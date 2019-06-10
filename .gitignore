@@ -1,0 +1,5 @@
+*.zip
+*.aux
+projekt1/Aufgaben.log
+projekt1/.vscode/*
+*/*/.vscode/*
