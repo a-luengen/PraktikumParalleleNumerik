@@ -1,0 +1,5 @@
+a) Liste: CG Verfahren; PCG-Verfahren; Verfahren der minimalen Risiduen; GCR-Verfahren; Arnoldi-Verfahren; FOM, ORTHORES;
+
+http://math.ntnu.edu.tw/~min/matrix_computation/Ch4_Slide7_GMRES_2011.pdf (quelle)
+
+https://rtraba.files.wordpress.com/2015/05/cpp_numerical.pdf
