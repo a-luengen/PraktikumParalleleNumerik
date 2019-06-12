@@ -7,11 +7,11 @@
  * 
  */
 
-#define L 3
+#define L 2
 #define MAX_K 15
 
 float f(float x, float y);
-float u(float x, float y);
+float func_u(float x, float y);
 int equals(float x, float y);
 int a(int x, int y);
 int T(int x, int y);
@@ -25,7 +25,7 @@ int main(void)
     h = 1.0 / pow(2.0, L);
     n = ((int)pow(2, L)) - 1;
 
-    float epsilon = 0.00001;
+    float epsilon = 0.000000001;
     float *u = malloc(sizeof(float) * n * n);
     float *u_new = malloc(sizeof(float) * n * n);
     // wähle Startvektor u0 aus IR^n
@@ -82,8 +82,16 @@ int main(void)
 
         k++;
     } while (flag == 1);
-    printf("Anzahl Iterationen: %d\n", k);
+    printf("Anzahl Iterationen: %d\n", k - 1);
     free(u);
+
+    #ifdef PRINT
+    for(int j = 0; j < n * n; j++)
+        printf("|%0.8f", func_u((j / n) * h, (j % n) * h));
+    printf("\n");
+    #endif
+
+
     return 0;
 }
 
@@ -100,7 +108,7 @@ int equals(float x, float y)
     return 1;
 }
 
-float u(float x, float y)
+float func_u(float x, float y)
 {
     if (equals(x, 0.0) || equals(x, 1.0) || equals(y, 0.0) || equals(y, 1.0))
         return 0.0;
