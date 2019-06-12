@@ -4,7 +4,7 @@
 #include <math.h>
 
 #define FEHLERSCHRANKE 1
-#define L 7
+#define L 5
 #define M 2
 #define N 2
 
@@ -97,10 +97,10 @@ int main() {
  //Vk besetzen
  for(int i = 0; i < k+1; i++) {
    V[i].size = n*n;
-   V[i].data =malloc(n*n*sizeof(float));
+  /* V[i].data =malloc(n*n*sizeof(float));
    for(int j = 0; j< n*n; j++ ){
      V[i].data[j] = 0.0f;
-   }
+   }*/
 
  }
 
@@ -155,13 +155,13 @@ int main() {
      float oldhij = H.data[i][j];
      float oldhi1j = H.data[i+1][j];
      H.data[i][j] =c.data[i+1]*oldhij + s.data[i+1]*oldhi1j;
-     H.data[i+1][j] = -1* s.data[i+1]*oldhij + c.data[i+1]*oldhi1j;
+     H.data[i+1][j] = -1.0f* s.data[i+1]*oldhij + c.data[i+1]*oldhi1j;
    }
    float beta = sqrt(H.data[j][j]*H.data[j][j]+ H.data[j+1][j]*H.data[j+1][j]);
    s.data[j+1] =H.data[j+1][j] / beta;
    c.data[j+1] =H.data[j][j] /beta;
    H.data[j][j] = beta;
-   gamma.data[j+1] = -1*s.data[j+1] * gamma.data[j];
+   gamma.data[j+1] = -1.0f*s.data[j+1] * gamma.data[j];
    gamma.data[j] = c.data[j+1] * gamma.data[j];
 
 
@@ -187,9 +187,9 @@ int main() {
 
  //Deklariere y
  struct Vector y;
- y.size = k;
- y.data = malloc(sizeof(float) * k);
- for(int i= 0; i< k; i++) {
+ y.size = (k+1);
+ y.data = malloc(sizeof(float) * (k+1));
+ for(int i= 0; i< k+1; i++) {
      y.data[i] = 0.0f;
  }
 
@@ -211,7 +211,7 @@ summedVector.data =malloc(n*n*sizeof(float));
 for(int zaehler = 0; zaehler< n*n; zaehler++ ){
   summedVector.data[zaehler] = 0.0f;
 }
-for(int i= 0; i <= k; i++){ // berechne summe zum abziehen
+for(int i= 0; i <= k; i++){ // berechne summe der Vektoren
   summedVector = sumVectors(summedVector, multFloatVector(y.data[i], V[i]));
 }
 //solution
