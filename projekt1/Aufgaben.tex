@@ -63,6 +63,17 @@
 		\hline
 	\end{tabular}
         \subsection{c)}
+        \begin{tabular}{|l|r|r|r|}
+        	\hline
+        	- & Auflösung &  Time (s) & Speedup \\
+        	\hline
+        	sequential &  1000 & 0.002 & - \\
+        	& 1 &  0.239 & - \\
+        	& 1 &  2.388 & - \\
+        	& 1 & 23.642 & - \\
+        	& 1 &  239.508 & - \\
+        	\hline
+        \end{tabular}
 	\begin{center}
 		\includegraphics[width=0.6\linewidth]{Aufgaben-Ressourcen/normal-1000.jpg}	
 	\end{center}
@@ -103,9 +114,19 @@
 	\subsection{b)}
 
     \section{Aufgabe 3}
+    
         \subsection{a)}
-        Speedup:
-        Effizienz:
+        P(x): Anzahl auszuführender Operationen auf x Prozessoren.\\
+        T(x): Ausführungszeit auf x Prozessoren.\\
+        
+        \textbf{Speedup}: Der Zusammenhang zwischen serieller und paralleler Ausführungszeit eines Programmes. S(n) = T(1)/T(n)\\
+        
+        \textbf{Effizienz}: E(n) = S(n)/n. Gibt die relative Verbesserung der Verarbeitungsgeschwindigkeit an.\\
+        
+        \textbf{Auslastung}: $ R(n)/(n*T(n)) $. Gibt an, wie viele Operationen (Tasks) jeder Prozessor im Durchschnitt pro Zeiteinheit ausgeführt hat.\\
+        
+        \textbf{Mehraufwand}: $R(n) = P(n)/P(1)$. Beschreibt den bei einem Multiprozessorsystem erforderlichen Mehraufwand für die Organisation, Synchronisation und Kommunikation der Prozessoren.\\
+        
         \subsection{b)}
         Race-Conditions: Wenn zwei Threads unabhängig voneinander auf eine Ressource lesend oder auch schreibend zugreiffen können, 
         spricht man von einer Race-Condition. Hierbei kann es bspw. beim Zugriff auf Variablen bei ungünstiger Ausführungszeiten
@@ -116,10 +137,29 @@
 
         In diesem Zusammenhang kann es auch zu Deadlocks, Lifelocks oder auch Starvation kommen. 
         \subsection{c)}
-        CPU
-        GPGPU
-        FPGA
-        MICs
+        \begin{tabular}{|p{4cm}|p{3cm}|p{3cm}|p{3cm}|}
+        	\hline
+        	- & GPUs & CPUs & FPGAs \\
+        	\hline
+        	Energieeffizienz & Gut & Mittel & Gut  \\
+        	\hline
+        	Anwenderfreundlichkeit & \begin{itemize}
+        		\item Braucht Einarbeitungszeit.
+        		\item Es gibt Bibliotheken.
+        	\end{itemize} & 
+        \begin{itemize}
+        	\item Am einfachsten zu programmieren.
+        	\item Viele Bibliotheken vorhanden. 
+        	\item Kurze Compilierzeit.
+        \end{itemize}  & \begin{itemize}
+        \item Aufwändig zu programmieren.
+        \item Lange Compilierzeit.
+        \item Wenig Bibliotheken.
+    \end{itemize}  \\
+        	\hline
+        \end{tabular}\\
+    
+    In diesem Praktikum verwenden wir CPUs und GPUs da sie universeller einsetzbar sind als FPGAs und die Programmierung deutlich leichter ist.
 
     \section{Aufgabe 4}
 
