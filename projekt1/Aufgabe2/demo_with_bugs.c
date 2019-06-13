@@ -144,7 +144,7 @@ int main(void) {
 	/*
 		PROBLEM: Race-Condition auf sum
 
-		LÖSUNG: sum
+		LÖSUNG: sum durch critical nur immer von einem Thread ausführen lassen.
 	
 	*/
 	/* --------- */
@@ -152,6 +152,7 @@ int main(void) {
 	sum = 0;
 	# pragma omp parallel for
 	for (i=1; i<N; i++) {
+		#pragma omp critical
 		sum = sum + b[i];
 	}
 	
