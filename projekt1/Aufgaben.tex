@@ -11,10 +11,11 @@
     \newpage
     \section{Aufgabe 1}
         \subsection{a)}
-        Die Reihenfolge in welcher die IDs der Threads ausgegeben werden ist unterschiedlich und auch nicht vorherzusagen.
+        Die Reihenfolge in welcher die IDs der Threads ausgegeben werden ist jedes Mal unterschiedlich und ist auch nicht vorherzusagen.
         
         \subsection{b)}
-        Gemessen wurde auf dem i82sn02. Die manuelle parallelisierung wurde mit atomic gemacht. Die Messung wurde nach 4 Threads aufgehört da sich die Rechenzeit sehr erhöht hat. Maximales Speedup von $ \sim 8 $.\\
+        Gemessen wurde auf dem i82sn02. Für die manuelle Parallelisierung wurde atomic verwendet. Diese Messung wurde nach 4 Threads aufgehört da sich die Rechenzeit stark erhöht hat. Für das Parallelisieren mit Reduktion ist das maximales Speedup $ \sim 8 $.\\
+        Bei 16 und 32 Threads verschlechtert sich die Beschleunigung im Gegensatz zu 8 Threads bei kleineren N. Das könnte am Overhead der Verarbeitung der Threads liegen.
         
 	\begin{tabular}{|l|l|r|r|r|}
 		\hline
@@ -62,16 +63,39 @@
 		 & 32 & $10^{10}$ & 29.551 & 8.1 \\
 		\hline
 	\end{tabular}
+
+	\newpage
         \subsection{c)}
+        
+        Die Messbedingungen waren gleich wie im Aufgabenteil b). Die Werte für das Speedup unterscheiden sich nicht groß von den oben gemessenen.\\
+        
         \begin{tabular}{|l|r|r|r|}
         	\hline
-        	- & Auflösung &  Time (s) & Speedup \\
+        	 Auflösung N & No. Threads &  Time (s) & Speedup \\
+        	 	\hline
+        	 1000& 1 &  4.411 & - \\
+        	 1000& 2 &  2.228 & 1.980 \\
+        	 1000& 4 &  1.122 & 3.931 \\
+        	 1000& 8 &  0.563 & 7.835\\
+        	 1000& 16 &  0.567 & 7.780 \\
         	\hline
-        	sequential &  1000 & 0.002 & - \\
-        	& 1 &  0.239 & - \\
-        	& 1 &  2.388 & - \\
-        	& 1 & 23.642 & - \\
-        	& 1 &  239.508 & - \\
+        	2000& 1 & 17.625 & - \\
+        	2000& 2 &  8.896& 1.981 \\
+        	2000& 4 &  4.493& 3.923 \\
+        	2000& 8 &  2.254& 7.819 \\
+        	2000& 16 &  2.248& 7.840 \\
+        	\hline
+        	4000& 1 & 71.761 & - \\
+        	4000& 2 &  35.559 & 2.010 \\
+        	4000& 4 &  17.952& 3.997 \\
+        	4000& 8 &  8.978 & 7.991\\
+        	4000& 16 &  8.980 & 7.991 \\
+        	\hline
+        	5000& 1 &  110.143 & - \\
+        	5000& 2 &  55.564 & 1.982 \\
+        	5000& 4 &  27.951 & 3.94 \\
+        	5000& 8 &  13.995 & 7.870 \\
+        	5000& 16 &  14.020 & 7.856\\
         	\hline
         \end{tabular}
 	\begin{center}
@@ -119,13 +143,13 @@
         P(x): Anzahl auszuführender Operationen auf x Prozessoren.\\
         T(x): Ausführungszeit auf x Prozessoren.\\
         
-        \textbf{Speedup}: Der Zusammenhang zwischen serieller und paralleler Ausführungszeit eines Programmes. S(n) = T(1)/T(n)\\
+        \textbf{Speedup}:  $S(n) = T(1)/T(n) $. \\ Der Zusammenhang zwischen serieller und paralleler Ausführungszeit eines Programmes. Der Wertebereich ist $ 1 \leq S(n) \leq n $ .\\
         
-        \textbf{Effizienz}: E(n) = S(n)/n. Gibt die relative Verbesserung der Verarbeitungsgeschwindigkeit an.\\
+        \textbf{Effizienz}: Die Effizienz $ E(n) = S(n)/n $ gibt die relative Verbesserung der Verarbeitungsgeschwindigkeit an.\\
         
         \textbf{Auslastung}: $ R(n)/(n*T(n)) $. Gibt an, wie viele Operationen (Tasks) jeder Prozessor im Durchschnitt pro Zeiteinheit ausgeführt hat.\\
         
-        \textbf{Mehraufwand}: $R(n) = P(n)/P(1)$. Beschreibt den bei einem Multiprozessorsystem erforderlichen Mehraufwand für die Organisation, Synchronisation und Kommunikation der Prozessoren.\\
+        \textbf{Mehraufwand}: $ R(n) = P(n)/P(1) $. Beschreibt den bei einem Multiprozessorsystem erforderlichen Mehraufwand für die Organisation, Synchronisation und Kommunikation der Prozessoren.\\
         
         \subsection{b)}
         Race-Conditions: Wenn zwei Threads unabhängig voneinander auf eine Ressource lesend oder auch schreibend zugreiffen können, 
