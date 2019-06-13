@@ -1,11 +1,11 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <omp.h>
 #include <stdlib.h>
 #include <math.h>
 
-#define L 4
-#define FEHLERSCHRANKE 0.00000001
-#define M 1
+#define L 6
+#define FEHLERSCHRANKE 0.00001
+#define M 3
 #define N 2
 //Exponent der Verfeinerung
 
@@ -111,6 +111,8 @@ int main() {
   free(u);
  return 0;
 }
+
+
 
 float functionF(float x, float y) { // x and y should be in (0,1)
   return (M*M+N*N)*(4*M_PI*M_PI*sin(2*M*M_PI*x)*sin(2*N*M_PI*y));
