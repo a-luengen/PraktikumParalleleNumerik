@@ -130,24 +130,48 @@
 	f(x,y) = ($N^2$ + $M^2$)*4*$\pi^2$*sin(2*M*$\pi$*x)*sin(2*N*$\pi$*y)
 	\subsection{c)}
 	Es handelt sich um eine h-FEM.  \newline
-	Folgende Lösungswerte ergaben sich mit M=3; N=2; l=5,6,7;  \newline
-\begin{figure}
-	\includegraphics[width=0.8\linewidth]{Aufgaben-Ressourcen/A5L5M3N2.png} 
+	Die Lösungswerte in Figure \ref{A5L5}, \ref{A5L6} und \ref{A5L7} ergrben sich mit M=3; N=2; l=5,6,7;  \newline
+	\begin{figure}
+		\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A5L5M3N2.png} 
 		\caption{l=5; h=1/32;}
-\end{figure}
-\begin{figure}
-	\includegraphics[width=0.8\linewidth]{Aufgaben-Ressourcen/A5L6M3N2.png} 
+		\label{A5L5}
+	\end{figure}
+	\begin{figure}
+		\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A5L6M3N2.png} 
 		\caption{l=6; h=1/64;}
-\end{figure}
-\begin{figure}
-	\includegraphics[width=0.8\linewidth]{Aufgaben-Ressourcen/A5L7M3N2.png}
+		\label{A5L6}
+	\end{figure}
+	\begin{figure}
+		\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A5L7M3N2.png}
 		\caption{l=7; h=1/128;}
-\end{figure}
+		\label{A5L7}
+	\end{figure}
 
 \section{Aufgabe 6}
 	\subsection{a)}
+	Liste: CG Verfahren; PCG-Verfahren; Verfahren der minimalen Risiduen(GMRES); GCR-Verfahren; Arnoldi-Verfahren; FOM, ORTHORES;\newline
+	Das Gleichungssystem ist dünnbesetzt zbd alle Krylow-Unterraumverfahren sind gut geeignet für dünnvesetzte Gleichungssysteme.
+	Diese Lösungswerte in Figure \ref{A6L5}, \ref{A6L6} und \ref{A6L7} ergeben sich mit der Gleichung aus Aufgabe 5 und M=3; N=2; l=5,6,7;  \newline
+\begin{figure}
+	\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A6L5M3N2.png} 
+		\caption{GMRES; l=5; h=1/32;}
+		\label{A6L5}
+\end{figure}
+\begin{figure}
+	\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A6L6M3N2.png} 
+		\caption{GMRES; l=6; h=1/64;}
+		\label{A6L6}
+\end{figure}
+\begin{figure}
+	\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A6L7M3N2.png}
+		\caption{GMRES; l=7; h=1/128;}
+		\label{A6L7}
+\end{figure}
 	\subsection{b)}
+	Die Verwendung des Residuums als Abrruchbedingung ist eventuell problematisch, da man dadurch in jedem Schleifendurchlauf einen Lösungsvektor $x^k$ berechnen muss. Man kann sich eine feste Anzahl von Iterationen setzen, allerdings hat man dann keine garantierte Genauigkeit. Außerdem kann man das Residuum mit weniger Rechenaufwand in jeder Iteration abschätzen und diesen Schätzwert als Abbruchbedingung nutzen. Auch diese Vorgehensweise hat keine garantierte Genauigkeit, da die Schätzgenauigkeit variiert.
 	\subsection{c)}
+
+Einsatz eines Vorkonditionierers: Der Einsatz ist unsinnvoll, da wir bereits eine dünn besetzte Matrix gegeben haben. Falls die Matrix anders besetzt wäre, könnte ein Vorkonditionierer von Nutzen sein.
 	\subsection{d)}
 \section{Aufgabe 7}
 \end{document}
