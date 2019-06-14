@@ -5,9 +5,6 @@
 #include <time.h>
 
 #define N 10
-#define M 1000
-#define P 1000
-//#define PRINT
 
 typedef struct Matrix {
     int rows, columns;
@@ -21,6 +18,7 @@ void matMulOmp(Matrix, Matrix, Matrix);
 Matrix createRandomMatrix(int rows, int cols);
 void freeMatrix(Matrix m);
 void printMatrix(Matrix m);
+void clearMatrix(Matrix m);
 
 int main(void) {
     // seed random generator
@@ -29,15 +27,6 @@ int main(void) {
     Matrix a = createRandomMatrix(N, N);
     Matrix b = createRandomMatrix(N, N);
     Matrix c = createRandomMatrix(N, N);
-    
-
-    printf("Generating random matrix\n");
-    int i, j;
-    for(i = 0; i < c.rows; i++) {
-        for(j = 0; j < c.columns; j++) {
-            c.matrix[i][j] = 0.0;
-        }
-    }
 
 #ifdef PRINT
     printf("Done \n");
@@ -47,20 +36,18 @@ int main(void) {
     printMatrix(b);
     printf("Print Matrix c:\n");
     printMatrix(c);
-#endif
+
     printf("Calculating Matrix Multiplication  a * b = c \n");
+#endif
     matMul(a, b , c);
 #ifdef PRINT
     printf("Print result in Matrix c:\n");
     printMatrix(c);
     printf("Done!\n");
 #endif
-
-
     freeMatrix(a);
     freeMatrix(b);
     freeMatrix(c);
-
     return 0;
 }
 
@@ -71,15 +58,17 @@ void matMul(Matrix a, Matrix b, Matrix c) {
 }
 
 void matMulOmp(Matrix a, Matrix b, Matrix c) {
-    printf("Doing Algorithmus with OMP: \n");
+    printf("Doing OMP with IKJ and temp-var: \n");
     
     int i, j, k;
+    float temp = 0.0;
 
-    #pragma omp parallel for private(i, j, k) schedule(dynamic, 1) collapse(2)
+    #pragma omp parallel for private(i, j, k, temp) schedule(dynamic, 1)
     for(i = 0; i < a.rows; i++) {
         for(k = 0; k < a.columns; k++) {
+            temp = a.matrix[i][k];
             for (j = 0; j < b.columns; j++) {
-                c.matrix[i][j] += a.matrix[i][k] * b.matrix[k][j];
+                 c.matrix[i][j] += temp * b.matrix[k][j];
             }
         }
     }
@@ -149,5 +138,12 @@ void printMatrix(Matrix m) {
         }
         printf("|\n");
     }
-    
+}
+
+void clearMatrix(Matrix m) {
+    for (int i = 0; i < m.rows; i++) {
+        for (int j = 0; j < m.columns; j++) {
+            m.matrix[i][j] = 0.0;
+        }
+    }
 }
