@@ -186,7 +186,51 @@
     In diesem Praktikum verwenden wir CPUs und GPUs da sie universeller einsetzbar sind als FPGAs und die Programmierung deutlich leichter ist.
 
     \section{Aufgabe 4}
+	\begin{figure}
+		\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A4L4.png}
+		\caption{l=4; h=1/16;}
+		\label{A4L4}
+	\end{figure}
+\begin{figure}
+		\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A4L5.png} 
+		\caption{l=5; h=1/32;}
+		\label{A4L5}
+	\end{figure}
+	\begin{figure}
+		\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A4L6.png} 
+		\caption{l=6; h=1/64;}
+		\label{A4L6}
+	\end{figure}
+	\subsection{a)}
+Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000001.\newline
+\begin{tabular}{|l|l|r|r|}
+		\hline
+		- & l=4; h=1/16 & l=5; h=1/32 & l=6; h=1/64\\
+		\hline
+		& 0.050s & 1.429s & 37.296s \\
+		& 0.041s & 1.426s & 37.014s  \\
+		& 0.040s & 1.392s & 37.061s \\
+		& 0.037s & 1.428s & 37.416s  \\
+		& 0.051s & 1.424s & 37.295s  \\
+		& =0.044s & =1.420s & =37.216s  \\
+		\hline
 
+	\end{tabular}
+\newline Diese Lösungswerte in Figure \ref{A4L4}, \ref{A4L5} und \ref{A4L6} ergeben sich mit l=4,5,6;  \newline
+	\subsection{b)}
+Die Schleifenabläufe sind direkt voneinander abhängig und müssen in Reihenfolge ablaufen. Die naive Parallelisierung liefert keine korrekten Ergebnisse. 
+	\subsection{c)}
+Methodik: Die beiden Summen die innerhalb der Schleife berechnet werden müssen wurden parallelisiert und mit einer Reduktion zusammendgefasst.\newline
+\begin{tabular}{|l|l|r|r|r|}
+		\hline
+		 &Laufzeit(seriell) &Laufzeit(parallel) & SpeedUp & Efficiency\\
+\hline
+		 l=4; h=1/16 & 0.044s & 0.242s & 0.182 & 0.004 \\
+		 l=5; h=1/32 & 1.420s & 1.154s & 1.231 & 0.026 \\
+		 l=6; h=1/64 & 37.216s & 26.884s & 1.384 & 0.029 \\
+		\hline
+
+	\end{tabular}
     \section{Aufgabe 5}
 	\begin{figure}
 		\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A5L5M3N2.png} 
