@@ -1,12 +1,9 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <omp.h>
 #include <stdlib.h>
-#include <math.h>
 
-#define L 6
-#define FEHLERSCHRANKE 0.00001
-#define M 3
-#define N 2
+#define FEHLERSCHRANKE 0.000001
+#define L 5
 //Exponent der Verfeinerung
 
 float functionF(float x, float y);
@@ -46,9 +43,9 @@ int main() {
     }
   }
 	//TODO: Timeranfang
-
   float fehler = FEHLERSCHRANKE +1;
   while(FEHLERSCHRANKE < fehler){
+    fehler =0;
     for(int j = 0; j < n*n; j++) {
         float firstSum = 0.0;
         float secondSum = 0.0;
@@ -74,7 +71,6 @@ int main() {
   }
 
 	//TODO:Timerende
-
 
 
 
@@ -112,8 +108,6 @@ int main() {
  return 0;
 }
 
-
-
 float functionF(float x, float y) { // x and y should be in (0,1)
-  return (M*M+N*N)*(4*M_PI*M_PI*sin(2*M*M_PI*x)*sin(2*N*M_PI*y));
+  return 32.0f*(x*(1.0f-x) + y*(1.0f-y));
 }

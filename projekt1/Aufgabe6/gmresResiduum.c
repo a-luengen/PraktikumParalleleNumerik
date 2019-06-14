@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define FEHLERSCHRANKE 0.0001
-#define L 7
-#define M 2
+#define FEHLERSCHRANKE 0.00001
+#define L 4
+#define M 3
 #define N 2
 
 struct Matrix
@@ -46,15 +46,17 @@ int main()
   struct Vector x0;
   x0.size = n * n;
   x0.data = malloc(n * n * sizeof(float));
+  #pragma omp parallel for
   for (int i = 0; i < n * n; i++)
   { //set x0
-    x0.data[i] = 0.0;
+    x0.data[i] = 0.0f;
   }
 
   //Funktionsvektor b
   struct Vector b;
   b.size = n * n;
   b.data = malloc(n * n * sizeof(float));
+  #pragma omp parallel for
   for (int i = 0; i < n; i++)
   {
     for (int j = 0; j < n; j++)
@@ -70,6 +72,7 @@ int main()
   A.data = malloc(A.rows * A.cols * sizeof(float));
 
   //A besetzen
+  #pragma omp parallel for
   for (int i = 0; i < n * n; i++)
   {
     A.data[i] = malloc(n * n * sizeof(float));
@@ -87,12 +90,17 @@ int main()
     }
   }
 
+
+  //Form the solution
+  struct Vector solution;
+
   //Matrix H
   struct Matrix H;
   H.rows = k + 1;
   H.cols = k;
   H.data = malloc(H.rows * H.cols * sizeof(float));
   //H besetzen
+  #pragma omp parallel for
   for (int i = 0; i < k + 1; i++)
   {
     H.data[i] = malloc((k) * sizeof(float));
@@ -106,18 +114,16 @@ int main()
   struct Vector *V;
   V = malloc((k + 1) * n * n * sizeof(float) + (k + 1) * sizeof(int));
   //Vk besetzen
+  #pragma omp parallel for
   for (int i = 0; i < k + 1; i++)
   {
     V[i].size = n * n;
-    /* V[i].data =malloc(n*n*sizeof(float));
-   for(int j = 0; j< n*n; j++ ){
-     V[i].data[j] = 0.0f;
-   }*/
   }
 
   struct Vector c;
   c.size = k + 1;
   c.data = malloc((k + 1) * sizeof(float));
+  #pragma omp parallel for
   for (int i = 0; i < k + 1; i++)
   {
     c.data[i] = 0.0f;
@@ -125,6 +131,7 @@ int main()
   struct Vector gamma;
   gamma.size = k + 1;
   gamma.data = malloc((k + 1) * sizeof(float));
+  #pragma omp parallel for
   for (int i = 0; i < k + 1; i++)
   {
     gamma.data[i] = 0.0f;
@@ -132,6 +139,7 @@ int main()
   struct Vector s;
   s.size = k + 1;
   s.data = malloc((k + 1) * sizeof(float));
+  #pragma omp parallel for
   for (int i = 0; i < k + 1; i++)
   {
     s.data[i] = 0.0f;
@@ -146,6 +154,7 @@ int main()
   {
     struct Vector q = multMatrixVector(A, V[j]);
     //hij berechnen
+    #pragma omp parallel for
     for (int i = 0; i <= j; i++)
     {
       H.data[i][j] = scalar(q, V[i]);
@@ -154,6 +163,7 @@ int main()
     struct Vector summedVector;
     summedVector.size = n * n;
     summedVector.data = malloc(n * n * sizeof(float));
+    #pragma omp parallel for
     for (int zaehler = 0; zaehler < n * n; zaehler++)
     {
       summedVector.data[zaehler] = 0.0f;
@@ -169,7 +179,7 @@ int main()
     H.data[j + 1][j] = norm(unnormedV);
 
     //Hij Schleife
-    for (int i = 0; i < j - 1; i++)
+    for (int i = 0; i < j; i++)
     { //muss in reihenfolge ablaufen
       float oldhij = H.data[i][j];
       float oldhi1j = H.data[i + 1][j];
@@ -188,60 +198,62 @@ int main()
     free(summedVector.data);
     free(q.data);
 
-    float testValue = gamma.data[j + 1];
-    if (testValue < 0)
-      testValue = testValue * -1.0f;
-    if (testValue < FEHLERSCHRANKE)
-    {
-      printf("Gamma: %f\n", testValue);
-      k = j;
-    }
-    else
-    {
-      //setze vj+1
-      V[j + 1] = multFloatVector(1 / H.data[j + 1][j], unnormedV);
-    }
-  }
+
 
   //Deklariere y
   struct Vector y;
-  y.size = (k + 1);
-  y.data = malloc(sizeof(float) * (k + 1));
-  for (int i = 0; i < k + 1; i++)
+  y.size = (j + 1);
+  y.data = malloc(sizeof(float) * (j + 1));
+  #pragma omp parallel for
+  for (int i = 0; i < j + 1; i++)
   {
     y.data[i] = 0.0f;
   }
 
   //berechne y
-  for (int i = k; i >= 0; i--)
+  for (int i = j; i >= 0; i--)
   { //Muss in reihenfolge laufen
     float helperValue = gamma.data[i];
-    for (int l = i + 1; l < k + 1; l++)
+    #pragma omp parallel for reduction(-:helperValue)
+    for (int l = i + 1; l <= j; l++)
     {
       helperValue -= H.data[i][l] * y.data[l];
     }
     y.data[i] = helperValue / H.data[i][i];
   }
 
-  //Form the solution
-  struct Vector solution;
+  free(y.data);
   //summed Vector of Vi and yi
-  struct Vector summedVector;
   summedVector.size = n * n;
   summedVector.data = malloc(n * n * sizeof(float));
+  #pragma omp parallel for
   for (int zaehler = 0; zaehler < n * n; zaehler++)
   {
     summedVector.data[zaehler] = 0.0f;
   }
-  for (int i = 0; i <= k; i++)
+  for (int i = 0; i <= j; i++)
   { // berechne summe der Vektoren
     summedVector = sumVectors(summedVector, multFloatVector(y.data[i], V[i]));
   }
   //solution
   solution = sumVectors(x0, summedVector);
+  free(summedVector.data);
   struct Vector test = diffVectors(b, multMatrixVector(A, solution));
   //AUSGABE
-  printf("Residuum: %f Iterations:%d\n", norm(test), k + 1);
+  float testValue = norm(test);
+  printf("Residuum: %f Iterations:%d\n", testValue, j + 1);
+  free(test.data);
+  if (testValue < FEHLERSCHRANKE)
+  {
+    k = j;
+  }
+  else
+  {
+    //setze vj+1
+    V[j + 1] = multFloatVector(1 / H.data[j + 1][j], unnormedV);
+  }
+}
+
 
   printf("\n");
   for (int i = 0; i < n; i++)
@@ -299,8 +311,10 @@ struct Vector multMatrixVector(struct Matrix m, struct Vector v)
   struct Vector toReturn;
   toReturn.size = m.rows;
   toReturn.data = malloc(sizeof(float) * m.rows);
+  #pragma omp parallel for
   for (int i = 0; i < m.rows; i++)
   {
+    toReturn.data[i] = 0.0f;
     for (int j = 0; j < m.cols; j++)
     {
       toReturn.data[i] += m.data[i][j] * v.data[j];
@@ -314,6 +328,7 @@ struct Vector diffVectors(struct Vector v1, struct Vector v2)
   struct Vector toReturn;
   toReturn.size = v1.size;
   toReturn.data = malloc(sizeof(float) * v1.size);
+  #pragma omp parallel for
   for (int i = 0; i < v1.size; i++)
   {
     toReturn.data[i] = v1.data[i] - v2.data[i];
@@ -326,6 +341,7 @@ struct Vector multFloatVector(float factor, struct Vector v)
   struct Vector toReturn;
   toReturn.size = v.size;
   toReturn.data = malloc(sizeof(float) * v.size);
+  #pragma omp parallel for
   for (int i = 0; i < v.size; i++)
   {
     toReturn.data[i] = factor * v.data[i];
@@ -338,6 +354,7 @@ struct Vector sumVectors(struct Vector v1, struct Vector v2)
   struct Vector toReturn;
   toReturn.size = v1.size;
   toReturn.data = malloc(sizeof(float) * v1.size);
+  #pragma omp parallel for
   for (int i = 0; i < v1.size; i++)
   {
     toReturn.data[i] = v1.data[i] + v2.data[i];
@@ -358,21 +375,4 @@ float scalar(struct Vector v1, struct Vector v2)
 float norm(struct Vector v)
 {
   return sqrt(scalar(v, v));
-}
-
-struct Matrix transpose(struct Matrix m)
-{
-  struct Matrix transposed;
-  transposed.cols = m.rows;
-  transposed.rows = m.cols;
-  transposed.data = malloc(sizeof(float) * m.rows * m.cols);
-  for (int i = 0; i < m.cols; i++)
-  {
-    transposed.data[i] = malloc(sizeof(float) * m.cols);
-    for (int j = 0; j < m.rows; j++)
-    {
-      transposed.data[i][j] = m.data[j][i];
-    }
-  }
-  return transposed;
 }
