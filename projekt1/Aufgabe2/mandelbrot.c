@@ -10,7 +10,7 @@
 #include <stdlib.h>
 
 #define N 2000 /* NxN grid size */
-#define maxiter 500
+#define maxiter 400
 
 
 typedef struct {
@@ -43,7 +43,7 @@ int main() {
 	
 	printf("Starting calculation for N=%d...\n", N);
 	
-	#pragma omp parallel for private(i,j,z,kappa,k)
+	#pragma omp parallel for private(i,j,z,kappa,k) schedule(dynamic)
 	for (i=0; i<N; i++) {
 		for (j=0; j<N; j++) {
 			z.re = kappa.re = (4.0*(i-N/2))/N;
