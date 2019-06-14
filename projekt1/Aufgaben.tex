@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
+\usepackage{multirow}
 
 \title{Antworten zu Aufgabenblatt 1}
 \date{2019-06-04}
@@ -75,30 +76,101 @@
     \section{Aufgabe 2}
     	\subsection{a)}
 		\begin{enumerate}
-			\item Example: Es besteht eine Race-Condition auf dem Array a über Index i,
+			\item Example: \\
+				Es besteht eine Race-Condition auf dem Array a über Index i,
 				bei ungünstiger Ausführungsreihenfolge der Threads kann es dazu kommen,
 				das a[i] durch einen Thread geschrieben wird und von einem anderen Thread versucht wird, darauf in der nachfolgenden Anweisung lesend zuzugreifen.
 				Um dieses Problem zu lösen können zwei for-Schleifen verwendet werden.
 				Eine schreibt alle Werte in Array a und die zweite schreibt alle Werte unter Zugriff auf Array a in Array b. 
 				Beide Schleifen werden jeweils getrennt parallelisiert.
-			\item Example: Threads exisiteren hier in der gesamten parallelen Region.
+			\item Example: \\
+				Threads exisiteren hier in der gesamten parallelen Region.
 				Das nowait-Statement der ersten parallelisierten For-Schleife bewirkt, dass Threads bereits die nächste parallelisierte Schleife bearbeiten können, wenn sie ihren Teil der ersten Schleife fertig verarbeitet haben.
 				Dies führt zu einer Race-Condition auf das Array a mit Index i, ähnlich zu Example 1.
 				Mit dem entfernen des nowait-Statements der ersten for-Schleife warten alle Threads wieder auf die implizite Barriere bis alle Threads fertig sind und es kann Problemlos auf die geschriebenen Werte in Array a zugegriffen werden.
-			\item Example: Hier ist die Variable x zunächst global definiert und wird somit implizit zwischen den Threads geshared. 
+			\item Example: \\
+				Hier ist die Variable x zunächst global definiert und wird somit implizit zwischen den Threads geshared. 
 				Somit besteht eine Race-Condition auf x da die Threads unabhängig voneinander sowohl lesend als auch schreibend auf x zugreifen.
 				Indem man x explizit als private deklariert, erhält jeder Thread seine eigene Kopie der Variable und es besteht keine Race-Condition mehr.
-			\item Example: f ist global definiert und wird durch jeden Thread private gesetzt. 
+			\item Example: \\
+				f ist global definiert und wird durch jeden Thread private gesetzt. 
 				Allerdings erhält jeder Thread eine uninitialiserte Kopie der Variable f, was bedeutet das dass initialisieren mit dem Wert 2 vor der Schleife nur für den Master-Thread sichtbar ist.
 				Um diese Initialiserung auch für alle übrigen Threads sichtbar zu machen, ist es erforderlich, f mittels firstprivate zu deklarieren.
 				Des weiteren wird der Wert von x nicht aus der parallelen Region wieder rausgeschrieben, sondern gelöscht. 
 				Wodurch der zuletzt geschriebene Wert innerhalb der parallelen Region in x nach außen hin nicht sichtbar ist.
 				Um deses Verhalten zu erreichen, muss x als lastprivate deklariert werden.
-			\item Example:
-
+			\item Example: \\
+				Hier besteht eine Race-Condition auf die Variable sum. 
+				Da mehrere Threads versuchen hier den alten Wert von Sum zu lesen, den i-ten Wert aus b ausfzuaddieren und damit sum wieder zu überschreiben, ist nicht garantiert, dass sum am Ende den korrekten Wert enthält.
+				Indem man das auslesen, aufaddieren und zuweisen mittels critical-Konstrukt schützt, ist garantiert das immer nur ein Thread den Wert überschreiben kann.
+				Allerdings ist die gesamte Schleife dann gleichbedeutend mit einer Sequenziellen Ausführung.
 		\end{enumerate}
 
-	\subsection{b)}
+		\subsection{b)}
+			Werden Matrizen in C zeilenweise im Speicher hinterlegt, ist es zur optimalen Ausnutzung von Caching-Effekten ideal, wenn auch zeilenweise über Einträge der Matrix iteriert wird.
+			Dadurch läd der Prozessor bei einem Cache-miss auf einen Eintrag nicht nur den einzelnen Eintrag in den Cache, sondern direkt mehrere nachfolgende Einträge, was weniger Zugriffe auf den RAM zu folge hat und somit insgesamt die Performance verbessert.
+			Wird jedoch spaltenweise über eine Matrix iteriert, müssen für einen Zugriff auf das (i+1)-te Element alle n-Einträge nach i ausgelassen werden. 
+			Bei entsprechend großen Matrizen werden die mit in den Cache geladenen Elemente garnicht benötigt.
+			Jeder Zugriff entspricht somit einem Cache-miss, was wiederum einen Speicherzugriff zur folge hat und somit die gesamte Performance negative beeinflusst.
+			
+			Der klassische IJK-Algorithmus zur Matrixmultiplikation iteriert in der inneren K-Schleife für die rechte Matrix B für jede Addition+Multiplikation über die Spalten.
+			Zum besseren Ausnutzen der Cache-Effekte kann durch vertauschen der zwei Schleifen J und K, auch bekannt als IKJ-Optimierung, eine Verbesserung der Performance erzielt werden.
+			So wird in der inneren J-Schleife nur über die Spalten aus B und C iterriert und die K-Schleife iteriert über die Spalten in A.
+
+
+			\begin{tabular}{|l|p{1cm}|p{1cm}|p{1cm}|p{1cm}|r|r|r|r|}
+				\hline
+			\multirow{2}{*}{Compiler} & \multirow{2}{*}{N} & \multirow{2}{*}{Seq. Laufzeit} & \multicolumn{2}{|c|}{2 Threads} & \multicolumn{2}{|c|}{4 Threads} & \multicolumn{2}{|c|}{16 Threads} \\
+				& & & Zeit & Speedup & Zeit & Speedup & Zeit & Speedup \\
+				\hline
+				% Methode | Problemgröße | Seq Laufzeit | 2 Threads      | 4 Threads      | 16 Threads     |
+				%		  |              |              | Time | Speedup | Time | Speedup | Time | Speedup |
+				gcc - IJK & 	10 & 		0,004s &     0,004s &  &      0,004s  & &      0,004s &  \\
+				\hline
+				gcc - IJK & 100 &           0,019s &     0,014s &  &      0,009s  & &      0,007s & \\
+				\hline
+				gcc - IJK & 1000 &          8,899s &     4,555s & &        2,377s  &&       0,724s & \\
+				\hline
+				gcc - IKJ  & 10 & 			0,004s & 	 0,004s & & 	  0,004s &&			0,004 & \\
+				\hline 
+				gcc - IKJ & 100 &			0,0166s &     0,0122s &&		 0,0088s &&         0,006s & \\
+				\hline 
+				gcc - IKJ & 1000 & 			7,3744s & 	 7,8727s && 	  3,8862 &&         1,6994s & \\
+				\hline
+				gcc - ... +Inv & 10 &      0,003s &     0,003s &&       0,003s &&        0,004s & \\
+				\hline
+				gcc - ... +Inv & 100 &	    0,016s &     0,0116s &&       0,009s &&			0,0056s& \\
+				\hline
+				gcc - ... +Inv & 1000 & 	6,030s &	3,1956s &&			1,7114 &&		0,5086s& \\
+				\hline
+				gcc - ... +O2 & 10 &  0,004s &     0,0036s &  &      0,004s  & &      0,0042s &  \\
+				\hline 
+				gcc - ... +O2 & 100 & 0,006s &	  0,0062s &&		0,005s &&        0,005s & \\
+				\hline 
+				gcc - ... +O2 & 1000 & 6,0412s & 	3,1912 &&       1,7174s &&		  0,5078 & \\
+				\hline
+			\end{tabular}
+		
+		\subsection{c)}
+			Die Arbeitspakete pro Thread werden statisch vergeben. 
+			Die Berechnung der Mandelbrotmenge ist jedoch nur für einen bestimmten Bild Bereich besonders Berechnungsintensiv. 
+			Threads welche diese Bereiche berechnen sollen, müssen mehr Aufwand betreiben im vergleich zu den anderen Threads, wodurch diese insgesamt länge benötigen.
+			Die anderen Threads werden kaum ausgelastet und die gesamte Parallelisierung ist ineffizient.
+			Durch dynmisches Scheduling werden die Arbeitspakete erst an Threads verteilt, wenn diese keine Aufgabe haben oder eine bereits beendet haben.
+			Dies führt zu einer optimaleren Verteilung der Arbeitslast und insgesamt schnelleren Berechnung des Gesamtproblems, da alle Threads möglichst gleich viel Arbeiten.
+	
+
+			\begin{tabular}{|p{1cm}|p{2cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|}
+				\hline
+				Mode & N, It., Chunk & Seq. & 2 Threads & S.Up & 4 Threads & S.Up & 8 Threads & S.Up \\
+				\hline
+				static & 2000, 500, - & 8,528s & 6,188s & & & & \\
+				static & 4000, 500, - & 34,080s & 24,881s & & & & \\
+				static & 8000, 500, - & 135,882s &  & 86,120s &  & 15,226s & \\
+				dynamic & 2000, 500, 1 & & & & & & \\
+				dynamic & 4000, 500, 1 & & & & & & \\
+				dynamic & 8000, 500, 1 & & & & & & \\
+			\end{tabular}
 
     \section{Aufgabe 3}
         \subsection{a)}
@@ -122,4 +194,8 @@
     \section{Aufgabe 4}
 
     \section{Aufgabe 5}
+
+\section{Aufgabe 6}
+
+\section{Aufgabe 7}
 \end{document}
