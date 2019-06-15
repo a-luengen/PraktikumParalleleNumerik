@@ -5,7 +5,7 @@
 
 \title{Antworten zu Aufgabenblatt 1}
 \date{2019-06-04}
-\author{Alexander Lüngen}
+\author{Rebecca, Joshua, Alexander}
 
 \begin{document}
     \maketitle
@@ -154,40 +154,40 @@
 			Zum besseren Ausnutzen der Cache-Effekte kann durch vertauschen der zwei Schleifen J und K, auch bekannt als IKJ-Optimierung, eine Verbesserung der Performance erzielt werden.
 			So wird in der inneren J-Schleife nur über die Spalten aus B und C iterriert und die K-Schleife iteriert über die Spalten in A.
 
+			Da der einzelne Eintrag in A der inneren Schleife invariant ist, kann dieser zudem aus der Schleife herausgezogen und in einer tempäreren Variable gespeichert werden.
 
-			\begin{tabular}{|l|p{1cm}|p{1cm}|p{1cm}|p{1cm}|r|r|r|r|}
+			\begin{center}
+			\begin{tabular}{|l|p{1cm}|p{1cm}|p{1cm}|p{1.5cm}|r|r|r|r|}
 				\hline
-			\multirow{2}{*}{Compiler} & \multirow{2}{*}{N} & \multirow{2}{*}{Seq. Laufzeit} & \multicolumn{2}{|c|}{2 Threads} & \multicolumn{2}{|c|}{4 Threads} & \multicolumn{2}{|c|}{16 Threads} \\
+			\multirow{2}{*}{Mode} & \multirow{2}{*}{N} & \multirow{2}{*}{Seq} & \multicolumn{2}{|c|}{2 Threads} & \multicolumn{2}{|c|}{4 Threads} & \multicolumn{2}{|c|}{16 Threads} \\
 				& & & Zeit & Speedup & Zeit & Speedup & Zeit & Speedup \\
 				\hline
 				% Methode | Problemgröße | Seq Laufzeit | 2 Threads      | 4 Threads      | 16 Threads     |
 				%		  |              |              | Time | Speedup | Time | Speedup | Time | Speedup |
-				gcc - IJK & 	10 & 		0,004s &     0,004s &  &      0,004s  & &      0,004s &  \\
+				gcc - IJK & 10 & 		   0.0040  &     0.0040  &  1.00&      0.0040   & 1.00 &      0.0040  &  1.00\\
+				
+				gcc - IJK & 100 &           0.0190  &     0.0140  &  1.36&      0.0090   & 2.11&      0.0070  & 2.71\\
+				
+				gcc - IJK & 1000 &          8.8990  &     4.5550  &  1.95&        2.3770   & 3.74&       0.7240  & 12.29\\
 				\hline
-				gcc - IJK & 100 &           0,019s &     0,014s &  &      0,009s  & &      0,007s & \\
+				gcc - IKJ  & 10 & 			0.0040  & 	 0.0040  & 1.00 & 	  0.0040  &  1.00&			0.0040 & 1.00\\
+				
+				gcc - IKJ & 100 &			0.0166  &     0.0122  &  1.36&		 0.0088  & 1.89&         0.0060  & 2.77\\
+				
+				gcc - IKJ & 1000 & 			7.3744  & 	 7.8727  & 0.94& 	  3.8862 & 1.90&         1.6994  & 4.34\\
 				\hline
-				gcc - IJK & 1000 &          8,899s &     4,555s & &        2,377s  &&       0,724s & \\
+				gcc - ... +Inv & 10 &      0.0030  &     0.0030  & 1.00&       0.0030  & 1.00&        0.0040  & 0.75\\
+				gcc - ... +Inv & 100 &	    0.0160  &     0.0116  & 1.38&       0.0090  & 1.78&			0.0056 & 2.86\\
+				gcc - ... +Inv & 1000 & 	6.0300  &	3.1956  & 1.89&			1.7114 & 3.52&		0.5086 & 11.86\\
 				\hline
-				gcc - IKJ  & 10 & 			0,004s & 	 0,004s & & 	  0,004s &&			0,004 & \\
-				\hline 
-				gcc - IKJ & 100 &			0,0166s &     0,0122s &&		 0,0088s &&         0,006s & \\
-				\hline 
-				gcc - IKJ & 1000 & 			7,3744s & 	 7,8727s && 	  3,8862 &&         1,6994s & \\
-				\hline
-				gcc - ... +Inv & 10 &      0,003s &     0,003s &&       0,003s &&        0,004s & \\
-				\hline
-				gcc - ... +Inv & 100 &	    0,016s &     0,0116s &&       0,009s &&			0,0056s& \\
-				\hline
-				gcc - ... +Inv & 1000 & 	6,030s &	3,1956s &&			1,7114 &&		0,5086s& \\
-				\hline
-				gcc - ... +O2 & 10 &  0,004s &     0,0036s &  &      0,004s  & &      0,0042s &  \\
-				\hline 
-				gcc - ... +O2 & 100 & 0,006s &	  0,0062s &&		0,005s &&        0,005s & \\
-				\hline 
-				gcc - ... +O2 & 1000 & 6,0412s & 	3,1912 &&       1,7174s &&		  0,5078 & \\
+				gcc - ... +O2 & 10 &  0.0040  &     0.0036  &  1.11&      0.0040   & 1.00&      0.0042  &  0.95\\
+				 
+				gcc - ... +O2 & 100 & 0.0060  &	  0.0062  &  0.97 &		0.0050  & 1.20 &        0.0050  &  1.2\\
+				
+				gcc - ... +O2 & 1000 & 6.0412  & 	3.1912 & 1.89 &       1.7174  & 3.52 &		  0.5078 & 11.9\\
 				\hline
 			\end{tabular}
-		
+		\end{center}
 		\subsection{c)}
 			Die Arbeitspakete pro Thread werden statisch vergeben. 
 			Die Berechnung der Mandelbrotmenge ist jedoch nur für einen bestimmten Bild Bereich besonders Berechnungsintensiv. 
@@ -196,18 +196,42 @@
 			Durch dynmisches Scheduling werden die Arbeitspakete erst an Threads verteilt, wenn diese keine Aufgabe haben oder eine bereits beendet haben.
 			Dies führt zu einer optimaleren Verteilung der Arbeitslast und insgesamt schnelleren Berechnung des Gesamtproblems, da alle Threads möglichst gleich viel Arbeiten.
 	
+			\begin{center}
+				\begin{tabular}{|p{1.5cm}|p{2cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|}
+					\hline
+					Mode & N, It., Chunk & Seq. & 2 Threads & S.Up & 4 Threads & S.Up & 8 Threads & S.Up \\
+					\hline
+					static & 2000, 500, - & 8.528  & 6.188  & 1.38 & 5.453  & 1.56 & 3.908  & 2.18\\
+					static & 4000, 500, - & 34.080  & 24.881  & 1.37 & 22.193  & 1.54 & 15.061  & 2.26 \\
+					static & 8000, 500, - & 135.882  & 98.576  & 1.38 & 86.120  & 1.56  & 60.522  & 2.25 \\
+					\hline
+					dynamic & 2000, 500, 1 & 8.524  & 4.375  & 1.95 & 2.284 & 3.73 & 1.216 & 7.01 \\
+					dynamic & 4000, 500, 1 & 33.955  & 17.016 & 2.00 & 8.600 & 3.95 & 4.803 & 7.07 \\
+					dynamic & 8000, 500, 1 & 135.966  & 67.987 & 2.00 & 34.344 & 3.96 & 19.110 & 7.11 \\
+					\hline
+				\end{tabular}
+			\end{center}
+			
+			Veränderungen in der Chunk-Size beim Scheduling wirken sich in diesem Fall nicht auf die Performance aus.
+			
+			\begin{center}
+				\begin{tabular}{|r|r|r|r|r|r|}
+					\hline
+					Chunk & N & Seq. & 2 Threads & 4 Threads & 8 Threads \\
+					\hline
+					1 & 8000 & 135.966 & 67.987  & 34.569  & 19.042  \\
+					\hline
+					2 & 8000 & - & 68.069 & 34.569  & 19.049  \\
+					\hline
+					4 & 8000 & - & 69.999  & 34.471  & 19.049  \\
+					\hline
+					8 & 8000 & - & 68.027  & 34.533  & 19.096  \\
+					\hline
+					16 & 8000 & - & 67.996  & 34.892  & 19.134  \\
+					\hline
+				\end{tabular}
+			\end{center}
 
-			\begin{tabular}{|p{1cm}|p{2cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|}
-				\hline
-				Mode & N, It., Chunk & Seq. & 2 Threads & S.Up & 4 Threads & S.Up & 8 Threads & S.Up \\
-				\hline
-				static & 2000, 500, - & 8,528s & 6,188s & & & & \\
-				static & 4000, 500, - & 34,080s & 24,881s & & & & \\
-				static & 8000, 500, - & 135,882s &  & 86,120s &  & 15,226s & \\
-				dynamic & 2000, 500, 1 & & & & & & \\
-				dynamic & 4000, 500, 1 & & & & & & \\
-				dynamic & 8000, 500, 1 & & & & & & \\
-			\end{tabular}
 
     \section{Aufgabe 3}
     
@@ -387,5 +411,10 @@ Einsatz eines Vorkonditionierers: Der Einsatz ist unsinnvoll, da wir bereits ein
 MFEM; deal.II; libMesh; JuliaFEM; FEniCS; Hermes Project;...\newline
 Liste weiterer FEM Packages/Libraries: https://en.wikipedia.org/wiki/List\_of\_finite\_element\_software\_packages \newline
 Fast alle sind Open Source und kostenlos nutzbar. "Hermes Project" scheint zum Beispiel eine leicht nutzbare C/C++ Bibliothek.
-\section{Aufgabe 7}
+
+
+\section{Aufgabe}
+
+
+
 \end{document}
