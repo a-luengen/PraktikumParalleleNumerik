@@ -2,7 +2,9 @@
 
 \usepackage{beamerthemebars}
 \usepackage{amsmath, amssymb}
-\usepackage{ngerman,url}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{url}
 \usepackage{algorithm2e}
 \usepackage{graphicx}
 \usepackage{wrapfig}
@@ -186,12 +188,79 @@
 \section{Aufgabe 4}
 \frame{
 	\frametitle{Aufgabe 4 - Teil a}
-	Die Reihenfolge in welcher die IDs der Threads ausgegeben werden ist jedes Mal unterschiedlich und ist auch nicht vorherzusagen.
+	Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000001.\newline
+	\begin{itemize}
+		\item \textbf{h}: Verfeinerung $h = \frac{1}{2^l}$
+		\item \textbf{l}: $l \subset \mathbb{N}$
+	\end{itemize}
+	\begin{center}
+		\begin{tabular}{|l|l|r|r|}
+			\hline
+			& l=4; h=1/16 & l=5; h=1/32 & l=6; h=1/64\\
+			\hline
+			& 0.050s & 1.429s & 37.296s \\
+			& 0.041s & 1.426s & 37.014s  \\
+			& 0.040s & 1.392s & 37.061s \\
+			& 0.037s & 1.428s & 37.416s  \\
+			& 0.051s & 1.424s & 37.295s  \\
+			\hline 
+			Summe & = 0.044s & = 1.420s & = 37.216s  \\
+			\hline
+	
+		\end{tabular}	
+	\end{center}
+}
+
+\frame{
+	\frametitle{Aufgabe 4 - Teil b}
+	\begin{itemize}
+		\item Innere Schleifendurchgänge direkt voneinander Datenabhängig
+		\item Schleifen müssen in korrekter Reihenfolge abhängig von äußerer Schleife ablaufen
+		\item Naive Parallelisierung der äußersten Schleife liefert falsches Ergebnis
+	\end{itemize}
+}
+
+\frame{
+	\frametitle{Aufgabe 4 - Teil c}
+	Vorgehensweise zur optimalen Parallelisierung:
+	\begin{itemize}
+		\item Innere Schleifen zur Summenberechnung parallel berechnen
+		\item Matrix a und Vector u explizit shared
+		\item \grqq+\grqq-Reduction auf Summenvariable firstsum bzw. secondsum
+	\end{itemize}
+
+	\begin{center}
+		\begin{tabular}{|l|p{2cm}|p{2cm}|r|r|}
+			\hline
+			&Laufzeit \-(seriell) &Laufzeit \-(parallel) & SpeedUp & Efficiency\\
+			\hline
+			l=4; h=1/16 & 0.044s & 0.242s & 0.182 & 0.004 \\
+			l=5; h=1/32 & 1.420s & 1.154s & 1.231 & 0.026 \\
+			l=6; h=1/64 & 37.216s & 26.884s & 1.384 & 0.029 \\
+			\hline
+		\end{tabular}
+	\end{center}
 }
 
 \section{Aufgabe 5}
+
 \frame{
-	\frametitle{Aufgabe 5 -Visualisiert}
+	\frametitle{Aufgabe 5 - Teil a + b }
+	\begin{itemize}
+		\item $u$: Eine Lösung $u(x,y)$ muss mind. zweifach differenzierbar sein
+		\item $f$: $f(x,y)$ muss definiert sein auf $\Omega$
+		\item $\Gamma$: ist der Rand von $\Omega$ und es gilt: $\Gamma\subset\Omega $
+	\end{itemize}
+	\begin{center}
+		Function: $f(x,y) = (N^2 + M^2)*4*\pi^2*sin(2*M*\pi*x)*sin(2*N*\pi*y)$
+	\end{center}
+}
+
+\frame{
+	\frametitle{Aufgabe 5 - c - Visualisiert}
+	\begin{itemize}
+		\item Bei der Lösungsmethodik handelt es sich um eine $h-FEM$ 
+	\end{itemize}
 	\begin{figure}
 	\includegraphics[width=\linewidth]{figures/A5L7M3N2.png}
 		\caption{l=7; h=1/128;M=3;N=2}

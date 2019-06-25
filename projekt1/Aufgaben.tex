@@ -281,6 +281,7 @@
     
     In diesem Praktikum verwenden wir CPUs und GPUs da sie universeller einsetzbar sind als FPGAs und die Programmierung deutlich leichter ist.
 
+
     \section{Aufgabe 4}
 	\begin{figure}
 		\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A4L4.png}
@@ -297,6 +298,8 @@
 		\caption{l=6; h=1/64;}
 		\label{A4L6}
 	\end{figure}
+
+
 	\subsection{a)}
 Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000001.\newline
 \begin{tabular}{|l|l|r|r|}
@@ -312,21 +315,26 @@ Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000
 		\hline
 
 	\end{tabular}
-\newline Diese Lösungswerte in Figure \ref{A4L4}, \ref{A4L5} und \ref{A4L6} ergeben sich mit l=4,5,6;  \newline
+	\newline Diese Lösungswerte in Figure \ref{A4L4}, \ref{A4L5} und \ref{A4L6} ergeben sich mit l=4,5,6;  \newline
+	
 	\subsection{b)}
-Die Schleifenabläufe sind direkt voneinander abhängig und müssen in Reihenfolge ablaufen. Die naive Parallelisierung liefert keine korrekten Ergebnisse. 
-	\subsection{c)}
-Methodik: Die beiden Summen die innerhalb der Schleife berechnet werden müssen wurden parallelisiert und mit einer Reduktion zusammendgefasst.\newline
-\begin{tabular}{|l|l|r|r|r|}
-		\hline
-		 &Laufzeit(seriell) &Laufzeit(parallel) & SpeedUp & Efficiency\\
-\hline
-		 l=4; h=1/16 & 0.044s & 0.242s & 0.182 & 0.004 \\
-		 l=5; h=1/32 & 1.420s & 1.154s & 1.231 & 0.026 \\
-		 l=6; h=1/64 & 37.216s & 26.884s & 1.384 & 0.029 \\
-		\hline
+	Die Schleifenabläufe sind direkt voneinander abhängig und müssen in Reihenfolge ablaufen. Die naive Parallelisierung liefert keine korrekten Ergebnisse. 
+	
 
-	\end{tabular}
+	\subsection{c)}
+		Methodik: Die beiden Summen die innerhalb der Schleife berechnet werden müssen wurden parallelisiert und mit einer Reduktion zusammendgefasst.\newline
+		\begin{tabular}{|l|l|r|r|r|}
+				\hline
+				&Laufzeit(seriell) &Laufzeit(parallel) & SpeedUp & Efficiency\\
+			\hline
+			l=4; h=1/16 & 0.044s & 0.242s & 0.182 & 0.004 \\
+			l=5; h=1/32 & 1.420s & 1.154s & 1.231 & 0.026 \\
+				l=6; h=1/64 & 37.216s & 26.884s & 1.384 & 0.029 \\
+				\hline
+
+		\end{tabular}
+
+
     \section{Aufgabe 5}
 	\begin{figure}
 		\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A5L5M3N2.png} 
