@@ -112,8 +112,6 @@ int main() {
  return 0;
 }
 
-
-
 float functionF(float x, float y) { // x and y should be in (0,1)
   return (M*M+N*N)*(4*M_PI*M_PI*sin(2*M*M_PI*x)*sin(2*N*M_PI*y));
 }

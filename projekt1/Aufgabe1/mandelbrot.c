@@ -2,6 +2,7 @@
 /*
  * Compilation:
  * 		w/ image output: gcc -Wall -o mandelbrot -D IMAGE_OUTPUT mandelbrot.c -lm
+ * 			gcc -Wall -fopenmp -o mandelbrot -D IMAGE_OUTPUT mandelbrot.c -lm
  * 		w/o image output: gcc -Wall -o mandelbrot mandelbrot.c -lm
  */
 
@@ -9,8 +10,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define N 2000 /* NxN grid size */
-#define maxiter 500
+#define N 10000 /* NxN grid size */
+#define maxiter 1000
 
 
 typedef struct {
