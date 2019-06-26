@@ -29,91 +29,65 @@
 }
 \frame{
 	\frametitle{Aufgabe 1 - Teil b}
-	  \begin{tabular}{|l|l|r|r|r|}
-	  		\hline
-	  	- & Number of Threads & N & Time (s) & Speedup \\
-	  	\hline
-	  	sequential & 1 & 1000 & 0.002 & - \\
-	  	& 1 & $10^{7}$ & 0.239 & - \\
-	  	& 1 & $10^{8}$ & 2.388 & - \\
-	  	& 1 & $10^{9}$ & 23.642 & - \\
-	  	& 1 & $10^{10}$ & 239.508 & - \\
-	  	\hline
-	  	manual & 2 & 1000 & 0.002 & 1 \\
-	  	& 2 & $10^{7}$ & 0.634 & - \\
-	  	& 2 & $10^{8}$ & 6.461 & - \\
-	  	& 2 & $10^{9}$ & 52.989 & - \\
-	  	& 4 & $10^{9}$ & $\sim$ 120 & - \\
-	  	\hline
-	  \end{tabular}
+	\begin{center}
+		\begin{tabular}{|l|l|r|r|r|}
+			\hline
+			- & Number of Threads & N & Time (s) & Speedup \\
+			\hline
+			sequential& 1 & $10^{7}$ & 0.239 & - \\
+			& 1 & $10^{10}$ & 239.508 & - \\
+			\hline
+			atomic & 2 & $10^{7}$ & 0.634 & - \\
+			& 4 & $10^{10}$ & $\sim$ 120 & - \\
+			\hline
+		\end{tabular}
+	\end{center}
 }
 
 \frame{
 	\frametitle{Aufgabe 1 - Teil b}
-	\begin{tabular}{|l|l|r|r|r|}
-		\hline
-		- & Number of Threads & N & Time (s) & Speedup \\
-		\hline
-		sequential & 1 & 1000 & 0.002 & - \\
-		& 1 & $10^{7}$ & 0.239 & - \\
-		& 1 & $10^{8}$ & 2.388 & - \\
-		& 1 & $10^{9}$ & 23.642 & - \\
-		& 1 & $10^{10}$ & 239.508 & - \\
-		\hline
-		reduction & 2 & $10^{7}$ & 0.121 & 1.9 \\
-		& 2 & $10^{10}$ & 118.204 & 2 \\
-		& 4 & $10^{7}$ & 0.062 & 3.9 \\
-		& 4 & $10^{10}$ & 59.183 & 4 \\
-		& 8 & $10^{10}$ & 29.689 & 8.0 \\
-		& 16 & $10^{10}$ & 29.674 & 8.1\\
-		& 32 & $10^{10}$ & 29.551 & 8.1 \\	
-		\hline
-	\end{tabular}
-}
-
-\frame{
-	\frametitle{Aufgabe 1 - Teil c}
-	\begin{tabular}{|l|l|r|r|r|}
-		\hline 
-		 Aufl"osung N & No. Threads &  Time (s) & Speedup \\
-		\hline
-		1000& 1 &  4.411 & - \\
-		1000& 2 &  2.228 & 1.980 \\
-		1000& 4 &  1.122 & 3.931 \\
-		1000& 8 &  0.563 & 7.835\\
-		1000& 16 &  0.567 & 7.780 \\
-		\hline
-		2000& 1 & 17.625 & - \\
-		2000& 2 &  8.896& 1.981 \\
-		2000& 4 &  4.493& 3.923 \\
-		2000& 8 &  2.254& 7.819 \\
-		2000& 16 &  2.248& 7.840 \\
-		\hline
-	\end{tabular}
-}
-
-\frame{
-	\frametitle{Aufgabe 1 - Teil c}
-	\begin{tabular}{|l|l|r|r|r|}
-		\hline 
-		Aufl"osung N & No. Threads &  Time (s) & Speedup \\
+	\begin{center}
+		\begin{tabular}{|l|l|r|r|r|}
 			\hline
-		4000& 1 & 71.761 & - \\
-		4000& 2 &  35.559 & 2.010 \\
-		4000& 4 &  17.952& 3.997 \\
-		4000& 8 &  8.978 & 7.991\\
-		4000& 16 &  8.980 & 7.991 \\
-		\hline
-		5000& 1 &  110.143 & - \\
-		5000& 2 &  55.564 & 1.982 \\
-		5000& 4 &  27.951 & 3.94 \\
-		5000& 8 &  13.995 & 7.870 \\
-		5000& 16 &  14.020 & 7.856\\
-		\hline
-	\end{tabular}
+			- & Number of Threads & N & Time (s) & Speedup \\
+			\hline
+			sequential & 1 & $10^{7}$ & 0.239 & - \\
+			& 1 & $10^{10}$ & 239.508 & - \\
+			\hline
+			reduction & 2 & $10^{7}$ & 0.121 & 1.9 \\
+			& 2 & $10^{10}$ & 118.204 & 2 \\
+			& 4 & $10^{7}$ & 0.062 & 3.9 \\
+			& 4 & $10^{10}$ & 59.183 & 4 \\
+			& 8 & $10^{10}$ & 29.689 & 8.0 \\
+			& 16 & $10^{10}$ & 29.674 & 8.1\\
+			& 32 & $10^{10}$ & 29.551 & 8.1 \\	
+			\hline
+		\end{tabular}
+	\end{center}
 }
 
-
+\frame{
+	\frametitle{Aufgabe 1 - Teil c}
+	\begin{center}
+			\begin{tabular}{|l|l|r|r|r|}
+			\hline 
+			Aufl"osung N & No. Threads &  Time (s) & Speedup \\
+			\hline
+			1000& 1 &  4.411 & - \\
+			1000& 16 &  0.567 & 7.780 \\
+			\hline
+			2000& 1 & 17.625 & - \\
+			2000& 16 &  2.248& 7.840 \\
+			\hline
+			4000& 1 & 71.761 & - \\
+			4000& 16 &  8.980 & 7.991 \\
+			\hline
+			5000& 1 &  110.143 & - \\
+			5000& 16 &  14.020 & 7.856\\
+			\hline
+		\end{tabular}
+	\end{center}
+}
 
 \section{Aufgabe 2}
 
@@ -121,23 +95,74 @@
 
 	\frametitle{Aufgabe 2 - Teil a}
 		\begin{enumerate}
-			\item Race condition auf dem Array a "uber Index i
+			\item Race-Condition auf dem Array a "uber Index i
 			\item Threads existieren in gesamter paralleler Region
 			\item Hier ist die Variable x zunächst global definiert und wird somit implizit zwischen den Threads geshared. 
 			\item f ist global definiert und wird durch jeden Thread private gesetzt. 
-			\item ?
+			\item  Race-Condition auf die Variable sum. 
 		\end{enumerate} 
 }
 
 \frame{
 	
 	\frametitle{Aufgabe 2 - Teil b}
-	Werden Matrizen in C zeilenweise im Speicher hinterlegt, ist es zur optimalen Ausnutzung von Caching-Effekten ideal, wenn auch zeilenweise über Einträge der Matrix iteriert wird.
+	\begin{itemize}
+		\item Werden Matrizen in C zeilenweise im Speicher hinterlegt, ist es zur optimalen Ausnutzung von Caching-Effekten ideal, wenn auch zeilenweise über Einträge der Matrix iteriert wird.
+		\item Klassischer IJK-Algorithmus: K iteriert über Spalten $\rightarrow$ Optimierung : IKJ-Algorithmus
+	\end{itemize}
+	
 }
 \frame{
+	\frametitle{Aufgabe 2 - Teil b}
+	\begin{center}
+		\begin{tabular}{|l|p{1cm}|p{1cm}|p{1cm}|p{1.5cm}|r|r|r|r|}
+			\hline
+			Mode & N & Seq & \multicolumn{2}{|c|}{16 Threads} \\
+			& & & Zeit & Speedup \\
+			\hline
+			% Methode | Problemgröße | Seq Laufzeit | 2 Threads      | 4 Threads      | 16 Threads     |
+			%		  |              |              | Time | Speedup | Time | Speedup | Time | Speedup |
+			gcc - IJK & 100 &           0.0190  &    0.0070  & 2.71\\
+			
+			gcc - IJK & 1000 &          8.8990  &    0.7240  & 12.29\\
+			\hline
+			gcc - IKJ & 100 &			0.0166  &        0.0060  & 2.77\\
+			
+			gcc - IKJ & 1000 & 			7.3744  & 	     1.6994  & 4.34\\
+			\hline
+			gcc - ... +Inv & 100 &	    0.0160  & 	0.0056 & 2.86\\
+			gcc - ... +Inv & 1000 & 	6.0300  &	0.5086 & 11.86\\
+			\hline
+			gcc - ... +O2 & 100 & 0.0060  &	   0.0050  &  1.2\\
+			
+			gcc - ... +O2 & 1000 & 6.0412  & 	  0.5078 & 11.9\\
+			\hline
+		\end{tabular}
+	\end{center}
 	
+}
+
+\frame{
 	\frametitle{Aufgabe 2 - Teil c}
-	Die Arbeitspakete pro Thread werden statisch vergeben. 
+	\begin{itemize}
+		\item Berechnung in einigen Threads intensiver $\rightarrow$ dynamisches Scheduling führt zu optimaleren Verteilung der Arbeitslast
+		\item Veränderung der chunk size hat keinen Einfluss 
+	\end{itemize}
+
+	\begin{center}
+		\begin{tabular}{|p{1.5cm}|p{2cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|p{1cm}|}
+			\hline
+			Mode & N, It., Chunk & Seq. & 8 Thr. & S.Up \\
+			\hline
+			static & 4000, 500, - & 34.080  &  15.061  & 2.26 \\
+			static & 8000, 500, - & 135.882  &  60.522  & 2.25 \\
+			\hline
+			dynamic & 4000, 500, 1 & 33.955  & 4.803 & 7.07 \\
+			dynamic & 8000, 500, 1 & 135.966  & 19.110 & 7.11 \\
+			\hline
+		\end{tabular}
+	\end{center}
+	
 }
 
 
@@ -155,34 +180,37 @@
 
 \frame{
 	\frametitle{Aufgabe 3 - Teil b}
-	
+	\begin{itemize}
+		\item Race-Conditions: Wenn zwei Threads unabhängig voneinander auf eine Ressource lesend oder auch schreibend zugreifen können
+		\item Ungünstige Ausführungszeiten führen zu falschen Ergebnissen
+		\item Um eine Race-Condition zu vermeiden, können die kritischen Abschnitte in der Art und weise gesichert werden
+	\end{itemize}
 }
 
 \frame{
 	\frametitle{Aufgabe 3 - Teil c}
+	 \begin{tabular}{|p{2cm}|p{2.5cm}|p{2.5cm}|p{2.5cm}|}
+		\hline
+		- & GPUs & CPUs & FPGAs \\
+		\hline
+		Energieeff. & Gut & Schlecht & Gut  \\
+		\hline
+		Anwenderfr. & \begin{itemize}
+			\item Braucht Einarbeitungszeit
+			\item Es gibt Bibliotheken
+		\end{itemize} & 
+		\begin{itemize}
+			\item Am einfachsten zu programmieren
+			\item Viele Bibliotheken 
+			\item Kurze Compilierzeit
+		\end{itemize}  & \begin{itemize}
+			\item Aufwändig zu programmieren
+			\item Lange Compilierzeit
+			\item Wenig Bibliotheken
+		\end{itemize}  \\
+		\hline
+	\end{tabular}\\
 	
-}
-
-
-
-
-\frame{
-	\frametitle{Bilder Beispiel}
-	\begin{columns}
-		\column{.32\textwidth}
-			\begin{figure}
-				\includegraphics[scale=0.15]{figures/correct_fqp}
-			\end{figure}
-		\column{.32\textwidth}
-			\begin{figure}
-				\includegraphics[scale=0.15]{figures/nj_fqp}
-			\end{figure}
-		\column{.32\textwidth}
-		\begin{figure}
-				\includegraphics[scale=0.16]{figures/rhm_fqp.png}
-				\caption{\tiny copied from \emph{Evaluating methods for computer-assisted stemmatology using artificial benchmark data sets}}
-			\end{figure}
-	\end{columns}
 }
 
 \section{Aufgabe 4}
@@ -293,20 +321,20 @@
 \section{Aufgabe 7}
 \frame{
 	\frametitle{Aufgabe 7}
-	Die Reihenfolge in welcher die IDs der Threads ausgegeben werden ist jedes Mal unterschiedlich und ist auch nicht vorherzusagen.
+	
 }
 
-\frame{
-	\frametitle{References}
-	
-	\begin{itemize}
-	\small
-		\item Bein, Thomas. Textkritik: eine Einf"uhrung in Grundlagen germanistisch-medi"avistischer Editionswissenschaft: Lehrbuch mit "Ubungsteil. Peter Lang, 2011.
-		\item Roos, Teemu, Tuomas Heikkil"a, and Petri Myllym"aki. 'A compression-based method for stemmatic analysis.' Frontiers in Artificial Intelligence and Applications 141 (2006): 805.
-		\item Roos, Teemu, and Yuan Zou. 'Analysis of textual variation by latent tree structures.' Data Mining (ICDM), 2011 IEEE 11th International Conference on. IEEE, 2011.
-		\item Roos, Teemu, and Tuomas Heikkil"a. 'Evaluating methods for computer-assisted stemmatology using artificial benchmark data sets.' Literary and Linguistic Computing 24.4 (2009): 417-433.
-	\end{itemize}
-}
+%\frame{
+%	\frametitle{References}
+%	
+%	\begin{itemize}
+%	\small
+%		\item Bein, Thomas. Textkritik: eine Einf"uhrung in Grundlagen germanistisch-medi"avistischer Editionswissenschaft: Lehrbuch mit "Ubungsteil. Peter Lang, 2011.
+%		\item Roos, Teemu, Tuomas Heikkil"a, and Petri Myllym"aki. 'A compression-based method for stemmatic analysis.' Frontiers in Artificial Intelligence and Applications 141 (2006): 805.
+%		\item Roos, Teemu, and Yuan Zou. 'Analysis of textual variation by latent tree structures.' Data Mining (ICDM), 2011 IEEE 11th International Conference on. IEEE, 2011.
+%		\item Roos, Teemu, and Tuomas Heikkil"a. 'Evaluating methods for computer-assisted stemmatology using artificial benchmark data sets.' Literary and Linguistic Computing 24.4 (2009): 417-433.
+%	\end{itemize}
+%}
 
 \end{document}
 
