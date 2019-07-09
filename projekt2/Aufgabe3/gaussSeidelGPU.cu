@@ -7,7 +7,7 @@
 //Exponent der Verfeinerung
 
 float functionF(float x, float y);
-float** allocateSquareMatrix(int size, int initialize);
+float** allocateSquareMatrix(int size, int initialize, int n);
 float* allocateVector(int size, int initialize);
 void printSquareMatrix(float** matrix, int dim);
 void printVector(float* vector, int length);
@@ -66,7 +66,7 @@ int main() {
     gaussSeidel(n, FEHLERSCHRANKE, h, a, u);
 
     printSquareMatrix(a, (n * n));
-    printVector(u);
+    printVector(u, (n * n));
 
     freeSquareMatrix(a);
     free(u);
@@ -113,13 +113,13 @@ void freeSquareMatrix(float** matrix, int size) {
 }
 
 float* allocateVector(int size, int initialize) {
-    float* tmp = malloc(size * sizeof(float));
+    float* tmp = (float*) malloc(size * sizeof(float));
     if(initialize) {
         for(int i = 0; i < size; i++) {
             tmp[i] = 0.0;
         }
     }
-    return &tmp;
+    return tmp;
 }
 void printSquareMatrix(float** matrix, int dim) {
     printf("Printing sqare matrix with dim = %d\n", dim);
