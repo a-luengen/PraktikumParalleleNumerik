@@ -4,15 +4,14 @@
 
 __global__
 void constInc(int increment, int *array, int arrayLength) {
-        int index = blockIdx.x * blockDim.x + threadIdx.x;
-        if(i < n) array[i] = array[i] + increment;
+        int i = blockIdx.x * blockDim.x + threadIdx.x;
+        if(i < arrayLength) array[i] = array[i] + increment;
 }
 
 /**
 *  Print an Array with certain length on console
 */
 void printArray(int *array, int length) {
-        return;
         for(int i = 0; i < length; i++) {
                 printf("|%d", array[i]);
         }
