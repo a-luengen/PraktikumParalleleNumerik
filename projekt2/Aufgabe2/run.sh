@@ -1,9 +1,11 @@
 #!/bin/bash
 
-NAME=main22
+NAME=main2
 CODE=$NAME.cu
-SIZE=100
+SIZE=34
+DEF_NAME=ARRAY_SIZE
 
 echo $CODE
 echo "Compiling"
-nvcc $CODE -o $NAME
+nvcc  -D$DEF_NAME=$SIZE $CODE -o $NAME
+./$NAME

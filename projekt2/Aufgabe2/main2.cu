@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define ARRAY_SIZE 100000
+#define ARRAY_SIZE 34
 
 __global__
 void constInc(int increment, int *array, int arrayLength) {
@@ -23,7 +23,7 @@ void printArray(int *array, int length) {
 */
 void incrementOnGPU(int *array, int arLength, int constant) {
 	int blockSize = 32;
-	int blocks = 32;
+	int blocks = 1 + (arLength / blockSize);
 	
 	int* gpu_arr;
 	cudaMalloc((void***) &gpu_arr, arLength * sizeof(int));
