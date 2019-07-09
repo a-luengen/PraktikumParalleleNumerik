@@ -10,7 +10,8 @@ float functionF(float x, float y);
 float** allocateSquareMatrix(int size, int initialize);
 float* allocateVector(int size, int initialize);
 void printSquareMatrix(float** matrix, int dim);
-
+void printVector(float* vector, int length);
+void freeSquareMatrix(float** matrix, int size);
 
 
 void gaussSeidel(int n, float fehlerSchranke, float h, float** a, float* u) {
@@ -60,11 +61,11 @@ int main() {
     float *u = allocateVector(n*n, 1);
 
     //Matrix A
-    float **a = allocateSquareMatrix(n*n, 1, n);
+    float **a = allocateSquareMatrix((n*n), 1, n);
 
     gaussSeidel(n, FEHLERSCHRANKE, h, a, u);
 
-    printSquareMatrix(a);
+    printSquareMatrix(a, (n * n));
     printVector(u);
 
     freeSquareMatrix(a);
@@ -77,25 +78,24 @@ float functionF(float x, float y) { // x and y should be in (0,1)
 }
 
 float** allocateSquareMatrix(int size, int initialize, int n) {
-    float** tmp = malloc(size * sizeof(float*));
+    float** tmp = (float**) malloc(size * sizeof(float*));
 
     for(int i = 0; i < size; i++) {
-        tmp[i] = malloc(size * sizeof(float));
+        tmp[i] = (float*) malloc(size * sizeof(float));
     }
 
     if(initialize) {
         for(int i = 0; i < size ;i++){
             for(int j = 0; j < size; j++){
-                a[i][j] = 0.0;
+                tmp[i][j] = 0.0;
                 if(i == j)
-                    a[i][j] = 4.0;
+                    tmp[i][j] = 4.0;
 
                 if(i+n == j || i == j + n|| i + 1 == j || i == j+1)
-                    a[i][j] = -1.0;
+                    tmp[i][j] = -1.0;
 
                 if((i%n == 0 && j == i-1) || (i == j-1 && j%n == 0))
-                    a[i][j] = 0.0;
-                }
+                    tmp[i][j] = 0.0;
             }
         }
     }
