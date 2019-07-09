@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 #define FEHLERSCHRANKE 0.000001
-#define L 5
 #define PRINT 0
 //Exponent der Verfeinerung
 
