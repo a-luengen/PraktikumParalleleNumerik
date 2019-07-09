@@ -68,7 +68,8 @@ int main() {
     printSquareMatrix(a, (n * n));
     printVector(u, (n * n));
 
-    freeSquareMatrix(a);
+    freeSquareMatrix(a, (n * n));
+    free(a);
     free(u);
     return 0;
 }
@@ -99,7 +100,7 @@ float** allocateSquareMatrix(int size, int initialize, int n) {
             }
         }
     }
-    return &tmp;
+    return tmp;
 }
 
 /**
