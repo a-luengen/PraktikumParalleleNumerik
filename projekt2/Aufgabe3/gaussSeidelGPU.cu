@@ -4,6 +4,7 @@
 
 #define FEHLERSCHRANKE 0.000001
 #define L 5
+#define PRINT 0
 //Exponent der Verfeinerung
 
 float functionF(float x, float y);
@@ -51,11 +52,14 @@ int main() {
     //Randbedingungen
     float h = 1.0;
     int n = 1;
+    // calc 2^L
     for(int i = 0; i < L; i++){
-        h = h/2.0;
-        n = n*2;
+        n = n * 2;
     }
-    n = n-1;
+    h = 1 / n;
+    n = n - 1;
+
+    printf("h = %f, n = %d, l = %d\n", h, n, L);
 
     //Lösungsvektoren u
     float *u = allocateVector(n*n, 1);
@@ -63,10 +67,17 @@ int main() {
     //Matrix A
     float **a = allocateSquareMatrix((n*n), 1, n);
 
-    gaussSeidel(n, FEHLERSCHRANKE, h, a, u);
-
+    #ifdef PRINT
     printSquareMatrix(a, (n * n));
     printVector(u, (n * n));
+    #endif
+
+    gaussSeidel(n, FEHLERSCHRANKE, h, a, u);
+
+    #ifdef PRINT
+    printSquareMatrix(a, (n * n));
+    printVector(u, (n * n));
+    #endif
 
     freeSquareMatrix(a, (n * n));
     free(a);
