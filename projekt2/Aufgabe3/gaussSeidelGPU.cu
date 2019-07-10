@@ -136,7 +136,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float** a, float* u) {
     printSquareMatrix(u_emb, n_emb);
 
     // get values out of embedded vector
-    for(int i = 0; i < n * n; i++) {
+    for(int i = 0; i < n; i++) {
         for(int j = 0; j < n; j++) {
             u[i + j*n] = u_emb[i + 1][j + 1];
         }
@@ -174,6 +174,7 @@ int main() {
 
     #ifdef PRINT
     printSquareMatrix(a, (n * n));
+    printVectorInBlock(u, (n * n), n);
     printVector(u, (n * n));
     #endif
 
@@ -253,4 +254,14 @@ void printVector(float* vector, int length) {
         printf("|%f", vector[i]);
     
     printf("|\n");
+}
+
+void printVectorInBlock(float* vector, int length, int blockLength) {
+    printf("Printing Vector with length = %d\n", length);
+    for(int i = 0; i < length / blockLength; i++) {
+        for(int j = 0; j < blockLength; j++) {
+            printf("|%f", vector[i + blockLength * j]);
+        }
+        printf("|\n");
+    }
 }
