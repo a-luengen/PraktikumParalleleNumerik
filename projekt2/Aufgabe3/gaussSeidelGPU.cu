@@ -80,8 +80,6 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float** a, float* u) {
 
         for(int j = 1; j < n*n; j += 2) {
             // transform j into coordinates i_emb, j_emb where i_emb = column and j_emb = row in embedded vector/matrix
-            // i_emb = j%n + 1
-            // j_emb = j/n + 1
             int i_emb, j_emb;
             i_emb = j%n + 1;
             j_emb = j/n + 1;
@@ -106,30 +104,6 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float** a, float* u) {
             //set new value for u in embedded vector
             u_emb[i_emb][j_emb] = newU;
         }
-        /*
-        for(int j = 0; j < n*n; j++) {
-            float firstSum = 0.0;
-            float secondSum = 0.0;
-    
-            for(int i = 0; i < j; i++){
-                firstSum += a[j][i] * u[i];
-            }
-    
-            for(int i = j+1; i < n*n; i++){
-                secondSum += a[j][i] * u[i];
-            }
-            //Bestimme neues U
-            newU = (h*h*functionF((j/n+1)*h,(j%n+1)*h) - firstSum - secondSum) / 4.0;
-            //Berechne Fehler
-            diff = newU-u[j];
-            if( diff < 0)
-                diff = -1* diff;
-            if(fehler< diff);
-                fehler = diff;
-            //setze neuen u-Wert
-            u[j] = newU;
-        }
-        */
     }
     
     // print embedded vector u
@@ -165,7 +139,7 @@ int main() {
     float **a = allocateSquareMatrix((n*n), 1, n);
 
     #ifdef PRINT
-    printSquareMatrix(a, (n * n));
+    //printSquareMatrix(a, (n * n)*(n * n));
     printVector(u, (n * n));
     #endif
 
