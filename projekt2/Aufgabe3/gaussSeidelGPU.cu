@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 #define FEHLERSCHRANKE 0.000001
-#define PRINT 0
 //Exponent der Verfeinerung
 
 float functionF(float x, float y);
@@ -19,9 +18,79 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float** a, float* u) {
     float fehler = fehlerSchranke + 1;
     float diff = 0.0;
     float newU = 0.0;
+    int n_emb = n + 2;
+    float tempSum = 0.0;
+
+    // embedd vector u for corner case
+    float* u_emb = (float*) malloc(n_emb * n_emb * sizeof(float));
+    for(int i = 0; i < n_emb; i++) {
+        for(int j = 0; j < n_emb; j++) {
+            if(j == 0 || i == 0 || j == n_emb || i = n_emb) {
+                // fill up with edge value
+                u_emb[i + (n_emb) * j] = 0.0;
+            } else {
+                // copy value from u
+                u_emb[i + (n_emb) * j] = u[i - 1 + n * j - 1];
+            }
+        }
+    }
+    // print embedded vector u
+    printVector(u_emb, n_emb * n_emb);
 
     while(fehlerSchranke < fehler){
         fehler = 0.0;
+
+        // using jacobi calculation for gaussSeidel with red-black chess structure
+        // iterating over dimensions of u but use n_emb and increment i/j to access values in embedded vector
+        // "black" colored elements first
+        for(int j = 0; j < n*n; (j++)++ ) {
+
+            // top element
+            tempSum = u_emb[j - n_emb];
+            // left element
+            tempSum += u_emb[((j%n) + 1) + (((j / n) + 1) * n_emb) - 1];
+            // right element
+            tempSum += u_emb[((j%n) + 1) + (((j / n) + 1) * n_emb) + 1 ];
+            // bottom element
+            tempSum += u_emb[j + n_emb];
+            // calc new value for u
+            newU = (h * h * functionF((j / n+1) * h, (j % n+1 )*h) - tempSum) / 4.0;
+
+            // Calculate error
+            diff = newU - u_emb[((j%n) + 1) + (((j / n) + 1) * n_emb)];
+            if( diff < 0)
+                diff = -1* diff;
+            if(fehler < diff);
+                fehler = diff;
+
+            //set new value for u in embedded vector
+            u_emb[((j%n) + 1) + (((j / n) + 1) * n_emb)] = newU;
+        }
+
+        // "red" colored elements second
+
+        for(int j = 1; j < n*n; (j++)++) {
+            // top element
+            tempSum = u_emb[j - n_emb];
+            // left element
+            tempSum += u_emb[((j%n) + 1) + (((j / n) + 1) * n_emb) - 1];
+            // right element
+            tempSum += u_emb[((j%n) + 1) + (((j / n) + 1) * n_emb) + 1 ];
+            // bottom element
+            tempSum += u_emb[j + n_emb];
+            // calc new value for u
+            newU = (h * h * functionF((j / n+1) * h, (j % n+1 )*h) - tempSum) / 4.0;
+
+            // Calculate error
+            diff = newU - u_emb[((j%n) + 1) + (((j / n) + 1) * n_emb)];
+            if( diff < 0)
+                diff = -1* diff;
+            if(fehler < diff);
+                fehler = diff;
+            //set new value for u in embedded vector
+            u_emb[((j%n) + 1) + (((j / n) + 1) * n_emb)] = newU;
+        }
+        /*
         for(int j = 0; j < n*n; j++) {
             float firstSum = 0.0;
             float secondSum = 0.0;
@@ -34,7 +103,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float** a, float* u) {
                 secondSum += a[j][i] * u[i];
             }
             //Bestimme neues U
-            newU = (h*h*functionF((j/n+1)*h,(j%n+1)*h) - firstSum - secondSum)/a[j][j];
+            newU = (h*h*functionF((j/n+1)*h,(j%n+1)*h) - firstSum - secondSum) / 4.0;
             //Berechne Fehler
             diff = newU-u[j];
             if( diff < 0)
@@ -44,7 +113,19 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float** a, float* u) {
             //setze neuen u-Wert
             u[j] = newU;
         }
+        */
     }
+    
+    // print embedded vector u
+    printVector(u_emb, n_emb * n_emb);
+
+    // get values out of embedded vector
+    for(int i = 0; i < n * n; i++) {
+        for(int j = 0; j < n; j++) {
+            u[i + j*n] = u_emb[n_emb + 1 + j * n_emb];
+        }
+    }
+    free(u_emb);
 }
 
 int main() {
@@ -71,6 +152,7 @@ int main() {
     printVector(u, (n * n));
     #endif
 
+    // executing gauss seidel verfahren
     gaussSeidel(n, FEHLERSCHRANKE, h, a, u);
 
     #ifdef PRINT
