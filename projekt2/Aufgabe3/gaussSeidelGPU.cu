@@ -55,7 +55,7 @@ int main() {
     for(int i = 0; i < L; i++){
         n = n * 2;
     }
-    h = 1 / n;
+    h = 1.0 / (float) n;
     n = n - 1;
 
     printf("h = %f, n = %d, l = %d\n", h, n, L);
@@ -136,7 +136,7 @@ void printSquareMatrix(float** matrix, int dim) {
     printf("Printing sqare matrix with dim = %d\n", dim);
     for(int i = 0; i < dim; i++) {
         for(int j = 0; j < dim; j++) {
-            printf("|%f");
+            printf("|%f", matrix[i][j]);
         }
         printf("|\n");
     }
