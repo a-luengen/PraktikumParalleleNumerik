@@ -35,8 +35,10 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float** a, float* u) {
             }
         }
     }
+    #ifdef PRINT
     // print embedded vector u
     printSquareMatrix(u_emb, n_emb);
+    #endif
 
     while(fehlerSchranke < fehler){
         fehler = 0.0;
@@ -106,8 +108,10 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float** a, float* u) {
         }
     }
     
+    #ifdef PRINT
     // print embedded vector u
     printSquareMatrix(u_emb, n_emb);
+    #endif
 
     // get values out of embedded vector
     for(int i = 0; i < n; i++) {
@@ -148,10 +152,11 @@ int main() {
 
     #ifdef PRINT
     printSquareMatrix(a, (n * n));
+    #endif
+    
     printVectorInBlock(u, (n * n), n);
     printVector(u, (n * n));
-    #endif
-
+    
     freeSquareMatrix(a, (n * n));
     free(a);
     free(u);
