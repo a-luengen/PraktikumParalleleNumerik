@@ -25,7 +25,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float** a, float* u) {
     float* u_emb = (float*) malloc(n_emb * n_emb * sizeof(float));
     for(int i = 0; i < n_emb; i++) {
         for(int j = 0; j < n_emb; j++) {
-            if(j == 0 || i == 0 || j == n_emb || i = n_emb) {
+            if(j == 0 || i == 0 || j == n_emb || i == n_emb) {
                 // fill up with edge value
                 u_emb[i + (n_emb) * j] = 0.0;
             } else {
@@ -43,7 +43,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float** a, float* u) {
         // using jacobi calculation for gaussSeidel with red-black chess structure
         // iterating over dimensions of u but use n_emb and increment i/j to access values in embedded vector
         // "black" colored elements first
-        for(int j = 0; j < n*n; (j++)++ ) {
+        for(int j = 0; j < n*n; j += 2 ) {
 
             // top element
             tempSum = u_emb[j - n_emb];
@@ -69,7 +69,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float** a, float* u) {
 
         // "red" colored elements second
 
-        for(int j = 1; j < n*n; (j++)++) {
+        for(int j = 1; j < n*n; j += 2) {
             // top element
             tempSum = u_emb[j - n_emb];
             // left element
