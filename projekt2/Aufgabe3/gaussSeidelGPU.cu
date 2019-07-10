@@ -63,7 +63,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float** a, float* u) {
             tempSum += u_emb[i_emb][j_emb + 1];
 
             // calc new value for u
-            newU = (h * h * functionF((j / n+1) * h, (j % n+1 )*h) - tempSum) / 4.0;
+            newU = (h * h * functionF((j / n+1) * h, (j % n+1 )*h) + tempSum) / 4.0;
 
             // Calculate error
             diff = newU - u_emb[i_emb][j_emb];
@@ -93,7 +93,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float** a, float* u) {
             // bottom element
             tempSum += u_emb[i_emb][j_emb + 1];
             // calc new value for u
-            newU = (h * h * functionF((j / n+1) * h, (j % n+1 )*h) - tempSum) / 4.0;
+            newU = (h * h * functionF((j / n+1) * h, (j % n+1 )*h) + tempSum) / 4.0;
 
             // Calculate error
             diff = newU - u_emb[i_emb][j_emb];
