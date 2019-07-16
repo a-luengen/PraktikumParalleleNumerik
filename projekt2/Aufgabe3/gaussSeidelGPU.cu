@@ -40,7 +40,7 @@ __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_em
     j_emb = j_offset + (int) threadID / blockDim.x;
     i_emb = i_offset + (int) threadID % 8 + (1 - 2 * ITERATION_FLAG) * (j_emb % 2);
     
-
+    printf("threadID = %d, j_emb = %d, i_emb = %d", threadID, j_emb, i_emb);
     if(i_emb < dim_u_emb - 1 && i_emb > 0 && j_emb < dim_u_emb - 1 && j_emb > 0) {
         // 2. calculate the index's of inner matrix for the functionF-call
         //i_inner = i_emb - 1;
@@ -61,8 +61,6 @@ __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_em
         // 4. replace old value
         u_emb[i_emb + j_emb * dim_u_emb] = newU;
     }
-
-    printf("threadID = %d, j_emb = %d, i_emb = %d", threadID, j_emb, i_emb);
 }
 
 /**
@@ -111,8 +109,12 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
     cudaMalloc((void**)&gpu_u_emb, n_emb * n_emb * sizeof(float));
     // copy from local to device
     cudaMemcpy(gpu_u_emb, u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyHostToDevice);
+    checkForError("After Copying data to device.";
+    
+    // calculate the blocks per dimension
     int blocksPerDimension = 1 + n_emb / BLOCK_DIMENSION;
     dim3 numBlocks(blocksPerDimension, blocksPerDimension);
+
     printf("Running with numBlocks: %d, %d\n and %d of Threads per Block.\n", blocksPerDimension, blocksPerDimension, THREADS_PER_BLOCK);
     // Iterate as long as we do not come below our fehelrSchranke
     while (fehlerSchranke < fehler)
