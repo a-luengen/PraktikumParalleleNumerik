@@ -6,11 +6,13 @@
 //Exponent der Verfeinerung
 
 float functionF(float x, float y);
-float **allocateSquareMatrix(int size, int initialize, int n);
-float *allocateVector(int size, int initialize);
-void printSquareMatrix(float **matrix, int dim);
+float* allocateSquareMatrix(int size, int initialize, int n);
+float* allocateVector(int size, int initialize);
+void printSquareMatrix(float **matrix, int dim)
+void printSquareMatrix(float *matrix, int dim);
 void printVector(float *vector, int length);
 void freeSquareMatrix(float **matrix, int dim);
+float calculateError(float *old, float* new, int dim);
 
 const int ITERATE_ON_BLACK = 0;
 const int ITERATE_ON_RED = 1;
@@ -113,13 +115,14 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
     // Iterate as long as we do not come below our fehelrSchranke
     while (fehlerSchranke < fehler)
     {
+        //int dim_u, int dim_u_emb, float h, float* u_emb, int ITERATION_FLAG
         // black iteration
-        redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, h, u_emb, ITERATE_ON_BLACK);
+        redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, n_emb, h, u_emb, ITERATE_ON_BLACK);
         // red iteration
-        redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, h, u_emb, ITERATE_ON_RED);
+        redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, n_emb, h, u_emb, ITERATE_ON_RED);
 
         // move result of first iteration onto host
-        cudaMemcpy(u_emb_new, src, bytes, cudaMemcpyHostToDevice);
+        cudaMemcpy(u_emb_new, gpu_u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyDeviceToHost);
         
         // calculate error
         fehler = 0.0;
@@ -188,6 +191,18 @@ int main()
     return 0;
 }
 
+float calculateError(float* old_val, float* new_val, dim) {
+    float temp_glob = 0.0;
+    float temp_loc = 0.0;
+    for(int i = 0; i < dim * dim; i++) {
+        temp_loc = old_val[i] - new_val[i];
+        if(temp_loc < 0)
+            temp_loc = -temp_loc;
+        if(temp_loc > temp_glob)
+            temp_glob = temp_loc;
+    }
+}
+
 float functionF(float x, float y)
 { // x and y should be in (0,1)
     return 32.0f * (x * (1.0f - x) + y * (1.0f - y));
@@ -240,7 +255,7 @@ void freeSquareMatrix(float **matrix, int dim)
     }
 }
 
-float *allocateVector(int size, int initialize)
+float* allocateVector(int size, int initialize)
 {
     float *tmp = (float *)malloc(size * sizeof(float));
     if (initialize)
