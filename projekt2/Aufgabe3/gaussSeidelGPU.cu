@@ -180,8 +180,6 @@ int main()
 
     printVectorInBlock(u, (n * n), n);
     printVector(u, (n * n));
-
-    free(a);
     free(u);
     return 0;
 }
