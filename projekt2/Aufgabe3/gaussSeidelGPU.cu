@@ -111,9 +111,9 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
     cudaMalloc((void**)&gpu_u_emb, n_emb * n_emb * sizeof(float));
     // copy from local to device
     cudaMemcpy(gpu_u_emb, u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyHostToDevice);
-
-    dim3 numBlocks(n_emb / BLOCK_DIMENSION, n_emb/BLOCK_DIMENSION);
-    printf("Running with numBlocks: %d, %d\n and %d of Threads per Block.\n", n_emb/ BLOCK_DIMENSION, n_emb / BLOCK_DIMENSION, THREADS_PER_BLOCK);
+    int blocksPerDimension = 1 + n_emb / BLOCK_DIMENSION;
+    dim3 numBlocks(blocksPerDimension, blocksPerDimension);
+    printf("Running with numBlocks: %d, %d\n and %d of Threads per Block.\n", blocksPerDimension, blocksPerDimension, THREADS_PER_BLOCK);
     // Iterate as long as we do not come below our fehelrSchranke
     while (fehlerSchranke < fehler)
     {
