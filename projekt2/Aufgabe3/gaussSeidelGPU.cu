@@ -6,192 +6,222 @@
 //Exponent der Verfeinerung
 
 float functionF(float x, float y);
-float** allocateSquareMatrix(int size, int initialize, int n);
-float* allocateVector(int size, int initialize);
-void printSquareMatrix(float** matrix, int dim);
-void printVector(float* vector, int length);
-void freeSquareMatrix(float** matrix, int dim);
+float **allocateSquareMatrix(int size, int initialize, int n);
+float *allocateVector(int size, int initialize);
+void printSquareMatrix(float **matrix, int dim);
+void printVector(float *vector, int length);
+void freeSquareMatrix(float **matrix, int dim);
+
+const int ITERATE_ON_BLACK = 0;
+const int ITERATE_ON_RED = 1;
+const int THREADS_PER_BLOCK = 32;
+const int BLOCK_DIMENSION = 8;
+
+/**
+*   expecting embedded result-matrix to iterate on
+*   dim: dimension of the matrix u (without embedding)
+*   ITERATION_FLAG: has value 0 to iterate on "black" elements or 1 to iterate on "red" elements
+*/
+__global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_emb, int ITERATION_FLAG) {
 
 
-void gaussSeidel(int n, float fehlerSchranke, float h, float** a, float* u) {
-	//TODO: Timeranfang
+    int threadID = threadIdx.x * 2 + ITERATION_FLAG;
+    int i_offset = blockDim.x * blockIdx.x;
+    int j_offset = blockDim.y * blockIdx.y;
+    // use index of thread to calculate position in matrix u_emb 
+    // to execute computation on
+    int i_inner, j_inner, i_emb, j_emb;
+
+    // 1. Calculate the index's of embedded matrix to a thread has to work on
+    j_emb = j_offset + (int) threadID / blockDim.x;
+    i_emb = i_offset + (int) threadID % 8 + (1 - 2 * ITERATION_FLAG) * (j_emb % 2);
+    
+
+    if(i_emb < dim_u_emb - 1 && i_emb > 0 && j_emb < dim_u_emb - 1 && j_emb > 0) {
+        // 2. calculate the index's of inner matrix for the functionF-call
+        i_inner = i_emb - 1;
+        j_inner = j_emb - 1;
+        // 3. calculate new value for u_emb
+        float tempSum = 
+            // top element
+            u_emb[i_emb + (j_emb - 1) * dim_u_emb] 
+            // left element
+            + u_emb[i_emb - 1 + j_emb * dim_u_emb] 
+            // right element
+            + u_emb[i_emb + 1 + j_emb * dim_u_emb] 
+            // bottom element
+            + u_emb[i_emb + (j_emb + 1) * dim_u_emb]; 
+
+        // calc new value for u
+        float newU = (h * h * functionF((j_inner / dim_u + 1) * h, (j_inner % dim_u + 1) * h) + tempSum) / 4.0;
+        // 4. replace old value
+        u_emb[i_emb + j_emb * dim_u_emb] = newU;
+    }
+}
+
+/**
+*      
+*   n: Dimension of u matrix
+*   fehlerSchranke: Abbruchbedingung für Gaus Seidel Verfahren
+*   h: Verfeinerung/Gitterschrittweite
+*   a: pointer to 2D-Array of Matrix a (currently not used, due 
+*       to extraction of calculation pattern into algorithm)
+*   u: pointer to u matrix
+*/
+void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
+{
+    //TODO: Timeranfang
     float fehler = fehlerSchranke + 1;
     float diff = 0.0;
     float newU = 0.0;
-    int n_emb = n + 2;
     float tempSum = 0.0;
 
     // embedd vector u for corner case
-    float** u_emb = allocateSquareMatrix(n_emb * n_emb, 0, n_emb);
+    // u(0, y) = u(1, y) = u(x, 0) = u(y, 1) = 0.0
+    int n_emb = n + 2;
+    float *u_emb = allocateSquareMatrix(n_emb * n_emb, 0, n_emb);
+    float *u_emb_new = allocateSquareMatrix(n_emb * n_emb, 0, n_emb);
 
-    for(int i = 0; i < n_emb; i++) {
-        for(int j = 0; j < n_emb; j++) {
-            if(j == 0 || i == 0 || j == n_emb || i == n_emb) {
+    for (int i = 0; i < n_emb; i++)
+    {
+        for (int j = 0; j < n_emb; j++)
+        {
+            if (j == 0 || i == 0 || j == n_emb || i == n_emb)
+            {
                 // fill up with edge value
-                u_emb[i][j] = 0.0;
-            } else {
+                u_emb[i + j * n_emb] = 0.0;
+            }
+            else
+            {
                 // copy value from u
-                u_emb[i][j] = u[i - 1 + n * j - 1];
+                u_emb[i + j * n_emb] = u[i - 1 + n * j - 1];
             }
         }
     }
-    #ifdef PRINT
+#ifdef PRINT
     // print embedded vector u
     printSquareMatrix(u_emb, n_emb);
-    #endif
+#endif
 
-    while(fehlerSchranke < fehler){
+    // move vector matrix to device
+    float *gpu_u_emb;
+    cudaMalloc((void**)&gpu_u_emb, n_emb * n_emb * sizeof(float));
+    cudaMemcpy(gpu_u_emb, u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyHostToDevice);
+
+    dim3 numBlocks(n_emb / BLOCK_DIMENSION, n_emb/BLOCK_DIMENSION);
+
+    // Iterate as long as we do not come below our fehelrSchranke
+    while (fehlerSchranke < fehler)
+    {
+        // black iteration
+        redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, h, u_emb, ITERATE_ON_BLACK);
+        // red iteration
+        redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, h, u_emb, ITERATE_ON_RED);
+
+        // move result of first iteration onto host
+        cudaMemcpy(u_emb_new, src, bytes, cudaMemcpyHostToDevice);
+        
+        // calculate error
         fehler = 0.0;
-
-        // using jacoby calculation for gaussSeidel with red-black chess structure
-        // iterating over dimensions of u but use n_emb and increment i/j to access values in embedded vector
-        // "black" colored elements first
-        for(int j = 0; j < n*n; j += 2 ) {
-            
-            // transform j into coordinates i_emb, j_emb where i_emb = column and j_emb = row in embedded vector/matrix
-            // i_emb = j%n + 1
-            // j_emb = j/n + 1
-            int i_emb, j_emb;
-            i_emb = j%n + 1;
-            j_emb = j/n + 1;
-
-            // top element
-            tempSum = u_emb[i_emb][j_emb - 1];
-            // left element
-            tempSum += u_emb[i_emb - 1][j_emb];
-            // right element
-            tempSum += u_emb[i_emb + 1][j_emb];
-            // bottom element
-            tempSum += u_emb[i_emb][j_emb + 1];
-
-            // calc new value for u
-            newU = (h * h * functionF((j / n+1) * h, (j % n+1 )*h) + tempSum) / 4.0;
-
-            // Calculate error
-            diff = newU - u_emb[i_emb][j_emb];
-            if( diff < 0)
-                diff = -1* diff;
-            if(fehler < diff);
-                fehler = diff;
-
-            //set new value for u in embedded vector
-            u_emb[i_emb][j_emb] = newU;
-        }
-
-        // "red" colored elements second
-
-        for(int j = 1; j < n*n; j += 2) {
-            // transform j into coordinates i_emb, j_emb where i_emb = column and j_emb = row in embedded vector/matrix
-            int i_emb, j_emb;
-            i_emb = j%n + 1;
-            j_emb = j/n + 1;
-
-            // top element
-            tempSum = u_emb[i_emb][j_emb - 1];
-            // left element
-            tempSum += u_emb[i_emb - 1][j_emb];
-            // right element
-            tempSum += u_emb[i_emb + 1][j_emb];
-            // bottom element
-            tempSum += u_emb[i_emb][j_emb + 1];
-            // calc new value for u
-            newU = (h * h * functionF((j / n+1) * h, (j % n+1 )*h) + tempSum) / 4.0;
-
-            // Calculate error
-            diff = newU - u_emb[i_emb][j_emb];
-            if( diff < 0)
-                diff = -1* diff;
-            if(fehler < diff);
-                fehler = diff;
-            //set new value for u in embedded vector
-            u_emb[i_emb][j_emb] = newU;
-        }
+        fehler = calculateError(u_emb, u_emb_new);
+        // switch pointers
+        float temp = *u_emb;
+        *u_emb = *u_emb_new;
+        *u_emb_new = temp;
     }
-    
-    #ifdef PRINT
+
+#ifdef PRINT
     // print embedded vector u
     printSquareMatrix(u_emb, n_emb);
-    #endif
+#endif
 
     // get values out of embedded vector
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n; j++) {
-            u[i + j*n] = u_emb[i + 1][j + 1];
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            u[i + j * n] = u_emb[i + 1 + (j + 1) * n_emb];
         }
     }
-    freeSquareMatrix(u_emb, n_emb);
+    //freeSquareMatrix(u_emb, n_emb);
     free(u_emb);
 }
 
-int main() {
+int main()
+{
     //Randbedingungen
     float h = 1.0;
     int n = 1;
     // calc 2^L
-    for(int i = 0; i < L; i++){
+    for (int i = 0; i < L; i++)
+    {
         n = n * 2;
     }
-    h = 1.0 / (float) n;
+    h = 1.0 / (float)n;
     n = n - 1;
 
     printf("h = %f, n = %d, l = %d\n", h, n, L);
 
     //Lösungsvektoren u
-    float *u = allocateVector(n*n, 1);
+    float *u = allocateVector(n * n, 1);
 
     //Matrix A
-    float **a = allocateSquareMatrix((n*n), 1, n);
+    float *a = allocateSquareMatrix((n * n), 1, n);
 
-    #ifdef PRINT
+#ifdef PRINT
     //printSquareMatrix(a, (n * n)*(n * n));
     printVector(u, (n * n));
-    #endif
+#endif
 
     // executing gauss seidel verfahren
     gaussSeidel(n, FEHLERSCHRANKE, h, a, u);
 
-    #ifdef PRINT
+#ifdef PRINT
     printSquareMatrix(a, (n * n));
-    #endif
-    
+#endif
+
     printVectorInBlock(u, (n * n), n);
     printVector(u, (n * n));
-    
-    freeSquareMatrix(a, (n * n));
+
     free(a);
     free(u);
     return 0;
 }
 
-float functionF(float x, float y) { // x and y should be in (0,1)
-  return 32.0f*(x*(1.0f-x) + y*(1.0f-y));
+float functionF(float x, float y)
+{ // x and y should be in (0,1)
+    return 32.0f * (x * (1.0f - x) + y * (1.0f - y));
 }
 
-float** allocateSquareMatrix(int size, int initialize, int n) {
-    float** tmp = (float**) malloc(size * sizeof(float*));
+float* allocateSquareMatrix(int size, int initialize, int dim_n)
+{
+    float *tmp = malloc(size * sizeof(float));
 
-    for(int i = 0; i < size; i++) {
-        tmp[i] = (float*) malloc(size * sizeof(float));
-    }
+    if (initialize)
+    {
+        for (int i = 0; i < dim_n; i++)
+        {
+            for (int j = 0; j < dim_n; j++)
+            {
+                tmp[i + j * dim_n] = 0.0;
+                if (i == j)
+                    tmp[i + j * dim_n] = 4.0;
 
-    if(initialize) {
-        for(int i = 0; i < size ;i++){
-            for(int j = 0; j < size; j++){
-                tmp[i][j] = 0.0;
-                if(i == j)
-                    tmp[i][j] = 4.0;
+                if (i + dim_n == j || i == j + dim_n || i + 1 == j || i == j + 1)
+                    tmp[i + j * dim_n] = -1.0;
 
-                if(i+n == j || i == j + n|| i + 1 == j || i == j+1)
-                    tmp[i][j] = -1.0;
-
-                if((i%n == 0 && j == i-1) || (i == j-1 && j%n == 0))
-                    tmp[i][j] = 0.0;
+                if ((i % dim_n == 0 && j == i - 1) || (i == j - 1 && j % dim_n == 0))
+                    tmp[i + j * dim_n] = 0.0;
             }
         }
-    } else {
-        for(int i = 0; i < size; i++) {
-            for(int j = 0; j < size; j++) {
-                tmp[i][j] = 0.0;
+    }
+    else
+    {
+        for (int i = 0; i < dim_n; i++)
+        {
+            for (int j = 0; j < dim_n; j++)
+            {
+                tmp[i + j * dim_n] = 0.0;
             }
         }
     }
@@ -202,43 +232,67 @@ float** allocateSquareMatrix(int size, int initialize, int n) {
  *  Only frees the "rows" of the allocated Matrix. 
  *  Still have to call free on pointer of pointers
  */
-void freeSquareMatrix(float** matrix, int dim) {
-    for(int i = 0; i < dim; i++) {
+void freeSquareMatrix(float **matrix, int dim)
+{
+    for (int i = 0; i < dim; i++)
+    {
         free(matrix[i]);
     }
 }
 
-float* allocateVector(int size, int initialize) {
-    float* tmp = (float*) malloc(size * sizeof(float));
-    if(initialize) {
-        for(int i = 0; i < size; i++) {
+float *allocateVector(int size, int initialize)
+{
+    float *tmp = (float *)malloc(size * sizeof(float));
+    if (initialize)
+    {
+        for (int i = 0; i < size; i++)
+        {
             tmp[i] = 0.0;
         }
     }
     return tmp;
 }
-void printSquareMatrix(float** matrix, int dim) {
+void printSquareMatrix(float **matrix, int dim)
+{
     printf("Printing sqare matrix with dim = %d\n", dim);
-    for(int i = 0; i < dim; i++) {
-        for(int j = 0; j < dim; j++) {
+    for (int i = 0; i < dim; i++)
+    {
+        for (int j = 0; j < dim; j++)
+        {
             printf("|%f", matrix[i][j]);
         }
         printf("|\n");
     }
 }
 
-void printVector(float* vector, int length) {
+void printSquareMatrix(float *matrix, int dim) {
+    printf("Printing sqare matrix with dim = %d\n", dim);
+    for (int i = 0; i < dim; i++)
+    {
+        for (int j = 0; j < dim; j++)
+        {
+            printf("|%f", matrix[i + j * dim]);
+        }
+        printf("|\n");
+    }
+}
+
+void printVector(float *vector, int length)
+{
     printf("Printing Vector with length = %d\n", length);
-    for(int i = 0; i < length; i++)
+    for (int i = 0; i < length; i++)
         printf("|%f", vector[i]);
-    
+
     printf("|\n");
 }
 
-void printVectorInBlock(float* vector, int length, int blockLength) {
+void printVectorInBlock(float *vector, int length, int blockLength)
+{
     printf("Printing Vector with length = %d\n", length);
-    for(int i = 0; i < length / blockLength; i++) {
-        for(int j = 0; j < blockLength; j++) {
+    for (int i = 0; i < length / blockLength; i++)
+    {
+        for (int j = 0; j < blockLength; j++)
+        {
             printf("|%f", vector[i + blockLength * j]);
         }
         printf("|\n");
