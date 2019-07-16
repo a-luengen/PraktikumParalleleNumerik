@@ -128,6 +128,11 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *a, float *u)
         float temp = *u_emb;
         *u_emb = *u_emb_new;
         *u_emb_new = temp;
+
+        #ifdef PRINT
+        printf("Iteration-Error = %0.0f\n", fehler);
+        printSquareMatrix(u_emb, n_emb);
+        #endif
     }
 
 #ifdef PRINT
@@ -165,20 +170,13 @@ int main()
     //Lösungsvektoren u
     float *u = allocateVector(n * n, 1);
 
-    //Matrix A
-    float *a = allocateSquareMatrix((n * n), 1, n);
-
 #ifdef PRINT
     //printSquareMatrix(a, (n * n)*(n * n));
     printVector(u, (n * n));
 #endif
 
     // executing gauss seidel verfahren
-    gaussSeidel(n, FEHLERSCHRANKE, h, a, u);
-
-#ifdef PRINT
-    printSquareMatrix(a, (n * n));
-#endif
+    gaussSeidel(n, FEHLERSCHRANKE, h, u);
 
     printVectorInBlock(u, (n * n), n);
     printVector(u, (n * n));
