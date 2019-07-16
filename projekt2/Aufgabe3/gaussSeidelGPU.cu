@@ -42,7 +42,7 @@ __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_em
 
     if(i_emb < dim_u_emb - 1 && i_emb > 0 && j_emb < dim_u_emb - 1 && j_emb > 0) {
         // 2. calculate the index's of inner matrix for the functionF-call
-        i_inner = i_emb - 1;
+        //i_inner = i_emb - 1;
         j_inner = j_emb - 1;
         // 3. calculate new value for u_emb
         float tempSum = 
@@ -201,6 +201,7 @@ float calculateError(float* old_val, float* new_val, int dim) {
     return temp_glob;
 }
 
+__device__
 float functionF(float x, float y)
 { // x and y should be in (0,1)
     return 32.0f * (x * (1.0f - x) + y * (1.0f - y));
