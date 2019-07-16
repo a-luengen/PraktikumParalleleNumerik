@@ -199,7 +199,7 @@ float calculateError(float* old_val, float* new_val, int dim) {
     return temp_glob;
 }
 
-__device__
+__host__ __device__
 float functionF(float x, float y)
 { // x and y should be in (0,1)
     return 32.0f * (x * (1.0f - x) + y * (1.0f - y));
