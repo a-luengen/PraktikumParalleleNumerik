@@ -8,7 +8,7 @@
 float functionF(float x, float y);
 float* allocateSquareMatrix(int size, int initialize, int n);
 float* allocateVector(int size, int initialize);
-void printSquareMatrix(float **matrix, int dim)
+void printSquareMatrix(float **matrix, int dim);
 void printSquareMatrix(float *matrix, int dim);
 void printVector(float *vector, int length);
 void freeSquareMatrix(float **matrix, int dim);
