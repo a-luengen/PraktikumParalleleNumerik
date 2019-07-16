@@ -60,6 +60,8 @@ __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_em
         // 4. replace old value
         u_emb[i_emb + j_emb * dim_u_emb] = newU;
     }
+
+    printf("threadID = %d, j_emb = %d, i_emb = %d", threadID, j_emb, i_emb);
 }
 
 /**
@@ -103,9 +105,10 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
     printSquareMatrix(u_emb, n_emb);
 #endif
 
-    // move vector matrix to device
+    // allocate device memory
     float *gpu_u_emb;
     cudaMalloc((void**)&gpu_u_emb, n_emb * n_emb * sizeof(float));
+    // copy from local to device
     cudaMemcpy(gpu_u_emb, u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyHostToDevice);
 
     dim3 numBlocks(n_emb / BLOCK_DIMENSION, n_emb/BLOCK_DIMENSION);
