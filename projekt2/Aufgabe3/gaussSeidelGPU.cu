@@ -121,6 +121,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
         redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, n_emb, h, u_emb, ITERATE_ON_BLACK);
         // red iteration
         redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, n_emb, h, u_emb, ITERATE_ON_RED);
+        cudaDeviceSynchronize();
 
         // move result of first iteration onto host
         cudaMemcpy(u_emb_new, gpu_u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyDeviceToHost);
