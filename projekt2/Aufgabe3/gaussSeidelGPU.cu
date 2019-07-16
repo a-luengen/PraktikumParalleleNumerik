@@ -13,6 +13,7 @@ void printSquareMatrix(float *matrix, int dim);
 void printVector(float *vector, int length);
 void freeSquareMatrix(float **matrix, int dim);
 float calculateError(float *old, float* new, int dim);
+void printVectorInBlock(float *vector, int length, int blockLength);
 
 const int ITERATE_ON_BLACK = 0;
 const int ITERATE_ON_RED = 1;
@@ -74,9 +75,6 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
 {
     //TODO: Timeranfang
     float fehler = fehlerSchranke + 1;
-    float diff = 0.0;
-    float newU = 0.0;
-    float tempSum = 0.0;
 
     // embedd vector u for corner case
     // u(0, y) = u(1, y) = u(x, 0) = u(y, 1) = 0.0
@@ -125,7 +123,6 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
         cudaMemcpy(u_emb_new, gpu_u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyDeviceToHost);
         
         // calculate error
-        fehler = 0.0;
         fehler = calculateError(u_emb, u_emb_new);
         // switch pointers
         float temp = *u_emb;
