@@ -71,7 +71,7 @@ __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_em
 *       to extraction of calculation pattern into algorithm)
 *   u: pointer to u matrix
 */
-void gaussSeidel(int n, float fehlerSchranke, float h, float *a, float *u)
+void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
 {
     //TODO: Timeranfang
     float fehler = fehlerSchranke + 1;
