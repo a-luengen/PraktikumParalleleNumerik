@@ -33,7 +33,7 @@ __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_em
     int j_offset = blockDim.y * blockIdx.y;
     // use index of thread to calculate position in matrix u_emb 
     // to execute computation on
-    int i_inner, j_inner, i_emb, j_emb;
+    int j_inner, i_emb, j_emb;
 
     // 1. Calculate the index's of embedded matrix to a thread has to work on
     j_emb = j_offset + (int) threadID / blockDim.x;
@@ -123,7 +123,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *a, float *u)
         cudaMemcpy(u_emb_new, gpu_u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyDeviceToHost);
         
         // calculate error
-        fehler = calculateError(u_emb, u_emb_new);
+        fehler = calculateError(u_emb, u_emb_new, n_emb);
         // switch pointers
         float temp = *u_emb;
         *u_emb = *u_emb_new;
