@@ -14,6 +14,7 @@ void printVector(float *vector, int length);
 void freeSquareMatrix(float **matrix, int dim);
 float calculateError(float *old_val, float *new_val, int dim);
 void printVectorInBlock(float *vector, int length, int blockLength);
+void checkForError(const char* msg);
 
 const int ITERATE_ON_BLACK = 0;
 const int ITERATE_ON_RED = 1;
@@ -112,7 +113,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
     cudaMemcpy(gpu_u_emb, u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyHostToDevice);
 
     dim3 numBlocks(n_emb / BLOCK_DIMENSION, n_emb/BLOCK_DIMENSION);
-
+    printf("Running with numBlocks: %d, %d\n and %d of Threads per Block.\n", n_emb/ BLOCK_DIMENSION, n_emb / BLOCK_DIMENSION, THREADS_PER_BLOCK);
     // Iterate as long as we do not come below our fehelrSchranke
     while (fehlerSchranke < fehler)
     {
@@ -122,7 +123,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
         // red iteration
         redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, n_emb, h, u_emb, ITERATE_ON_RED);
         cudaDeviceSynchronize();
-
+        checkForError("After 2 Kernel Executions");
         // move result of first iteration onto host
         cudaMemcpy(u_emb_new, gpu_u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyDeviceToHost);
         
@@ -311,4 +312,10 @@ void printVectorInBlock(float *vector, int length, int blockLength)
         }
         printf("|\n");
     }
+}
+
+void checkForError(const char* msg) {
+    cudaError_t error = cudaGetLastError();
+    if(error != cudaSuccess)
+        printf("ERROR: %s: %s\n", msg, cudaGetErrorString(error));
 }
