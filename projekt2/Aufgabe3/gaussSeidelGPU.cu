@@ -12,7 +12,7 @@ void printSquareMatrix(float **matrix, int dim);
 void printSquareMatrix(float *matrix, int dim);
 void printVector(float *vector, int length);
 void freeSquareMatrix(float **matrix, int dim);
-float calculateError(float *old, float* new, int dim);
+float calculateError(float *old_val, float *new_val, int dim);
 void printVectorInBlock(float *vector, int length, int blockLength);
 
 const int ITERATE_ON_BLACK = 0;
@@ -71,7 +71,7 @@ __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_em
 *       to extraction of calculation pattern into algorithm)
 *   u: pointer to u matrix
 */
-void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
+void gaussSeidel(int n, float fehlerSchranke, float h, float *a, float *u)
 {
     //TODO: Timeranfang
     float fehler = fehlerSchranke + 1;
@@ -188,7 +188,7 @@ int main()
     return 0;
 }
 
-float calculateError(float* old_val, float* new_val, dim) {
+float calculateError(float* old_val, float* new_val, int dim) {
     float temp_glob = 0.0;
     float temp_loc = 0.0;
     for(int i = 0; i < dim * dim; i++) {
@@ -198,6 +198,7 @@ float calculateError(float* old_val, float* new_val, dim) {
         if(temp_loc > temp_glob)
             temp_glob = temp_loc;
     }
+    return temp_glob;
 }
 
 float functionF(float x, float y)
@@ -207,7 +208,7 @@ float functionF(float x, float y)
 
 float* allocateSquareMatrix(int size, int initialize, int dim_n)
 {
-    float *tmp = malloc(size * sizeof(float));
+    float *tmp = (float*) malloc(size * sizeof(float));
 
     if (initialize)
     {
