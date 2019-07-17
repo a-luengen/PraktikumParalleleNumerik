@@ -12,7 +12,7 @@ void printSquareMatrix(float **matrix, int dim);
 void printSquareMatrix(float *matrix, int dim);
 void printVector(float *vector, int length);
 void freeSquareMatrix(float **matrix, int dim);
-float calculateError(float *old_val, float *new_val, int dim);
+void calculateError(float *old_val, float *new_val, int dim, float *result);
 void printVectorInBlock(float *vector, int length, int blockLength);
 void checkForError(const char* msg);
 
@@ -30,22 +30,21 @@ __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_em
 
 
     int threadID = threadIdx.x * 2 + ITERATION_FLAG;
-    int i_offset = blockDim.x * blockIdx.x;
-    int j_offset = blockDim.y * blockIdx.y;
+    int i_offset = blockIdx.x;
+    int j_offset = blockIdx.y;
     // use index of thread to calculate position in matrix u_emb 
     // to execute computation on
     int j_inner, i_emb, j_emb;
 
     // 1. Calculate the index's of embedded matrix to a thread has to work on
-    j_emb = j_offset + (int) threadID / blockDim.x;
+    j_emb = j_offset + (int) threadID / BLOCK_DIMENSION;
     i_emb = i_offset + (int) threadID % 8 + (1 - 2 * ITERATION_FLAG) * (j_emb % 2);
-    
-    printf("threadID = %d, j_emb = %d, i_emb = %d\n", threadID, j_emb, i_emb);
-    if(i_emb < dim_u_emb - 1 && i_emb > 0 && j_emb < dim_u_emb - 1 && j_emb > 0) {
+
+    if(i_emb > 0 && i_emb < dim_u_emb - 1 && j_emb < dim_u_emb - 1 && j_emb > 0) {
         // 2. calculate the index's of inner matrix for the functionF-call
         //i_inner = i_emb - 1;
         j_inner = j_emb - 1;
-        printf("I calculate - threadID = %d, i_offset = %d, j_offset = %d, j_emb = %d, i_emb = %d, j_inner = %d\n", threadID, i_offset, j_offset, j_emb, i_emb, j_inner);
+
         // 3. calculate new value for u_emb
         float tempSum = 
             // top element
@@ -56,7 +55,7 @@ __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_em
             + u_emb[i_emb + 1 + j_emb * dim_u_emb] 
             // bottom element
             + u_emb[i_emb + (j_emb + 1) * dim_u_emb]; 
-
+        //printf("I calculate - threadID = %d, tempSum = %.6f\n", threadID, tempSum);
         // calc new value for u
         float newU = (h * h * functionF((j_inner / dim_u + 1) * h, (j_inner % dim_u + 1) * h) + tempSum) / 4.0;
         // 4. replace old value
@@ -103,6 +102,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
 #ifdef PRINT
     // print embedded vector u
     printSquareMatrix(u_emb, n_emb);
+    printSquareMatrix(u_emb_new, n_emb);
 #endif
 
     // allocate device memory
@@ -110,39 +110,40 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
     cudaMalloc((void**)&gpu_u_emb, n_emb * n_emb * sizeof(float));
     // copy from local to device
     cudaMemcpy(gpu_u_emb, u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyHostToDevice);
-    checkForError("After Copying data to device.");
     
     // calculate the blocks per dimension
     int blocksPerDimension = 1 + n_emb / BLOCK_DIMENSION;
     dim3 numBlocks(blocksPerDimension, blocksPerDimension);
 
     printf("Running with numBlocks: %d, %d\n and %d of Threads per Block.\n", blocksPerDimension, blocksPerDimension, THREADS_PER_BLOCK);
-    // Iterate as long as we do not come below our fehelrSchranke
+    // Iterate as long as we do not come below our fehlerSchranke
+    int count = 0;
+
     while (fehlerSchranke < fehler)
     {
-        //int dim_u, int dim_u_emb, float h, float* u_emb, int ITERATION_FLAG
         // black iteration
-        redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, n_emb, h, u_emb, ITERATE_ON_BLACK);
+        redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, n_emb, h, gpu_u_emb, ITERATE_ON_BLACK);
         // red iteration
-        redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, n_emb, h, u_emb, ITERATE_ON_RED);
+        redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, n_emb, h, gpu_u_emb, ITERATE_ON_RED);
         cudaDeviceSynchronize();
-        checkForError("After 2 Kernel Executions");
+
         // move result of first iteration onto host
         cudaMemcpy(u_emb_new, gpu_u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyDeviceToHost);
         
         // calculate error
-        fehler = calculateError(u_emb, u_emb_new, n_emb);
+        calculateError(u_emb, u_emb_new, n_emb, &fehler);
         // switch pointers
-        float temp = *u_emb;
-        *u_emb = *u_emb_new;
-        *u_emb_new = temp;
+        float *temp = u_emb;
+        u_emb = u_emb_new;
+        u_emb_new = temp;
 
         #ifdef PRINT
-        printf("Iteration-Error = %0.0f\n", fehler);
-        printSquareMatrix(u_emb, n_emb);
+        printf("Iteration-Error = %.8f\n", fehler);
+        printSquareMatrix(u_emb_new, n_emb);
         #endif
+        count++;
     }
-
+    printf("Took %d Iterations to complete.\n", count);
 #ifdef PRINT
     // print embedded vector u
     printSquareMatrix(u_emb, n_emb);
@@ -157,6 +158,8 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
         }
     }
     //freeSquareMatrix(u_emb, n_emb);
+    cudaFree(gpu_u_emb);
+    free(u_emb_new);
     free(u_emb);
 }
 
@@ -179,7 +182,6 @@ int main()
     float *u = allocateVector(n * n, 1);
 
 #ifdef PRINT
-    //printSquareMatrix(a, (n * n)*(n * n));
     printVector(u, (n * n));
 #endif
 
@@ -192,17 +194,17 @@ int main()
     return 0;
 }
 
-float calculateError(float* old_val, float* new_val, int dim) {
+void calculateError(float* old_val, float* new_val, int dim, float *result) {
     float temp_glob = 0.0;
     float temp_loc = 0.0;
     for(int i = 0; i < dim * dim; i++) {
-        temp_loc = old_val[i] - new_val[i];
+        temp_loc = new_val[i] - old_val[i];
         if(temp_loc < 0)
             temp_loc = -temp_loc;
         if(temp_loc > temp_glob)
             temp_glob = temp_loc;
     }
-    return temp_glob;
+    *result = temp_glob;
 }
 
 __host__ __device__
@@ -277,9 +279,9 @@ void printSquareMatrix(float **matrix, int dim)
     {
         for (int j = 0; j < dim; j++)
         {
-            printf("|%f", matrix[i][j]);
+            printf(" %f", matrix[i][j]);
         }
-        printf("|\n");
+        printf(" \n");
     }
 }
 
@@ -289,9 +291,9 @@ void printSquareMatrix(float *matrix, int dim) {
     {
         for (int j = 0; j < dim; j++)
         {
-            printf("|%f", matrix[i + j * dim]);
+            printf(" %f", matrix[i + j * dim]);
         }
-        printf("|\n");
+        printf(" \n");
     }
 }
 
@@ -299,9 +301,9 @@ void printVector(float *vector, int length)
 {
     printf("Printing Vector with length = %d\n", length);
     for (int i = 0; i < length; i++)
-        printf("|%f", vector[i]);
+        printf(" %f", vector[i]);
 
-    printf("|\n");
+    printf(" \n");
 }
 
 void printVectorInBlock(float *vector, int length, int blockLength)
@@ -311,9 +313,9 @@ void printVectorInBlock(float *vector, int length, int blockLength)
     {
         for (int j = 0; j < blockLength; j++)
         {
-            printf("|%f", vector[i + blockLength * j]);
+            printf(" %f", vector[i + blockLength * j]);
         }
-        printf("|\n");
+        printf(" \n");
     }
 }
 
