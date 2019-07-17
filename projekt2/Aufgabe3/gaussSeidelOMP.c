@@ -10,6 +10,7 @@ float **allocateSquareMatrix(int size, int initialize, int n);
 float *allocateVector(int size, int initialize);
 void printSquareMatrix(float **matrix, int dim);
 void printVector(float *vector, int length);
+void printVectorInBlock(float *vector, int length, int blockLength);
 void freeSquareMatrix(float **matrix, int dim);
 
 /**
@@ -46,7 +47,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
     // print embedded vector u
     printSquareMatrix(u_emb, n_emb);
 #endif
-
+    int count = 0;
     while (fehlerSchranke < fehler)
     {
         fehler = 0.0;
@@ -81,20 +82,24 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
 
                 // Calculate error
                 diff = newU - u_emb[i_emb][j_emb];
-                if (diff < 0)
+                if (diff < 0) {
                     diff = -1 * diff;
-#pragma omp atomic update
+                }
+                #pragma omp critical
                 {
                     // update this atomically
-                    if (fehler < diff)
+                    if (fehler < diff) {
                         fehler = diff;
+                    }
                 }
 
                 //set new value for u in embedded vector
                 u_emb[i_emb][j_emb] = newU;
             }
         }
+        count++;
     }
+    printf("Took %d -Iterations. \n", count);
 
 #ifdef PRINT
     // print embedded vector u
