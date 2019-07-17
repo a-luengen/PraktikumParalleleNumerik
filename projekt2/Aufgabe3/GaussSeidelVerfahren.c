@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #define FEHLERSCHRANKE 0.000001
-#define L 5
+//#define L 5
 //Exponent der Verfeinerung
 
 float functionF(float x, float y);
