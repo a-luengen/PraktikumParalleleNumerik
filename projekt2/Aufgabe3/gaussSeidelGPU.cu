@@ -115,7 +115,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
     int blocksPerDimension = 1 + n_emb / BLOCK_DIMENSION;
     dim3 numBlocks(blocksPerDimension, blocksPerDimension);
 
-    printf("Running with numBlocks: %d, %d\n and %d of Threads per Block.\n", blocksPerDimension, blocksPerDimension, THREADS_PER_BLOCK);
+    printf("Running with numBlocks: %d, %d - %d Threads / Block.\n", blocksPerDimension, blocksPerDimension, THREADS_PER_BLOCK);
     // Iterate as long as we do not come below our fehlerSchranke
     int count = 0;
 
@@ -189,7 +189,9 @@ int main()
     // executing gauss seidel verfahren
     gaussSeidel(n, FEHLERSCHRANKE, h, u);
 
+    #ifdef PRINT
     printVectorInBlock(u, (n * n), n);
+    #endif
     printVector(u, (n * n));
     free(u);
     return 0;
