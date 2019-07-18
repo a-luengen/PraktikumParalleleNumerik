@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <math.h>
 #include <stdlib.h>
 
 #define FEHLERSCHRANKE 0.000001
@@ -81,10 +81,11 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
                 newU = (h * h * functionF((j / n + 1) * h, (j % n + 1) * h) + tempSum) / 4.0;
 
                 // Calculate error
-                diff = newU - u_emb[i_emb][j_emb];
-                if (diff < 0) {
-                    diff = -1 * diff;
-                }
+                diff = (newU - u_emb[i_emb][j_emb]) * (newU - u_emb[i_emb][j_emb]);
+
+                #pragma omp atomic update
+                fehler += diff;
+                /*
                 #pragma omp critical
                 {
                     // update this atomically
@@ -92,11 +93,12 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
                         fehler = diff;
                     }
                 }
-
+                */
                 //set new value for u in embedded vector
                 u_emb[i_emb][j_emb] = newU;
             }
         }
+        fehler = sqrt(fehler);
         count++;
     }
     printf("Took %d -Iterations. \n", count);

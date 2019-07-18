@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <math.h>
 #include <stdlib.h>
 
 #define FEHLERSCHRANKE 0.000001
@@ -38,7 +38,7 @@ __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_em
 
     // 1. Calculate the index's of embedded matrix to a thread has to work on
     j_emb = j_offset + (int) threadID / BLOCK_DIMENSION;
-    i_emb = i_offset + (int) threadID % 8 + (1 - 2 * ITERATION_FLAG) * (j_emb % 2);
+    i_emb = i_offset + (int) threadID % BLOCK_DIMENSION + (1 - 2 * ITERATION_FLAG) * (j_emb % 2);
 
     if(i_emb > 0 && i_emb < dim_u_emb - 1 && j_emb < dim_u_emb - 1 && j_emb > 0) {
         // 2. calculate the index's of inner matrix for the functionF-call
@@ -123,6 +123,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
     {
         // black iteration
         redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, n_emb, h, gpu_u_emb, ITERATE_ON_BLACK);
+        cudaDeviceSynchronize();
         // red iteration
         redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, n_emb, h, gpu_u_emb, ITERATE_ON_RED);
         cudaDeviceSynchronize();
@@ -195,6 +196,7 @@ int main()
 }
 
 void calculateError(float* old_val, float* new_val, int dim, float *result) {
+    /*
     float temp_glob = 0.0;
     float temp_loc = 0.0;
     for(int i = 0; i < dim * dim; i++) {
@@ -204,7 +206,14 @@ void calculateError(float* old_val, float* new_val, int dim, float *result) {
         if(temp_loc > temp_glob)
             temp_glob = temp_loc;
     }
-    *result = temp_glob;
+    */
+
+    float sum = 0.0;
+    for(int i = 0; i < dim * dim; i++) {
+        sum += (new_val[i] - old_val[i]) * (new_val[i] - old_val[i]);
+    }
+    *result = sqrtf(sum);
+    //*result = temp_glob;
 }
 
 __host__ __device__
