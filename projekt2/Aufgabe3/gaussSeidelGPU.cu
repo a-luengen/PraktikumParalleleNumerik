@@ -23,7 +23,8 @@ const int BLOCK_DIMENSION = 8;
 
 /**
 *   expecting embedded result-matrix to iterate on
-*   dim: dimension of the matrix u (without embedding)
+*   dim_u: dimension of the matrix u (without embedding)
+*   dim_u_emb: dimension of the matrix u_emb (with embedding)
 *   ITERATION_FLAG: has value 0 to iterate on "black" elements or 1 to iterate on "red" elements
 */
 __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_emb, int ITERATION_FLAG) {
@@ -37,13 +38,17 @@ __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_em
     int j_inner, i_emb, j_emb;
 
     // 1. Calculate the index's of embedded matrix to a thread has to work on
-    j_emb = j_offset + (int) threadID / BLOCK_DIMENSION;
-    i_emb = i_offset + (int) threadID % BLOCK_DIMENSION + (1 - 2 * ITERATION_FLAG) * (j_emb % 2);
+    j_emb = (j_offset * BLOCK_DIMENSION) + (int) threadID / BLOCK_DIMENSION;
+    i_emb = (i_offset * BLOCK_DIMENSION) + (int) threadID % BLOCK_DIMENSION + (1 - 2 * ITERATION_FLAG) * (j_emb % 2);
 
     if(i_emb > 0 && i_emb < dim_u_emb - 1 && j_emb < dim_u_emb - 1 && j_emb > 0) {
         // 2. calculate the index's of inner matrix for the functionF-call
-        //i_inner = i_emb - 1;
-        j_inner = j_emb - 1;
+        //j_inner range: [0, dim_u * dim_u]
+        j_inner = (j_emb - 1) * dim_u + (i_emb - 1);
+        
+        #ifdef PRINT
+        printf("ThreadID = %d, i_offset = %d, j_offset = %d, i_emb = %d, j_emb = %d, j_inner = %d\n", threadID, i_offset, j_offset, i_emb, j_emb, j_inner);
+        #endif
 
         // 3. calculate new value for u_emb
         float tempSum = 
@@ -55,7 +60,9 @@ __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_em
             + u_emb[i_emb + 1 + j_emb * dim_u_emb] 
             // bottom element
             + u_emb[i_emb + (j_emb + 1) * dim_u_emb]; 
+        #ifdef PRINT
         //printf("I calculate - threadID = %d, tempSum = %.6f\n", threadID, tempSum);
+        #endif
         // calc new value for u
         float newU = (h * h * functionF((j_inner / dim_u + 1) * h, (j_inner % dim_u + 1) * h) + tempSum) / 4.0;
         // 4. replace old value
@@ -137,12 +144,15 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
         float *temp = u_emb;
         u_emb = u_emb_new;
         u_emb_new = temp;
+        
+        // count for iterations
+        count++;
 
         #ifdef PRINT
         printf("Iteration-Error = %.8f\n", fehler);
         printSquareMatrix(u_emb_new, n_emb);
+        break;
         #endif
-        count++;
     }
     printf("Took %d Iterations to complete.\n", count);
 #ifdef PRINT
@@ -189,9 +199,7 @@ int main()
     // executing gauss seidel verfahren
     gaussSeidel(n, FEHLERSCHRANKE, h, u);
 
-    #ifdef PRINT
     printVectorInBlock(u, (n * n), n);
-    #endif
     printVector(u, (n * n));
     free(u);
     return 0;
