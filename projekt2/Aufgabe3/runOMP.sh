@@ -10,5 +10,5 @@ echo $FLAGS
 echo $CODE
 echo "Compiling"
 echo "#######"
-$CC $FLAGS -D$DEF_NAME1=$SIZE $CODE -o $NAME
+$CC $FLAGS -D$DEF_NAME1=$SIZE $CODE -o $NAME -lm
 ./$NAME
