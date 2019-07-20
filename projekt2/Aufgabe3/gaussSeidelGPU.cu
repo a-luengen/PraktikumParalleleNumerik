@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define FEHLERSCHRANKE 0.000001
 //Exponent der Verfeinerung
@@ -79,7 +80,7 @@ __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_em
 *       to extraction of calculation pattern into algorithm)
 *   u: pointer to u matrix
 */
-void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
+void jaccobi(int n, float fehlerSchranke, float h, float *u)
 {
     //TODO: Timeranfang
     float fehler = fehlerSchranke + 1;
@@ -176,6 +177,11 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
 
 int main()
 {
+
+    clock_t start, stop;
+    double time_used;
+
+    start = clock();
     //Randbedingungen
     float h = 1.0;
     int n = 1;
@@ -196,27 +202,26 @@ int main()
     printVector(u, (n * n));
 #endif
 
+    
     // executing gauss seidel verfahren
-    gaussSeidel(n, FEHLERSCHRANKE, h, u);
+    jaccobi(n, FEHLERSCHRANKE, h, u);
 
-    printVectorInBlock(u, (n * n), n);
+    stop = clock();
+    time_used = (double) (stop - start) / CLOCKS_PER_SEC;
+
+    printf("Time used %f\n", time_used);
+
+    //printVectorInBlock(u, (n * n), n);
     printVector(u, (n * n));
     free(u);
+
     return 0;
 }
 
+/**
+ * Calculating distance between two vectors via L2-Norm  
+ */
 void calculateError(float* old_val, float* new_val, int dim, float *result) {
-    /*
-    float temp_glob = 0.0;
-    float temp_loc = 0.0;
-    for(int i = 0; i < dim * dim; i++) {
-        temp_loc = new_val[i] - old_val[i];
-        if(temp_loc < 0)
-            temp_loc = -temp_loc;
-        if(temp_loc > temp_glob)
-            temp_glob = temp_loc;
-    }
-    */
 
     float sum = 0.0;
     for(int i = 0; i < dim * dim; i++) {

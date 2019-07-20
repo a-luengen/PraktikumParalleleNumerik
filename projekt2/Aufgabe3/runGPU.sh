@@ -2,7 +2,7 @@
 
 NAME=gaussSeidelGPU
 CODE=$NAME.cu
-SIZE=3
+SIZE=7
 DEF_NAME1=L
 DEF_NAME2=PRINT
 
@@ -14,12 +14,13 @@ nvcc -D$DEF_NAME1=$SIZE $CODE -o $NAME
 start=`date +%s%N`
 ./$NAME
 end=`date +%s%N`
-echo 1. Execution time was `expr $end - $start` nanoseconds.
+
+echo 1. Execution time was $end - $start = `expr $end - $start` nanoseconds.
 start=`date +%s%N`
 ./$NAME
 end=`date +%s%N`
-echo 2. Execution time was `expr $end - $start` nanoseconds.
+echo 2. Execution time was $end - $start = `expr $end - $start` nanoseconds.
 start=`date +%s%N`
 ./$NAME
 end=`date +%s%N`
-echo 3. Execution time was `expr $end - $start` nanoseconds.
+echo 3. Execution time was $end - $start = `expr $end - $start` nanoseconds.
