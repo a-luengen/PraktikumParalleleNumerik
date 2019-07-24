@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define FEHLERSCHRANKE 0.000001
 //Exponent der Verfeinerung
@@ -33,7 +34,6 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
 
     // embedd vector u for corner case
     float **u_emb = allocateSquareMatrix(n_emb * n_emb, 0, n_emb);
-
     // embedd vector u
     for (int i = 1; i < n_emb - 1; i++)
     {
@@ -58,7 +58,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
         // "black" colored elements first (start_iter = 0) and then the "red" colored elements (start_iter = 1)
         for (int start_iter = 0; start_iter < 2; start_iter++)
         {
-#pragma omp parallel for private(tempSum, newU, diff, i_emb, j_emb) shared(fehler)
+#pragma omp parallel for private(tempSum, newU, diff, i_emb, j_emb) reduction(+:fehler)
             for (int j = start_iter; j < n * n; j += 2)
             {
 
@@ -83,22 +83,17 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
                 // Calculate error
                 diff = (newU - u_emb[i_emb][j_emb]) * (newU - u_emb[i_emb][j_emb]);
 
-                #pragma omp atomic update
+                //#pragma omp atomic update
                 fehler += diff;
-                /*
-                #pragma omp critical
-                {
-                    // update this atomically
-                    if (fehler < diff) {
-                        fehler = diff;
-                    }
-                }
-                */
+              
+
                 //set new value for u in embedded vector
                 u_emb[i_emb][j_emb] = newU;
             }
         }
+
         fehler = sqrt(fehler);
+
         count++;
     }
     printf("Took %d -Iterations. \n", count);
@@ -122,6 +117,9 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
 
 int main()
 {
+    clock_t start, stop;
+    start = clock();
+
     //Randbedingungen
     float h = 1.0;
     int n = 1;
@@ -148,6 +146,11 @@ int main()
 
     // executing gauss seidel verfahren
     gaussSeidel(n, FEHLERSCHRANKE, h, a, u);
+    
+    stop = clock();
+    double time_used = (double) (stop - start) / CLOCKS_PER_SEC;
+
+    printf("Time used %f\n", time_used);
 
 #ifdef PRINT
     printSquareMatrix(a, (n * n));

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define FEHLERSCHRANKE 0.000001
 //Exponent der Verfeinerung
@@ -79,7 +80,7 @@ __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_em
 *       to extraction of calculation pattern into algorithm)
 *   u: pointer to u matrix
 */
-void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
+void jaccobi(int n, float fehlerSchranke, float h, float *u)
 {
     //TODO: Timeranfang
     float fehler = fehlerSchranke + 1;
@@ -115,11 +116,11 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
     // allocate device memory
     float *gpu_u_emb;
     cudaMalloc((void**)&gpu_u_emb, n_emb * n_emb * sizeof(float));
-    // copy from local to device
+    // copy from host to device
     cudaMemcpy(gpu_u_emb, u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyHostToDevice);
     
     // calculate the blocks per dimension
-    int blocksPerDimension = 1 + n_emb / BLOCK_DIMENSION;
+    int blocksPerDimension = n_emb / BLOCK_DIMENSION + (n_emb % BLOCK_DIMENSION ? 1: 0);
     dim3 numBlocks(blocksPerDimension, blocksPerDimension);
 
     printf("Running with numBlocks: %d, %d - %d Threads / Block.\n", blocksPerDimension, blocksPerDimension, THREADS_PER_BLOCK);
@@ -130,20 +131,23 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
     {
         // black iteration
         redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, n_emb, h, gpu_u_emb, ITERATE_ON_BLACK);
-        cudaDeviceSynchronize();
+        //cudaDeviceSynchronize();
         // red iteration
         redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, n_emb, h, gpu_u_emb, ITERATE_ON_RED);
-        cudaDeviceSynchronize();
+        //cudaDeviceSynchronize();
 
-        // move result of first iteration onto host
-        cudaMemcpy(u_emb_new, gpu_u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyDeviceToHost);
-        
-        // calculate error
-        calculateError(u_emb, u_emb_new, n_emb, &fehler);
-        // switch pointers
-        float *temp = u_emb;
-        u_emb = u_emb_new;
-        u_emb_new = temp;
+        if(count > 1) {
+            // move result of first iteration onto host (implicitly synchronizing)
+            cudaMemcpy(u_emb_new, gpu_u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyDeviceToHost);
+            
+            // calculate error
+            calculateError(u_emb, u_emb_new, n_emb, &fehler);
+            // switch pointers
+            float *temp = u_emb;
+            u_emb = u_emb_new;
+            u_emb_new = temp;
+        }
+
         
         // count for iterations
         count++;
@@ -176,6 +180,11 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float *u)
 
 int main()
 {
+
+    clock_t start, stop;
+    double time_used;
+
+    start = clock();
     //Randbedingungen
     float h = 1.0;
     int n = 1;
@@ -196,29 +205,29 @@ int main()
     printVector(u, (n * n));
 #endif
 
+    
     // executing gauss seidel verfahren
-    gaussSeidel(n, FEHLERSCHRANKE, h, u);
+    jaccobi(n, FEHLERSCHRANKE, h, u);
 
-    printVectorInBlock(u, (n * n), n);
+    stop = clock();
+    time_used = (double) (stop - start) / CLOCKS_PER_SEC;
+
+    printf("Time used %f\n", time_used);
+
+    //printVectorInBlock(u, (n * n), n);
     printVector(u, (n * n));
     free(u);
+
     return 0;
 }
 
+/**
+ * Calculating distance between two vectors via L2-Norm  
+ */
 void calculateError(float* old_val, float* new_val, int dim, float *result) {
-    /*
-    float temp_glob = 0.0;
-    float temp_loc = 0.0;
-    for(int i = 0; i < dim * dim; i++) {
-        temp_loc = new_val[i] - old_val[i];
-        if(temp_loc < 0)
-            temp_loc = -temp_loc;
-        if(temp_loc > temp_glob)
-            temp_glob = temp_loc;
-    }
-    */
 
     float sum = 0.0;
+    #pragma omp parallel for shared(old_val, new_val) reduction(+: sum)
     for(int i = 0; i < dim * dim; i++) {
         sum += (new_val[i] - old_val[i]) * (new_val[i] - old_val[i]);
     }
