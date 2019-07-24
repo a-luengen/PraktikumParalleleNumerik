@@ -10,11 +10,12 @@
 \begin{document}
     \maketitle
     \newpage
-    \section{Aufgabe 1}
-        \subsection{a)}
+    \section{Aufgabenblatt 1}
+    \subsection{Aufgabe 1}
+        \subsubsection{a)}
         Die Reihenfolge in welcher die IDs der Threads ausgegeben werden ist jedes Mal unterschiedlich und ist auch nicht vorherzusagen.
         
-        \subsection{b)}
+        \subsubsection{b)}
         Gemessen wurde auf dem i82sn02. Für die manuelle Parallelisierung wurde atomic verwendet. Diese Messung wurde nach 4 Threads aufgehört da sich die Rechenzeit stark erhöht hat. Für das Parallelisieren mit Reduktion ist das maximales Speedup $ \sim 8 $.\\
         Bei 16 und 32 Threads verschlechtert sich die Beschleunigung im Gegensatz zu 8 Threads bei kleineren N. Das könnte am Overhead der Verarbeitung der Threads liegen.
         
@@ -66,7 +67,7 @@
 	\end{tabular}
 
 	\newpage
-        \subsection{c)}
+        \subsubsection{c)}
         
         Die Messbedingungen waren gleich wie im Aufgabenteil b). Die Werte für das Speedup unterscheiden sich nicht groß von den oben gemessenen.\\
         
@@ -110,8 +111,8 @@
 	\end{center}
 
 
-    \section{Aufgabe 2}
-    	\subsection{a)}
+    \subsection{Aufgabe 2}
+    	\subsubsection{a)}
 		\begin{enumerate}
 			\item Example: \\
 				Es besteht eine Race-Condition auf dem Array a über Index i,
@@ -143,7 +144,7 @@
 				Allerdings ist die gesamte Schleife dann gleichbedeutend mit einer Sequenziellen Ausführung.
 		\end{enumerate}
 
-		\subsection{b)}
+		\subsubsection{b)}
 			Werden Matrizen in C zeilenweise im Speicher hinterlegt, ist es zur optimalen Ausnutzung von Caching-Effekten ideal, wenn auch zeilenweise über Einträge der Matrix iteriert wird.
 			Dadurch läd der Prozessor bei einem Cache-miss auf einen Eintrag nicht nur den einzelnen Eintrag in den Cache, sondern direkt mehrere nachfolgende Einträge, was weniger Zugriffe auf den RAM zu folge hat und somit insgesamt die Performance verbessert.
 			Wird jedoch spaltenweise über eine Matrix iteriert, müssen für einen Zugriff auf das (i+1)-te Element alle n-Einträge nach i ausgelassen werden. 
@@ -188,7 +189,7 @@
 				\hline
 			\end{tabular}
 		\end{center}
-		\subsection{c)}
+		\subsubsection{c)}
 			Die Arbeitspakete pro Thread werden statisch vergeben. 
 			Die Berechnung der Mandelbrotmenge ist jedoch nur für einen bestimmten Bild Bereich besonders Berechnungsintensiv. 
 			Threads welche diese Bereiche berechnen sollen, müssen mehr Aufwand betreiben im vergleich zu den anderen Threads, wodurch diese insgesamt länge benötigen.
@@ -233,9 +234,9 @@
 			\end{center}
 
 
-    \section{Aufgabe 3}
+    \subsection{Aufgabe 3}
     
-        \subsection{a)}
+        \subsubsection{a)}
         P(x): Anzahl auszuführender Operationen auf x Prozessoren.\\
         T(x): Ausführungszeit auf x Prozessoren.\\
         
@@ -247,7 +248,7 @@
         
         \textbf{Mehraufwand}: $ R(n) = P(n)/P(1) $. Beschreibt den bei einem Multiprozessorsystem erforderlichen Mehraufwand für die Organisation, Synchronisation und Kommunikation der Prozessoren.\\
         
-        \subsection{b)}
+        \subsubsection{b)}
         Race-Conditions: Wenn zwei Threads unabhängig voneinander auf eine Ressource lesend oder auch schreibend zugreiffen können, 
         spricht man von einer Race-Condition. Hierbei kann es bspw. beim Zugriff auf Variablen bei ungünstiger Ausführungszeiten
         dazu kommen, dass am Ende der Berechnungen ein falscher Wert in der Variable enthalten ist, als wenn die Berechnung sequentiell 
@@ -256,7 +257,7 @@
         Thread gleichzeitig innerhalb des kritischen Abschnitts sein darf.
 
         In diesem Zusammenhang kann es auch zu Deadlocks, Lifelocks oder auch Starvation kommen. 
-        \subsection{c)}
+        \subsubsection{c)}
         \begin{tabular}{|p{4cm}|p{3cm}|p{3cm}|p{3cm}|}
         	\hline
         	- & GPUs & CPUs & FPGAs \\
@@ -282,7 +283,7 @@
     In diesem Praktikum verwenden wir CPUs und GPUs da sie universeller einsetzbar sind als FPGAs und die Programmierung deutlich leichter ist.
 
 
-    \section{Aufgabe 4}
+    \subsection{Aufgabe 4}
 	\begin{figure}
 		\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A4L4.png}
 		\caption{l=4; h=1/16;}
@@ -300,7 +301,7 @@
 	\end{figure}
 
 
-	\subsection{a)}
+	\subsubsection{a)}
 Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000001.\newline
 \begin{tabular}{|l|l|r|r|}
 		\hline
@@ -317,11 +318,11 @@ Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000
 	\end{tabular}
 	\newline Diese Lösungswerte in Figure \ref{A4L4}, \ref{A4L5} und \ref{A4L6} ergeben sich mit l=4,5,6;  \newline
 	
-	\subsection{b)}
+	\subsubsection{b)}
 	Die Schleifenabläufe sind direkt voneinander abhängig und müssen in Reihenfolge ablaufen. Die naive Parallelisierung liefert keine korrekten Ergebnisse. 
 	
 
-	\subsection{c)}
+	\subsubsection{c)}
 		Methodik: Die beiden Summen die innerhalb der Schleife berechnet werden müssen wurden parallelisiert und mit einer Reduktion zusammendgefasst.\newline
 		\begin{tabular}{|l|l|r|r|r|}
 				\hline
@@ -335,7 +336,7 @@ Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000
 		\end{tabular}
 
 
-    \section{Aufgabe 5}
+    \subsection{Aufgabe 5}
 	\begin{figure}
 		\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A5L5M3N2.png} 
 		\caption{l=5; h=1/32;}
@@ -351,18 +352,18 @@ Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000
 		\caption{l=7; h=1/128;}
 		\label{A5L7}
 	\end{figure}
-	\subsection{a)}
+	\subsubsection{a)}
 	f(x,y) muss definiert sein auf $\Omega$ \newline
 	$\Gamma$ ist der Rand von $\Omega$  \newline
 	L\"{o}sung u(x,y) muss zweifach differenzierbar sein 
-	\subsection{b)}
+	\subsubsection{b)}
 	f(x,y) = ($N^2$ + $M^2$)*4*$\pi^2$*sin(2*M*$\pi$*x)*sin(2*N*$\pi$*y)
-	\subsection{c)}
+	\subsubsection{c)}
 	Es handelt sich um eine h-FEM.  \newline
 	Die Lösungswerte in Figure \ref{A5L5}, \ref{A5L6} und \ref{A5L7} ergrben sich mit M=3; N=2; l=5,6,7;  \newline
 
 
-\section{Aufgabe 6}
+\subsection{Aufgabe 6}
 \begin{figure}
 	\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A6L5M3N2.png} 
 		\caption{GMRES; l=5; h=1/32;}
@@ -378,14 +379,14 @@ Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000
 		\caption{GMRES; l=7; h=1/128;}
 		\label{A6L7}
 \end{figure}
-	\subsection{a)}
+	\subsubsection{a)}
 	Liste: CG Verfahren; PCG-Verfahren; Verfahren der minimalen Risiduen(GMRES); GCR-Verfahren; Arnoldi-Verfahren; FOM, ORTHORES;\newline
 	Das Gleichungssystem ist dünnbesetzt und alle Krylow-Unterraumverfahren sind gut geeignet f\"{u}r d\"{u}nnvesetzte Gleichungssysteme.
 	Diese Lösungswerte in Figure \ref{A6L5}, \ref{A6L6} und \ref{A6L7} ergeben sich mit der Gleichung aus Aufgabe 5 und M=3; N=2; l=5,6,7;  \newline
 
-	\subsection{b)}
+	\subsubsection{b)}
 	Die Verwendung des Residuums als Abrruchbedingung ist eventuell problematisch, da man dadurch in jedem Schleifendurchlauf einen Lösungsvektor $x^k$ berechnen muss. Man kann sich eine feste Anzahl von Iterationen setzen, allerdings hat man dann keine garantierte Genauigkeit. Außerdem kann man das Residuum mit weniger Rechenaufwand in jeder Iteration abschätzen und diesen Schätzwert als Abbruchbedingung nutzen. Auch diese Vorgehensweise hat keine garantierte Genauigkeit, da die Schätzgenauigkeit variiert. Im Zuge des Praktikums haben wir bis jetzt nur eine stabile Version mit abgeschätztem Residuum implementiert(gmres.c). Die Version mit dem Residuum als Abbruchbedingung funktioniert nicht verlässlich(gmresResiduum.c).
-	\subsection{c)}
+	\subsubsection{c)}
 Die Efficiency ist bei jedem Vergleich zwischen Aufgabe 6 und Aufgabe 5c gleich dem Speedup, da die Anzahl N der Kerne auf denen das Programm läuft nicht variiert.\newline
 \begin{tabular}{|l|l|r|r|}
 		\hline
@@ -415,13 +416,38 @@ Die Efficiency ist bei jedem Vergleich zwischen Aufgabe 6 und Aufgabe 5c gleich 
 	\end{tabular}
 \newline
 Einsatz eines Vorkonditionierers: Der Einsatz ist unsinnvoll, da wir bereits eine d\"{u}nn besetzte Matrix gegeben haben. Falls die Matrix anders besetzt wäre, könnte ein Vorkonditionierer von Nutzen sein.
-	\subsection{d)}
+	\subsubsection{d)}
 MFEM; deal.II; libMesh; JuliaFEM; FEniCS; Hermes Project;...\newline
 Liste weiterer FEM Packages/Libraries: https://en.wikipedia.org/wiki/List\_of\_finite\_element\_software\_packages \newline
 Fast alle sind Open Source und kostenlos nutzbar. "Hermes Project" scheint zum Beispiel eine leicht nutzbare C/C++ Bibliothek.
 
+\section{Aufgabenblatt 2}
 
-\section{Aufgabe}
+\subsection{Aufgabe 1}
+
+
+\subsection{Aufgabe 2}
+
+
+\subsection{Aufgabe 3}
+
+\subsubsection{a)}
+
+\subsubsection{b)}
+
+\subsubsection{c)}
+
+\subsection{Aufgabe 4}
+
+\subsubsection{a)}
+
+\subsubsection{b)}
+
+\subsubsection{c)}
+
+\subsubsection{d)}
+
+\subsection{Aufgabe 5}
 
 
 
