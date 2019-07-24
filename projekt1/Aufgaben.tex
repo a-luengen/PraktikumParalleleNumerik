@@ -421,17 +421,115 @@ MFEM; deal.II; libMesh; JuliaFEM; FEniCS; Hermes Project;...\newline
 Liste weiterer FEM Packages/Libraries: https://en.wikipedia.org/wiki/List\_of\_finite\_element\_software\_packages \newline
 Fast alle sind Open Source und kostenlos nutzbar. "Hermes Project" scheint zum Beispiel eine leicht nutzbare C/C++ Bibliothek.
 
+\newpage
+
 \section{Aufgabenblatt 2}
 
 \subsection{Aufgabe 1}
 
+Es gibt sehr viele Eigenschaften die man auslesen kann. Hier sind mögliche Ausgaben: \\
+
+Number of Devices: 2\\
+Device Number:                0\\
+Device Name:                  Tesla K80\\
+Memory Clock Rate (KHz):      2505000\\
+Memory Bus Width (bits):      384\\
+Global Memory size (bytes):   11996954624\\
+Device Number:                1\\
+Device Name:                  Tesla K80\\
+Memory Clock Rate (KHz):      2505000\\
+Memory Bus Width (bits):      384\\
+Global Memory size (bytes):   11996954624\\
 
 \subsection{Aufgabe 2}
 
+\paragraph{Arraygröße} Bei kleinen Arrays lohnt sich Cuda nicht wirklich zur Steigerung der Transferrate (Zu viel Overhead?).
+Wenn die Arrays sehr groß werden beobachtet man jedoch eine deutliche Steigerung der Effizienz.
+Hier wurde mit nvprof gemessen.
+
+\begin{center}
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		N         & Device to Host     & Host to Device     & Device to Device     & Host to Host      \\ \hline \hline
+		10			& 2.1120us & 2.0160us &  3.7440us & 3.000us \\ \hline
+		100			& 2.3360us & 2.0800us  & 3.8400us & 4.000us\\ \hline
+		1000	& 2.6880us & 2.5280us & 3.5200us & 3.000us \\ \hline 
+		10000     & 7.4240us & 10.368us & 3.2640us & 22us      \\ \hline
+		100000    & 55.679us & 58.240us & 7.7760us & 156us     \\ \hline
+		1000000   & 624.25us & 553.79us & 74.015us & 2.171ms   \\ \hline
+		10000000  & 5.4335ms & 5.3853ms & 621.02us & 25.503ms  \\ \hline
+		100000000 & 53.996ms & 54.383ms & 6.1003ms & 266.338ms \\ \hline
+	\end{tabular}
+\end{center}
+
+\paragraph{Werte um X erhöhen} 
+
+\begin{center}
+		\begin{tabular}{|c|l|l|}
+		\hline                                                                             
+		\multicolumn{1}{|l|}{blocksize}           & N         & Time     \\ \hline
+		\multirow{5}{*}{4}                        & 10000     & 14.752us                                                     \\ \cline{2-3} 
+		& 100000    & 121.47us                                                                                \\ \cline{2-3} 
+		& 1000000   & 1.4293ms                                                                             \\ \cline{2-3} 
+		& 10000000  & 14.122ms                                                                              \\ \cline{2-3} 
+		& 100000000 & 141.23ms                                                        \\ \hline
+		\multirow{5}{*}{8}                        & 10000     & 8.9920us                               \\ \cline{2-3} 
+		& 100000    & 62.207us                                                                                \\ \cline{2-3} 
+		& 10000000  & 7.0312ms                                                                                  \\ \cline{2-3} 
+		& 100000000 & 70.966ms                                                                                \\ \hline
+		\multirow{5}{*}{16}                       & 10000     & 5.8880us                                                                                   \\ \cline{2-3} 
+		& 100000    & 32.896us                                                                                  \\ \cline{2-3} 
+		& 1000000   & 357.12us                                                                                   \\ \cline{2-3} 
+		& 10000000  & 3.5412ms                                                                                   \\ \cline{2-3} 
+		& 100000000 & 35.236ms                                                                                   \\ \hline
+		\multirow{5}{*}{24}                       & 10000     & 4.8000us                                                                                   \\ \cline{2-3} 
+		& 100000    & 23.936us                                                                                   \\ \cline{2-3} 
+		& 1000000   & 251.20us                                                                                  \\ \cline{2-3} 
+		& 10000000  & 2.5063ms                                                                                  \\ \cline{2-3} 
+		& 100000000 & 24.878ms                                                                                 \\ \hline
+		\multirow{5}{*}{32}             & 10000     & 4.0960us                                                                                   \\ \cline{2-3} 
+		& 100000    & 17.920us                                                                                   \\ \cline{2-3} 
+		& 1000000   & 184.29us                                                                                   \\ \cline{2-3} 
+		& 10000000  & 1.8227ms                                                                                   \\ \cline{2-3} 
+		& 100000000 & 18.020ms                                                                                  \\ \hline
+	\end{tabular}
+\end{center}
+
+\paragraph{Speedup} 
+VectorIncrement um 1 nur auf der CPU mit Openmp:\\
+N = 10000000:  Im Schnitt 49.6942 ms (zwischen 194 und 440 ms)\\
+N = 100000000: 488.84 ms
+
+\begin{center}
+	\begin{tabular}{l|l|l|}
+		\cline{2-3}
+		& \multicolumn{2}{c|}{Speedup} \\ \hline
+		\multicolumn{1}{|l|}{blocksize} & N = 10ˆ7      & N = 10ˆ8     \\ \hline
+		\multicolumn{1}{|l|}{4}         & 3.52          & 3.49         \\ \hline
+		\multicolumn{1}{|l|}{8}         & 7.07          &              \\ \hline
+		\multicolumn{1}{|l|}{16}        & 14.03         &              \\ \hline
+		\multicolumn{1}{|l|}{24}        & 19.82         &              \\ \hline
+		\multicolumn{1}{|l|}{32}        & 27.19         & 27.74        \\ \hline
+	\end{tabular}
+\end{center}
 
 \subsection{Aufgabe 3}
 
 \subsubsection{a)}
+
+Running with 32 threads.\\
+h = 0.015625, n = 63, l = 6\\
+~ 6.725816\\
+		\begin{tabular}{|l|l|l|r|r|r|}
+	\hline
+	&Laufzeit(seriell) &Laufzeit(Openmp)& Laufzeit(CUDA) & S (omp) & S (cuda)\\
+	\hline
+	l=4; h=1/16 & 0.044s & 0.242s & ? & 0.182 & 0.004 \\
+	l=5; h=1/32 & 1.420s & 1.154s & ? &1.231 & 0.026 \\
+	l=6; h=1/64 & 37.216s & 6.725816 ms & ? & 1.384 & 0.029 \\
+	\hline
+	
+\end{tabular}
 
 \subsubsection{b)}
 
