@@ -116,11 +116,11 @@ void jaccobi(int n, float fehlerSchranke, float h, float *u)
     // allocate device memory
     float *gpu_u_emb;
     cudaMalloc((void**)&gpu_u_emb, n_emb * n_emb * sizeof(float));
-    // copy from local to device
+    // copy from host to device
     cudaMemcpy(gpu_u_emb, u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyHostToDevice);
     
     // calculate the blocks per dimension
-    int blocksPerDimension = 1 + n_emb / BLOCK_DIMENSION;
+    int blocksPerDimension = n_emb / BLOCK_DIMENSION + (n_emb % BLOCK_DIMENSION ? 1: 0);
     dim3 numBlocks(blocksPerDimension, blocksPerDimension);
 
     printf("Running with numBlocks: %d, %d - %d Threads / Block.\n", blocksPerDimension, blocksPerDimension, THREADS_PER_BLOCK);
@@ -131,20 +131,23 @@ void jaccobi(int n, float fehlerSchranke, float h, float *u)
     {
         // black iteration
         redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, n_emb, h, gpu_u_emb, ITERATE_ON_BLACK);
-        cudaDeviceSynchronize();
+        //cudaDeviceSynchronize();
         // red iteration
         redBlackIteration<<<numBlocks, THREADS_PER_BLOCK>>>(n, n_emb, h, gpu_u_emb, ITERATE_ON_RED);
-        cudaDeviceSynchronize();
+        //cudaDeviceSynchronize();
 
-        // move result of first iteration onto host
-        cudaMemcpy(u_emb_new, gpu_u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyDeviceToHost);
-        
-        // calculate error
-        calculateError(u_emb, u_emb_new, n_emb, &fehler);
-        // switch pointers
-        float *temp = u_emb;
-        u_emb = u_emb_new;
-        u_emb_new = temp;
+        if(count > 1) {
+            // move result of first iteration onto host (implicitly synchronizing)
+            cudaMemcpy(u_emb_new, gpu_u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyDeviceToHost);
+            
+            // calculate error
+            calculateError(u_emb, u_emb_new, n_emb, &fehler);
+            // switch pointers
+            float *temp = u_emb;
+            u_emb = u_emb_new;
+            u_emb_new = temp;
+        }
+
         
         // count for iterations
         count++;
@@ -224,6 +227,7 @@ int main()
 void calculateError(float* old_val, float* new_val, int dim, float *result) {
 
     float sum = 0.0;
+    #pragma omp parallel for shared(old_val, new_val) reduction(+: sum)
     for(int i = 0; i < dim * dim; i++) {
         sum += (new_val[i] - old_val[i]) * (new_val[i] - old_val[i]);
     }
