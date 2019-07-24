@@ -1,6 +1,7 @@
 #include <stdio.h>
-
+#include <math.h>
 #include <stdlib.h>
+#include <time.h>
 
 #define FEHLERSCHRANKE 0.000001
 //Exponent der Verfeinerung
@@ -10,6 +11,7 @@ float **allocateSquareMatrix(int size, int initialize, int n);
 float *allocateVector(int size, int initialize);
 void printSquareMatrix(float **matrix, int dim);
 void printVector(float *vector, int length);
+void printVectorInBlock(float *vector, int length, int blockLength);
 void freeSquareMatrix(float **matrix, int dim);
 
 /**
@@ -32,7 +34,6 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
 
     // embedd vector u for corner case
     float **u_emb = allocateSquareMatrix(n_emb * n_emb, 0, n_emb);
-
     // embedd vector u
     for (int i = 1; i < n_emb - 1; i++)
     {
@@ -46,7 +47,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
     // print embedded vector u
     printSquareMatrix(u_emb, n_emb);
 #endif
-
+    int count = 0;
     while (fehlerSchranke < fehler)
     {
         fehler = 0.0;
@@ -57,7 +58,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
         // "black" colored elements first (start_iter = 0) and then the "red" colored elements (start_iter = 1)
         for (int start_iter = 0; start_iter < 2; start_iter++)
         {
-#pragma omp parallel for private(tempSum, newU, diff, i_emb, j_emb) shared(fehler)
+#pragma omp parallel for private(tempSum, newU, diff, i_emb, j_emb) reduction(+:fehler)
             for (int j = start_iter; j < n * n; j += 2)
             {
 
@@ -80,21 +81,22 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
                 newU = (h * h * functionF((j / n + 1) * h, (j % n + 1) * h) + tempSum) / 4.0;
 
                 // Calculate error
-                diff = newU - u_emb[i_emb][j_emb];
-                if (diff < 0)
-                    diff = -1 * diff;
-#pragma omp atomic update
-                {
-                    // update this atomically
-                    if (fehler < diff)
-                        fehler = diff;
-                }
+                diff = (newU - u_emb[i_emb][j_emb]) * (newU - u_emb[i_emb][j_emb]);
+
+                //#pragma omp atomic update
+                fehler += diff;
+              
 
                 //set new value for u in embedded vector
                 u_emb[i_emb][j_emb] = newU;
             }
         }
+
+        fehler = sqrt(fehler);
+
+        count++;
     }
+    printf("Took %d -Iterations. \n", count);
 
 #ifdef PRINT
     // print embedded vector u
@@ -115,6 +117,9 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
 
 int main()
 {
+    clock_t start, stop;
+    start = clock();
+
     //Randbedingungen
     float h = 1.0;
     int n = 1;
@@ -141,6 +146,11 @@ int main()
 
     // executing gauss seidel verfahren
     gaussSeidel(n, FEHLERSCHRANKE, h, a, u);
+    
+    stop = clock();
+    double time_used = (double) (stop - start) / CLOCKS_PER_SEC;
+
+    printf("Time used %f\n", time_used);
 
 #ifdef PRINT
     printSquareMatrix(a, (n * n));
