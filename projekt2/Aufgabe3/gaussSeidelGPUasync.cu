@@ -22,55 +22,86 @@ const int ITERATE_ON_RED = 1;
 const int THREADS_PER_BLOCK = 32;
 const int BLOCK_DIMENSION = 8;
 
-__global__ void blockIterationAsyncRedBlack(int dim_u, int dim_u_emb, float h, float* u_emb, int iterCount) {
+__global__ void blockIterationAsyncJacobi(int dim_u, int dim_u_emb, float h, float* u_emb, int iterCount) {
 
+    // 1. Load data from global memory into local
+    // load all needed data from global memory
+    // change only values in inner block and 
+    // write only updated values to global Memory
+    __shared__ float localBlock[BLOCK_DIMENSION + 2][BLOCK_DIMENSION + 2];
+
+    int global_start_i = blockIdx.x * BLOCK_DIMENSION;
+    int global_start_j = blockIdx.y * BLOCK_DIMENSION;
+    int global_end_i = (blockIdx.x + 1) * BLOCK_DIMENSION + 1;
+    int global_end_j = (blockIdx.y + 1) * BLOCK_DIMENSION + 1;
+
+    int global_i = 0;
+    int global_j = 0;
+    int local_i = 0;
+    int local_j = 0;
+
+
+
+    for(int i = threadIdx.x; i < (BLOCK_DIMENSION + 2) * (BLOCK_DIMENSION + 2); i+=blockDim.x) {
+
+        local_i = i % BLOCK_DIMENSION;
+        local_j = (int) ( i / BLOCK_DIMENSION);
+        global_i = global_start_i + local_i;
+        global_j = global_start_j + local_j;
+
+        #ifdef PRINT
+        printf("ThreadIdx = %d, i = %d, local_i = %d, local_j = %d, global_i = %d, global_j = %d", threadIdx.x, i, local_i, local_j, global_i, global_j);
+        #endif
+
+        if(global_i > 0 && global_i < dim_u_emb && global_j > 0 && )
+            localBlock[local_i][local_j] = u_emb[global_i + global_j * dim_u_emb];
+    }
+    __syncthreads();
+
+    /*
+    // 2. do jacobi iterations on local block
     for(int iterations = 0; iterations < iterCount; iterations++) {
 
         for(int iter_flag = 0; iter_flag < 2; iter_flag++) {
 
             int threadID = threadIdx.x * 2 + iter_flag;
-            int i_offset = blockIdx.x;
-            int j_offset = blockIdx.y;
-            // use index of thread to calculate position in matrix u_emb 
+            // use index of thread to calculate position in matrix 
             // to execute computation on
-            int j_inner, i_emb, j_emb;
+            int i, j;
         
-            // 1. Calculate the index's of embedded matrix to a thread has to work on
-            j_emb = (j_offset * BLOCK_DIMENSION) + (int) threadID / BLOCK_DIMENSION;
-            i_emb = (i_offset * BLOCK_DIMENSION) + (int) threadID % BLOCK_DIMENSION + (1 - 2 * iter_flag) * (j_emb % 2);
+            // 1. Calculate the index's in the matrix a thread has to work on
+            j = ((int) threadID / BLOCK_DIMENSION) + 1;
+            i = ((int) threadID % BLOCK_DIMENSION + (1 - 2 * iter_flag) * (j % 2) ) + 1;
         
-            if(i_emb > 0 && i_emb < dim_u_emb - 1 && j_emb < dim_u_emb - 1 && j_emb > 0) {
-                // 2. calculate the index's of inner matrix for the functionF-call
-                //j_inner range: [0, dim_u * dim_u]
-                j_inner = (j_emb - 1) * dim_u + (i_emb - 1);
-                
+            if(i > 0 && i < BLOCK_DIMENSION + 1 && j < BLOCK_DIMENSION - 1 && j > 0) {
+
                 #ifdef PRINT
-                printf("ThreadID = %d, i_offset = %d, j_offset = %d, i_emb = %d, j_emb = %d, j_inner = %d\n", threadID, i_offset, j_offset, i_emb, j_emb, j_inner);
+                printf("ThreadID = %d, i = %d, j = %d\n", threadID, i, j);
                 #endif
         
                 // 3. calculate new value for u_emb
                 float tempSum = 
                     // top element
-                    u_emb[i_emb + (j_emb - 1) * dim_u_emb] 
+                    localBlock[i][j - 1] 
                     // left element
-                    + u_emb[i_emb - 1 + j_emb * dim_u_emb] 
+                    + localBlock[i - 1][j] 
                     // right element
-                    + u_emb[i_emb + 1 + j_emb * dim_u_emb] 
+                    + localBlock[i + 1][j] 
                     // bottom element
-                    + u_emb[i_emb + (j_emb + 1) * dim_u_emb]; 
-                #ifdef PRINT
-                //printf("I calculate - threadID = %d, tempSum = %.6f\n", threadID, tempSum);
-                #endif
+                    + localBlock[i][j + 1]; 
+
                 // calc new value for u
                 float newU = (h * h * functionF((j_inner / dim_u + 1) * h, (j_inner % dim_u + 1) * h) + tempSum) / 4.0;
                 // 4. replace old value
-                u_emb[i_emb + j_emb * dim_u_emb] = newU;
+                
+                localBlock[i][j] = newU;
             }
         }
         __syncthreads();
     }
 
     cudaThreadSynchronize();
+    */
 }
 
 
