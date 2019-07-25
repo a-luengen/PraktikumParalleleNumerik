@@ -538,12 +538,35 @@ h = 0.015625, n = 63, l = 6\\
 \subsection{Aufgabe 4}
 
 \subsubsection{a)}
+Als Indexmenge eignen sich Indizes für i von 0 bis n-1 und für j jeweils Indizes von i bis i+n. Man braucht nicht mehr Indizes solange die Matrix A die Struktur aus den vorherigen Aufgaben hat. Falls die Matrix voll besetzt ist sollte man i zwischen 0 und n-1 variieren und j zwischen i und n-1.
 
 \subsubsection{b)}
+Nein, eine Implementierung mit OpenMp wäre nicht geeigneter. Gerade bei der Matrix der vorherigen Aufgaben (Finite Differenzen Matrix) kann man die Indizes in n gleichgroße Arbeitspakete aufteilen, bei OpenMP hat man aber meist sehr viel weniger Kerne. Das ganze verfahren lässt sich mit Cuda sehr gut parallelisieren. Man kann sogar einen Thread pro Index kombination im GPU-Kernel nutzen und hat so weit mehr parallel laufenden Code.
 
 \subsubsection{c)}
+Bei der Linksvorkonditionierung multipliziert man die Matrix (LU)$^{-1}$ von links an die Gleichung die vorkonditioniert werden soll. Dadurch muss man zum Beispiel beim GMRES Verfahren das Residuum beim starten und in jedem Schritt neu bestimmen mit LUr = r'. Bei der Rechtsvorkonditionierung multipliziert man (LU)$^{-1}*LU$ von rechts. Dadurch braucht man zusätzlich noch die Vorkonditionierer, wenn man am Ende den Lösungsvektor bestimmt. 
+Die beiden Vorkonditionierungsmethoden sind gut, aber ich würde Linksvorkonditionierung empfehlen, da man dadurch die Vorkonditionierungsmatritzen nicht noch beim Lösungsaufbau braucht. Außerdem wird Linksvorkonditionierung mehr verwendet und dadurch findet man mehr Hilfestellungen und Beispiele im Internet.
 
 \subsubsection{d)}
+\begin{figure}
+	\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A6L7M3N2.png}
+		\caption{Poisson-Problem: Lösung}
+\end{figure}
+
+Implementierung: Linksvorkonditioniertes GMRES-Verfahren\\
+Vergleichsimplementierung: GMRES-Verfahren\\
+Das vorkonditionierte Verfahren konvergiert schneller als das gewöhnliche GMRES-Verfahren. Allerdings ist die Laufzeit trotzdem je nach der gewählten Genauigkeit langsamer als im gewöhnlichen GMRES. Dies liegt daran, dass die Bestimmung des Vorkonditionierers am Anfang und dessen Anwendung in jeder Iteration die Laufzeit verlängert. Mit l=5 gilt, wenn der globale Fehler kleiner als 0.8*10$^{-5}$ ist ist die vorkonditionierte Version schneller. Dieser Fehlergrenzwert erhöht sich mit der Erhöhung von l.\\
+Die Messungen wurden mit l=5 M=3 N=2 und variierender Fehlerschranke f durchgeführt. In den Datenzellen steht jeweils die Anzahl der Iterationen und durch ein Simikolon getrennt die Laufzeit in Sekunden.\\
+
+\begin{tabular}{|l|l|l|r|r|r|}
+	\hline
+	Algorithmus&f=$10^{-5}$ &$10^{-6}$&$9*10^{-7}$& $8*10^{-7}$& $7*10^{-7}$\\
+	\hline
+	GMRES & 33;0.423 & 173;1.181 & 213;1.378 & 269;1.953 & 351;2.683 \\
+	Vorkonditioniert & 18;0.725 & 21;1.760 & 29;1.921 & 36;2.111 & 36;2.106 \\
+	\hline
+	
+\end{tabular}
 
 \subsection{Aufgabe 5}
 

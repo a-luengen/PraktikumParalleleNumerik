@@ -6,7 +6,7 @@
     #define M_PI 3.14159265358979323846
 #endif
 
-#define FEHLERSCHRANKE 0.0000005
+#define FEHLERSCHRANKE 0.0000009
 #define L 5
 #define M 3
 #define N 2
@@ -43,7 +43,7 @@ int main()
     h = h / 2.0;
     n = n * 2;
   }
-  n = n - 1;
+  n = n - 1 + 2;
 
   //Lösungsvektoren x0
   struct Vector x0;
@@ -64,7 +64,7 @@ int main()
   {
     for (int j = 0; j < n; j++)
     {
-      b.data[i * n + j] = h * h * functionF(h * i + h, h * j + h);
+      b.data[i * n + j] = h * h * functionF(h * i, h * j);
     }
   }
 
@@ -146,6 +146,10 @@ int main()
 
   //compute r0
   struct Vector r0 = diffVectors(b, multMatrixVector(A, x0));
+  for(int i = 0; i < n*n; i++){
+    if(i<n||i%n == 0 ||i%n==n-1||i>n*(n-1))
+    r0.data[i]=0;
+  }
   gamma.data[0] = norm(r0);
   V[0] = multFloatVector(1.0f / gamma.data[0], r0);
 
@@ -175,6 +179,10 @@ int main()
     }
     struct Vector unnormedV;
     unnormedV = diffVectors(q, summedVector);
+    for(int i = 0; i < n*n; i++){
+      if(i<n||i%n == 0 ||i%n==n-1||i>n*(n-1))
+      unnormedV.data[i]=0;
+    }
 
     //setze hj+1j
     H.data[j + 1][j] = norm(unnormedV);
@@ -211,6 +219,8 @@ int main()
     {
       //setze vj+1
       V[j + 1] = multFloatVector(1 / H.data[j + 1][j], unnormedV);
+
+
     }
 
     free(unnormedV.data);
@@ -262,36 +272,15 @@ int main()
   printf("\n");
   for (int i = 0; i < n; i++)
   {
-    if (i == 0)
-    {
-      for (int j = 0; j < n + 2; j++)
-      {
-        printf(" %f ", 0.0f);
-      }
-      printf("\n");
-    }
     for (int j = n - 1; j > -1; j--)
     {
-      if (j == n - 1)
-        printf(" %f ", 0.0f);
 
       if (solution.data[i + j * n] < 0)
         printf("%f ", solution.data[i + j * n]);
       else
         printf(" %f ", solution.data[i + j * n]);
-
-      if (j == 0)
-        printf(" %f ", 0.0f);
     }
     printf("\n");
-    if (i == n - 1)
-    {
-      for (int j = 0; j < n + 2; j++)
-      {
-        printf(" %f ", 0.0f);
-      }
-      printf("\n");
-    }
   } //Schönere Ausgabe schreiben
   //free data
   for (int i = 0; i < n * n; i++)

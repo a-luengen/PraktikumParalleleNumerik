@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include <math.h>
 #ifndef M_PI
-    #define M_PI 3.14159265358979323846
+#define M_PI 3.14159265358979323846
 #endif
 
-#define FEHLERSCHRANKE 0.0000005
+#define FEHLERSCHRANKE 0.0000009
 #define LVALUE 5
 #define M 3
 #define N 2
@@ -43,7 +43,7 @@ int main()
     h = h / 2.0;
     n = n * 2;
   }
-  n = n - 1;
+  n = n - 1 +2;
 
   //Lösungsvektoren x0
   struct Vector x0;
@@ -64,7 +64,7 @@ int main()
   {
     for (int j = 0; j < n; j++)
     {
-      b.data[i * n + j] = h * h * functionF(h * i + h, h * j + h);
+      b.data[i * n + j] = h * h * functionF(h * i , h * j );
     }
   }
 
@@ -83,13 +83,13 @@ int main()
     {
       A.data[i][j] = 0.0;
       if (i == j)
-        A.data[i][j] = 4.0;
+      A.data[i][j] = 4.0;
 
       if (i + n == j || i == j + n || i + 1 == j || i == j + 1)
-        A.data[i][j] = -1.0;
+      A.data[i][j] = -1.0;
 
       if ((i % n == 0 && j == i - 1) || (i == j - 1 && j % n == 0))
-        A.data[i][j] = 0.0;
+      A.data[i][j] = 0.0;
     }
   }
 
@@ -244,25 +244,32 @@ int main()
 
   //compute r0
   r0 = diffVectors(b, multMatrixVector(A, x0));
-
   //berechne preconditioned r0
   for (int i = 0; i < n*n; i++)
   { //Muss in reihenfolge laufen
-    float helperValue = r0.data[i];
-    for (int l = i - 1; l >=l-n &&l >= 0; l--)
-    {
-      helperValue -= L.data[i][l] * r0.data[l];
+    if(i<n||i%n == 0 ||i%n==n-1||i>n*(n-1))
+    r0.data[i]=0;
+    else {
+      float helperValue = r0.data[i];
+      for (int l = i - 1; l >=l-n &&l >= 0; l--)
+      {
+        helperValue -= L.data[i][l] * r0.data[l];
+      }
+      r0.data[i] = helperValue / L.data[i][i];
     }
-    r0.data[i] = helperValue / L.data[i][i];
   }
   for (int i = n*n-1; i >=0; i--)
   { //Muss in reihenfolge laufen
-    float helperValue = r0.data[i];
-    for (int l = i + 1; l<=l+n&&l < n*n; l++)
-    {
-      helperValue -= U.data[i][l] * r0.data[l];
+    if(i<n||i%n == 0 ||i%n==n-1||i>n*(n-1))
+    r0.data[i]=0;
+    else {
+      float helperValue = r0.data[i];
+      for (int l = i + 1; l<=l+n&&l < n*n; l++)
+      {
+        helperValue -= U.data[i][l] * r0.data[l];
+      }
+      r0.data[i] = helperValue / U.data[i][i];
     }
-    r0.data[i] = helperValue / U.data[i][i];
   }
 
   gamma.data[0] = norm(r0);
@@ -271,25 +278,36 @@ int main()
   for (int j = 0; j < k; j++)
   {
     struct Vector q = multMatrixVector(A, V[j]);
-
+    for(int i = 0; i < n*n; i++){
+      if(i<n||i%n == 0 ||i%n==n-1||i>n*(n-1))
+      q.data[i]=0;
+    }
     //berechne preconditioned w
     for (int i = 0; i < n*n; i++)
     { //Muss in reihenfolge laufen
-      float helperValue = q.data[i];
-      for (int l = i - 1; l>=l-n&&l >= 0; l--)
-      {
-        helperValue -= L.data[i][l] * w.data[l];
+      if(i<n||i%n == 0 ||i%n==n-1||i>n*(n-1))
+      w.data[i]=0;
+      else {
+        float helperValue = q.data[i];
+        for (int l = i - 1; l>=l-n&&l >= 0; l--)
+        {
+          helperValue -= L.data[i][l] * w.data[l];
+        }
+        w.data[i] = helperValue / L.data[i][i];
       }
-      w.data[i] = helperValue / L.data[i][i];
     }
     for (int i = n*n-1; i >=0; i--)
     { //Muss in reihenfolge laufen
-      float helperValue = w.data[i];
-      for (int l = i + 1; l<=l+n&&l < n*n; l++)
-      {
-        helperValue -= U.data[i][l] * w.data[l];
+      if(i<n||i%n == 0 ||i%n==n-1||i>n*(n-1))
+      w.data[i]=0;
+      else {
+        float helperValue = w.data[i];
+        for (int l = i + 1; l<=l+n&&l < n*n; l++)
+        {
+          helperValue -= U.data[i][l] * w.data[l];
+        }
+        w.data[i] = helperValue / U.data[i][i];
       }
-      w.data[i] = helperValue / U.data[i][i];
     }
     //hij berechnen
     #pragma omp parallel for
@@ -314,7 +332,10 @@ int main()
     }
     struct Vector unnormedV;
     unnormedV = diffVectors(w, summedVector);
-
+    for(int i = 0; i < n*n; i++){
+      if(i<n||i%n == 0 ||i%n==n-1||i>n*(n-1))
+      unnormedV.data[i]=0;
+    }
     //setze hj+1j
     H.data[j + 1][j] = norm(unnormedV);
 
@@ -339,7 +360,7 @@ int main()
 
     float testValue = gamma.data[j + 1];
     if (testValue < 0)
-      testValue = testValue * -1.0f;
+    testValue = testValue * -1.0f;
 
     if (testValue < FEHLERSCHRANKE)
     {
@@ -400,36 +421,16 @@ int main()
   printf("\n");
   for (int i = 0; i < n; i++)
   {
-    if (i == 0)
-    {
-      for (int j = 0; j < n + 2; j++)
-      {
-        printf(" %f ", 0.0f);
-      }
-      printf("\n");
-    }
     for (int j = n - 1; j > -1; j--)
     {
-      if (j == n - 1)
-        printf(" %f ", 0.0f);
 
       if (solution.data[i + j * n] < 0)
-        printf("%f ", solution.data[i + j * n]);
+      printf("%f ", solution.data[i + j * n]);
       else
-        printf(" %f ", solution.data[i + j * n]);
+      printf(" %f ", solution.data[i + j * n]);
 
-      if (j == 0)
-        printf(" %f ", 0.0f);
     }
     printf("\n");
-    if (i == n - 1)
-    {
-      for (int j = 0; j < n + 2; j++)
-      {
-        printf(" %f ", 0.0f);
-      }
-      printf("\n");
-    }
   } //Schönere Ausgabe schreiben
   //free data
   for (int i = 0; i < n * n; i++)
