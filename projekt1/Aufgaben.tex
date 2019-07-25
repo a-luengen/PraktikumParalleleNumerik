@@ -570,6 +570,56 @@ Die Messungen wurden mit l=5 M=3 N=2 und variierender Fehlerschranke f durchgef�
 
 \subsection{Aufgabe 5}
 
+\subsubsection{Mathematische Grundlage}
+Im folgenden Abschnitt werden folgende Funktionen und Parameter verwendet:\\
+u(t$_{n}$) := Wärme an allen räumlichen Diskretisierungspunkten zum Zeitpunkt t$_{n}$\\
+u'(t$_{n}$) := Wärmeänderungen an allen räumlichen Diskretisierungspunkten zum Zeitpunkt t$_{n}$\\
+u$_{i,j}$(t$_{n}$) := Wärme am räumlichen Diskretisierungsschritt (i,j) zum Zeitpunkt t$_{n}$\\
+u'$_{i,j}$(t$_{n}$) := Wärmeänderungen am räumlichen Diskretisierungsschritt (i,j) zum Zeitpunkt t$_{n}$\\
+u(x,y,t$_{n}$) := Wärme am räumlichen Punkt (x,y) zum Zeitpunkt t$_{n}$\\
+u'(x,y,t$_{n}$) := Wärmeänderungen am Punkt (x,y) zum Zeitpunkt t$_{n}$\\
+f := Heizfunktion an allen räumlichen Diskretisierungspunkten (zeitlich invariant) $f(x,y) = 32 * [x*(x-1)+y*(y-1)]$\\
+h$_{t}$ := Zeitlicher Diskretisierungsparameter (Zeitschrittweite)\\
+h$_{s}$ := Räumlicher Diskretisierungsparameter (Schrittweite zwischen den räumlichen Diskretisierungspunkten)\\
+a := Temperaturleitfähigkeit des Materials \\
+A := Matrix mit besonderer Struktur für Finite Differenzen\\
+t$_{n}$ := Zeitpunkt nach n Zeitschritten\\
+t$_{0}$ := Startzeitpunkt\\
+N := Menge der natürlichen Zahlen\\
+\\
+Wir benutzen die nicht homogene Wärmeleitungsgleichung, da wir nicht nur die Wärmeverteilung simulieren wollen, sondern mit der Funktion f Wärme hinzugefügt werden soll. Damit lautet die Gleichung:\\
+$u'(t) - a * \triangle u(t) = f$\\
+Damit unser Modellproblem korrekt gestellt ist definieren wir folgendes:\\
+$- \triangle u(x,y,t_{n}) = \frac{f(x,y)-u'(x,y,t_{n})}{a}   ,$   $  (x,y) \in \Omega = (0,1)^2  ,$   $  n \in N\backslash0;$\\
+$u(x,y,t_{n}) = 20,$   $(x,y) \in \Gamma ,$   $ n \in N;$\\
+$u(x,y,t_{0}) = 20,$   $ (x,y) \in \Omega ; $ \\
+f(x,y) ist stetig,   $ (x,y) \in \Omega .$ \\
+Damit sind unsere Rand- und Anfangsbedingungen gesetzt. Wir haben also u(t$_{0}$) gegeben und kennen f. Damit können wir u'(t$_{0}$) bestimmen indem wir unsere Basisgleichung umstellen.\\
+$u'(t_{n})  = f + a * \triangle u(t_{n})$\\
+mit $\triangle u(t_{n}) = \frac{4*u_{i,j}(t_{n})-u_{i-1,j}(t_{n})-u_{i+1,j}(t_{n})-u_{i,j-1}(t_{n})-u_{i,j+1}(t_{n})}{h_{s}^{2}}$\\
+Im Fall von unserem $u(t_{0})$ ist $\triangle u(t_{n})$ = 0, da es keine Hitzeunterschiede in $u(t_{0})$ gibt. Anschließend können wir $u(t_{1})$ bestimmen und damit den Zeitschritt volziehen. Dafür eignet sich das explizite Eulerverfahren und als Gleichung ergibt sich:\\
+$u(t_{n+1})  =u(t_{n}) + h_{t} * u'(t_{n})$\\
+Nun haben wir alles um das Poissonproblem zu lösen. Die oben definierte Gleichung konvertieren wir um sie numerisch zu lösen. Da wir u' von unserem neuen Zeitschritt noch nicht kennen ersetzen wir es durch $\frac{ u(t_{n}) -  u(t_{n-1})}{h_{t}}$.\\
+$A* u(t_{n}) = \frac{h_{s}^{2}}{a} * ( f-\frac{ u(t_{n}) -  u(t_{n-1})}{h_{t}}) $\\
+Die Lösung des Problems gibt uns u(t$_{1}$) und dadurch können wir wieder mit dem ersten Schritt weiter machen. Damit lässt sich jeder beliebige Zeitschritt berechnen.
+\subsubsection{Implementierung}
+Wir haben uns für die Implentierung des Poisson-Gleichungs-Lösers für einen vorkonditionierten GMRES-Algorithmus entschieden, da die Matrix A konstant bleibt und man somit den Vorkonditionierer nur ein Mal bestimmen muss und trotzdem in jeder Iteration davon profitiert. Wir haben a=1 angenommen in unserer Implementierung und alle anderen Parameter sind konfigurierbar. Außerdem werden die Hitzedaten in jedem x-ten Zeitschritt ausgegeben, wobei man x frei wählen kann. Beim Testen \\
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/P2A5T5.png}
+		\caption{u($t_{5})$}
+\end{figure}
+\begin{figure}
+	\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/P2A5T30.png}
+		\caption{u($t_{30})$}
+\end{figure}
+\begin{figure}
+	\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/P2A5T60.png}
+		\caption{u($t_{60})$}
+\end{figure}
+
+
+	
 
 
 \end{document}
