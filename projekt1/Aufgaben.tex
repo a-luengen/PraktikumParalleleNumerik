@@ -603,7 +603,7 @@ Nun haben wir alles um das Poissonproblem zu lösen. Die oben definierte Gleichu
 $A* u(t_{n}) = \frac{h_{s}^{2}}{a} * ( f-\frac{ u(t_{n}) -  u(t_{n-1})}{h_{t}}) $\\
 Die Lösung des Problems gibt uns u(t$_{1}$) und dadurch können wir wieder mit dem ersten Schritt weiter machen. Damit lässt sich jeder beliebige Zeitschritt berechnen.
 \subsubsection{Implementierung}
-Wir haben uns für die Implentierung des Poisson-Gleichungs-Lösers für einen vorkonditionierten GMRES-Algorithmus entschieden, da die Matrix A konstant bleibt und man somit den Vorkonditionierer nur ein Mal bestimmen muss und trotzdem in jeder Iteration davon profitiert. Wir haben a=1 angenommen in unserer Implementierung und alle anderen Parameter sind konfigurierbar. Außerdem werden die Hitzedaten in jedem x-ten Zeitschritt ausgegeben, wobei man x frei wählen kann. Bei den Zeitschritten 5, 30 und 60 ergaben sich diese Hitzewerte. \\
+Wir haben uns für die Implentierung des Poisson-Gleichungs-Lösers für einen vorkonditionierten GMRES-Algorithmus entschieden, da die Matrix A konstant bleibt und man somit den Vorkonditionierer nur ein Mal bestimmen muss und trotzdem in jeder Iteration davon profitiert. Wir haben a=1 angenommen in unserer Implementierung und alle anderen Parameter sind konfigurierbar. Außerdem werden die Hitzedaten in jedem x-ten Zeitschritt ausgegeben, wobei man x frei wählen kann. Bei den Zeitschritten 5, 30 und 60 ergeben sich die in den Grafiken dargestellten Hitzewerte. \\
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/P2A5T5.png}
