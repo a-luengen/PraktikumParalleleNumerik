@@ -10,11 +10,12 @@
 \begin{document}
     \maketitle
     \newpage
-    \section{Aufgabe 1}
-        \subsection{a)}
+    \section{Aufgabenblatt 1}
+    \subsection{Aufgabe 1}
+        \subsubsection{a)}
         Die Reihenfolge in welcher die IDs der Threads ausgegeben werden ist jedes Mal unterschiedlich und ist auch nicht vorherzusagen.
         
-        \subsection{b)}
+        \subsubsection{b)}
         Gemessen wurde auf dem i82sn02. Für die manuelle Parallelisierung wurde atomic verwendet. Diese Messung wurde nach 4 Threads aufgehört da sich die Rechenzeit stark erhöht hat. Für das Parallelisieren mit Reduktion ist das maximales Speedup $ \sim 8 $.\\
         Bei 16 und 32 Threads verschlechtert sich die Beschleunigung im Gegensatz zu 8 Threads bei kleineren N. Das könnte am Overhead der Verarbeitung der Threads liegen.
         
@@ -66,7 +67,7 @@
 	\end{tabular}
 
 	\newpage
-        \subsection{c)}
+        \subsubsection{c)}
         
         Die Messbedingungen waren gleich wie im Aufgabenteil b). Die Werte für das Speedup unterscheiden sich nicht groß von den oben gemessenen.\\
         
@@ -110,8 +111,8 @@
 	\end{center}
 
 
-    \section{Aufgabe 2}
-    	\subsection{a)}
+    \subsection{Aufgabe 2}
+    	\subsubsection{a)}
 		\begin{enumerate}
 			\item Example: \\
 				Es besteht eine Race-Condition auf dem Array a über Index i,
@@ -143,7 +144,7 @@
 				Allerdings ist die gesamte Schleife dann gleichbedeutend mit einer Sequenziellen Ausführung.
 		\end{enumerate}
 
-		\subsection{b)}
+		\subsubsection{b)}
 			Werden Matrizen in C zeilenweise im Speicher hinterlegt, ist es zur optimalen Ausnutzung von Caching-Effekten ideal, wenn auch zeilenweise über Einträge der Matrix iteriert wird.
 			Dadurch läd der Prozessor bei einem Cache-miss auf einen Eintrag nicht nur den einzelnen Eintrag in den Cache, sondern direkt mehrere nachfolgende Einträge, was weniger Zugriffe auf den RAM zu folge hat und somit insgesamt die Performance verbessert.
 			Wird jedoch spaltenweise über eine Matrix iteriert, müssen für einen Zugriff auf das (i+1)-te Element alle n-Einträge nach i ausgelassen werden. 
@@ -188,7 +189,7 @@
 				\hline
 			\end{tabular}
 		\end{center}
-		\subsection{c)}
+		\subsubsection{c)}
 			Die Arbeitspakete pro Thread werden statisch vergeben. 
 			Die Berechnung der Mandelbrotmenge ist jedoch nur für einen bestimmten Bild Bereich besonders Berechnungsintensiv. 
 			Threads welche diese Bereiche berechnen sollen, müssen mehr Aufwand betreiben im vergleich zu den anderen Threads, wodurch diese insgesamt länge benötigen.
@@ -233,9 +234,9 @@
 			\end{center}
 
 
-    \section{Aufgabe 3}
+    \subsection{Aufgabe 3}
     
-        \subsection{a)}
+        \subsubsection{a)}
         P(x): Anzahl auszuführender Operationen auf x Prozessoren.\\
         T(x): Ausführungszeit auf x Prozessoren.\\
         
@@ -247,7 +248,7 @@
         
         \textbf{Mehraufwand}: $ R(n) = P(n)/P(1) $. Beschreibt den bei einem Multiprozessorsystem erforderlichen Mehraufwand für die Organisation, Synchronisation und Kommunikation der Prozessoren.\\
         
-        \subsection{b)}
+        \subsubsection{b)}
         Race-Conditions: Wenn zwei Threads unabhängig voneinander auf eine Ressource lesend oder auch schreibend zugreiffen können, 
         spricht man von einer Race-Condition. Hierbei kann es bspw. beim Zugriff auf Variablen bei ungünstiger Ausführungszeiten
         dazu kommen, dass am Ende der Berechnungen ein falscher Wert in der Variable enthalten ist, als wenn die Berechnung sequentiell 
@@ -256,7 +257,7 @@
         Thread gleichzeitig innerhalb des kritischen Abschnitts sein darf.
 
         In diesem Zusammenhang kann es auch zu Deadlocks, Lifelocks oder auch Starvation kommen. 
-        \subsection{c)}
+        \subsubsection{c)}
         \begin{tabular}{|p{4cm}|p{3cm}|p{3cm}|p{3cm}|}
         	\hline
         	- & GPUs & CPUs & FPGAs \\
@@ -282,7 +283,7 @@
     In diesem Praktikum verwenden wir CPUs und GPUs da sie universeller einsetzbar sind als FPGAs und die Programmierung deutlich leichter ist.
 
 
-    \section{Aufgabe 4}
+    \subsection{Aufgabe 4}
 	\begin{figure}
 		\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A4L4.png}
 		\caption{l=4; h=1/16;}
@@ -300,7 +301,7 @@
 	\end{figure}
 
 
-	\subsection{a)}
+	\subsubsection{a)}
 Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000001.\newline
 \begin{tabular}{|l|l|r|r|}
 		\hline
@@ -317,11 +318,11 @@ Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000
 	\end{tabular}
 	\newline Diese Lösungswerte in Figure \ref{A4L4}, \ref{A4L5} und \ref{A4L6} ergeben sich mit l=4,5,6;  \newline
 	
-	\subsection{b)}
+	\subsubsection{b)}
 	Die Schleifenabläufe sind direkt voneinander abhängig und müssen in Reihenfolge ablaufen. Die naive Parallelisierung liefert keine korrekten Ergebnisse. 
 	
 
-	\subsection{c)}
+	\subsubsection{c)}
 		Methodik: Die beiden Summen die innerhalb der Schleife berechnet werden müssen wurden parallelisiert und mit einer Reduktion zusammendgefasst.\newline
 		\begin{tabular}{|l|l|r|r|r|}
 				\hline
@@ -335,7 +336,7 @@ Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000
 		\end{tabular}
 
 
-    \section{Aufgabe 5}
+    \subsection{Aufgabe 5}
 	\begin{figure}
 		\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A5L5M3N2.png} 
 		\caption{l=5; h=1/32;}
@@ -351,18 +352,18 @@ Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000
 		\caption{l=7; h=1/128;}
 		\label{A5L7}
 	\end{figure}
-	\subsection{a)}
+	\subsubsection{a)}
 	f(x,y) muss definiert sein auf $\Omega$ \newline
 	$\Gamma$ ist der Rand von $\Omega$  \newline
 	L\"{o}sung u(x,y) muss zweifach differenzierbar sein 
-	\subsection{b)}
+	\subsubsection{b)}
 	f(x,y) = ($N^2$ + $M^2$)*4*$\pi^2$*sin(2*M*$\pi$*x)*sin(2*N*$\pi$*y)
-	\subsection{c)}
+	\subsubsection{c)}
 	Es handelt sich um eine h-FEM.  \newline
 	Die Lösungswerte in Figure \ref{A5L5}, \ref{A5L6} und \ref{A5L7} ergrben sich mit M=3; N=2; l=5,6,7;  \newline
 
 
-\section{Aufgabe 6}
+\subsection{Aufgabe 6}
 \begin{figure}
 	\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A6L5M3N2.png} 
 		\caption{GMRES; l=5; h=1/32;}
@@ -378,14 +379,14 @@ Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000
 		\caption{GMRES; l=7; h=1/128;}
 		\label{A6L7}
 \end{figure}
-	\subsection{a)}
+	\subsubsection{a)}
 	Liste: CG Verfahren; PCG-Verfahren; Verfahren der minimalen Risiduen(GMRES); GCR-Verfahren; Arnoldi-Verfahren; FOM, ORTHORES;\newline
 	Das Gleichungssystem ist dünnbesetzt und alle Krylow-Unterraumverfahren sind gut geeignet f\"{u}r d\"{u}nnvesetzte Gleichungssysteme.
 	Diese Lösungswerte in Figure \ref{A6L5}, \ref{A6L6} und \ref{A6L7} ergeben sich mit der Gleichung aus Aufgabe 5 und M=3; N=2; l=5,6,7;  \newline
 
-	\subsection{b)}
+	\subsubsection{b)}
 	Die Verwendung des Residuums als Abrruchbedingung ist eventuell problematisch, da man dadurch in jedem Schleifendurchlauf einen Lösungsvektor $x^k$ berechnen muss. Man kann sich eine feste Anzahl von Iterationen setzen, allerdings hat man dann keine garantierte Genauigkeit. Außerdem kann man das Residuum mit weniger Rechenaufwand in jeder Iteration abschätzen und diesen Schätzwert als Abbruchbedingung nutzen. Auch diese Vorgehensweise hat keine garantierte Genauigkeit, da die Schätzgenauigkeit variiert. Im Zuge des Praktikums haben wir bis jetzt nur eine stabile Version mit abgeschätztem Residuum implementiert(gmres.c). Die Version mit dem Residuum als Abbruchbedingung funktioniert nicht verlässlich(gmresResiduum.c).
-	\subsection{c)}
+	\subsubsection{c)}
 Die Efficiency ist bei jedem Vergleich zwischen Aufgabe 6 und Aufgabe 5c gleich dem Speedup, da die Anzahl N der Kerne auf denen das Programm läuft nicht variiert.\newline
 \begin{tabular}{|l|l|r|r|}
 		\hline
@@ -415,13 +416,136 @@ Die Efficiency ist bei jedem Vergleich zwischen Aufgabe 6 und Aufgabe 5c gleich 
 	\end{tabular}
 \newline
 Einsatz eines Vorkonditionierers: Der Einsatz ist unsinnvoll, da wir bereits eine d\"{u}nn besetzte Matrix gegeben haben. Falls die Matrix anders besetzt wäre, könnte ein Vorkonditionierer von Nutzen sein.
-	\subsection{d)}
+	\subsubsection{d)}
 MFEM; deal.II; libMesh; JuliaFEM; FEniCS; Hermes Project;...\newline
 Liste weiterer FEM Packages/Libraries: https://en.wikipedia.org/wiki/List\_of\_finite\_element\_software\_packages \newline
 Fast alle sind Open Source und kostenlos nutzbar. "Hermes Project" scheint zum Beispiel eine leicht nutzbare C/C++ Bibliothek.
 
+\newpage
 
-\section{Aufgabe}
+\section{Aufgabenblatt 2}
+
+\subsection{Aufgabe 1}
+
+Es gibt sehr viele Eigenschaften die man auslesen kann. Hier sind mögliche Ausgaben: \\
+
+Number of Devices: 2\\
+Device Number:                0\\
+Device Name:                  Tesla K80\\
+Memory Clock Rate (KHz):      2505000\\
+Memory Bus Width (bits):      384\\
+Global Memory size (bytes):   11996954624\\
+Device Number:                1\\
+Device Name:                  Tesla K80\\
+Memory Clock Rate (KHz):      2505000\\
+Memory Bus Width (bits):      384\\
+Global Memory size (bytes):   11996954624\\
+
+\subsection{Aufgabe 2}
+
+\paragraph{Arraygröße} Bei kleinen Arrays lohnt sich Cuda nicht wirklich zur Steigerung der Transferrate (Zu viel Overhead?).
+Wenn die Arrays sehr groß werden beobachtet man jedoch eine deutliche Steigerung der Effizienz.
+Hier wurde mit nvprof gemessen.
+
+\begin{center}
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		N         & Device to Host     & Host to Device     & Device to Device     & Host to Host      \\ \hline \hline
+		10			& 2.1120us & 2.0160us &  3.7440us & 3.000us \\ \hline
+		100			& 2.3360us & 2.0800us  & 3.8400us & 4.000us\\ \hline
+		1000	& 2.6880us & 2.5280us & 3.5200us & 3.000us \\ \hline 
+		10000     & 7.4240us & 10.368us & 3.2640us & 22us      \\ \hline
+		100000    & 55.679us & 58.240us & 7.7760us & 156us     \\ \hline
+		1000000   & 624.25us & 553.79us & 74.015us & 2.171ms   \\ \hline
+		10000000  & 5.4335ms & 5.3853ms & 621.02us & 25.503ms  \\ \hline
+		100000000 & 53.996ms & 54.383ms & 6.1003ms & 266.338ms \\ \hline
+	\end{tabular}
+\end{center}
+
+\paragraph{Werte um X erhöhen} 
+
+\begin{center}
+		\begin{tabular}{|c|l|l|}
+		\hline                                                                             
+		\multicolumn{1}{|l|}{blocksize}           & N         & Time     \\ \hline
+		\multirow{5}{*}{4}                        & 10000     & 14.752us                                                     \\ \cline{2-3} 
+		& 100000    & 121.47us                                                                                \\ \cline{2-3} 
+		& 1000000   & 1.4293ms                                                                             \\ \cline{2-3} 
+		& 10000000  & 14.122ms                                                                              \\ \cline{2-3} 
+		& 100000000 & 141.23ms                                                        \\ \hline
+		\multirow{5}{*}{8}                        & 10000     & 8.9920us                               \\ \cline{2-3} 
+		& 100000    & 62.207us                                                                                \\ \cline{2-3} 
+		& 10000000  & 7.0312ms                                                                                  \\ \cline{2-3} 
+		& 100000000 & 70.966ms                                                                                \\ \hline
+		\multirow{5}{*}{16}                       & 10000     & 5.8880us                                                                                   \\ \cline{2-3} 
+		& 100000    & 32.896us                                                                                  \\ \cline{2-3} 
+		& 1000000   & 357.12us                                                                                   \\ \cline{2-3} 
+		& 10000000  & 3.5412ms                                                                                   \\ \cline{2-3} 
+		& 100000000 & 35.236ms                                                                                   \\ \hline
+		\multirow{5}{*}{24}                       & 10000     & 4.8000us                                                                                   \\ \cline{2-3} 
+		& 100000    & 23.936us                                                                                   \\ \cline{2-3} 
+		& 1000000   & 251.20us                                                                                  \\ \cline{2-3} 
+		& 10000000  & 2.5063ms                                                                                  \\ \cline{2-3} 
+		& 100000000 & 24.878ms                                                                                 \\ \hline
+		\multirow{5}{*}{32}             & 10000     & 4.0960us                                                                                   \\ \cline{2-3} 
+		& 100000    & 17.920us                                                                                   \\ \cline{2-3} 
+		& 1000000   & 184.29us                                                                                   \\ \cline{2-3} 
+		& 10000000  & 1.8227ms                                                                                   \\ \cline{2-3} 
+		& 100000000 & 18.020ms                                                                                  \\ \hline
+	\end{tabular}
+\end{center}
+
+\paragraph{Speedup} 
+VectorIncrement um 1 nur auf der CPU mit Openmp:\\
+N = 10000000:  Im Schnitt 49.6942 ms (zwischen 194 und 440 ms)\\
+N = 100000000: 488.84 ms
+
+\begin{center}
+	\begin{tabular}{l|l|l|}
+		\cline{2-3}
+		& \multicolumn{2}{c|}{Speedup} \\ \hline
+		\multicolumn{1}{|l|}{blocksize} & N = 10ˆ7      & N = 10ˆ8     \\ \hline
+		\multicolumn{1}{|l|}{4}         & 3.52          & 3.49         \\ \hline
+		\multicolumn{1}{|l|}{8}         & 7.07          &              \\ \hline
+		\multicolumn{1}{|l|}{16}        & 14.03         &              \\ \hline
+		\multicolumn{1}{|l|}{24}        & 19.82         &              \\ \hline
+		\multicolumn{1}{|l|}{32}        & 27.19         & 27.74        \\ \hline
+	\end{tabular}
+\end{center}
+
+\subsection{Aufgabe 3}
+
+\subsubsection{a)}
+
+Running with 32 threads.\\
+h = 0.015625, n = 63, l = 6\\
+~ 6.725816\\
+		\begin{tabular}{|l|l|l|r|r|r|}
+	\hline
+	&Laufzeit(seriell) &Laufzeit(Openmp)& Laufzeit(CUDA) & S (omp) & S (cuda)\\
+	\hline
+	l=4; h=1/16 & 0.044s & 0.242s & ? & 0.182 & 0.004 \\
+	l=5; h=1/32 & 1.420s & 1.154s & ? &1.231 & 0.026 \\
+	l=6; h=1/64 & 37.216s & 6.725816 ms & ? & 1.384 & 0.029 \\
+	\hline
+	
+\end{tabular}
+
+\subsubsection{b)}
+
+\subsubsection{c)}
+
+\subsection{Aufgabe 4}
+
+\subsubsection{a)}
+
+\subsubsection{b)}
+
+\subsubsection{c)}
+
+\subsubsection{d)}
+
+\subsection{Aufgabe 5}
 
 
 
