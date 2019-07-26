@@ -1,9 +1,9 @@
 #!/bin/bash
 
-THREAD_COUNT=32
+THREAD_COUNT=8
 NAME=gaussSeidelOMP
 CODE=$NAME.c
-SIZE=6
+SIZE=5
 DEF_NAME1=L
 CC=gcc
 FLAGS="-std=c99 -fopenmp"

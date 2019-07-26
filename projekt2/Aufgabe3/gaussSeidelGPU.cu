@@ -62,7 +62,7 @@ __global__ void redBlackIteration(int dim_u, int dim_u_emb, float h, float* u_em
             // bottom element
             + u_emb[i_emb + (j_emb + 1) * dim_u_emb]; 
         #ifdef PRINT
-        //printf("I calculate - threadID = %d, tempSum = %.6f\n", threadID, tempSum);
+        printf("I calculate - threadID = %d, tempSum = %.6f\n", threadID, tempSum);
         #endif
         // calc new value for u
         float newU = (h * h * functionF((j_inner / dim_u + 1) * h, (j_inner % dim_u + 1) * h) + tempSum) / 4.0;

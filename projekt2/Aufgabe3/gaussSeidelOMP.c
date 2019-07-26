@@ -157,7 +157,7 @@ int main()
 #endif
 
     printVectorInBlock(u, (n * n), n);
-    printVector(u, (n * n));
+    //printVector(u, (n * n));
 
     freeSquareMatrix(a, (n * n));
     free(a);
@@ -251,9 +251,9 @@ void printVector(float *vector, int length)
 {
     printf("Printing Vector with length = %d\n", length);
     for (int i = 0; i < length; i++)
-        printf("|%f", vector[i]);
+        printf(" %f ", vector[i]);
 
-    printf("|\n");
+    printf(" \n");
 }
 
 void printVectorInBlock(float *vector, int length, int blockLength)
@@ -263,8 +263,8 @@ void printVectorInBlock(float *vector, int length, int blockLength)
     {
         for (int j = 0; j < blockLength; j++)
         {
-            printf("|%f", vector[i + blockLength * j]);
+            printf(" %f ", vector[i + blockLength * j]);
         }
-        printf("|\n");
+        printf(" \n");
     }
 }
