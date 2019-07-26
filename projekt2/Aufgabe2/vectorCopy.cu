@@ -3,10 +3,10 @@
 
 #define N 10000000
 
-__global__ void increment(int *array, int length, int x) {
+__global__ void increment(int *array, int length) {
     int idx = blockIdx.x*blockDim.x + threadIdx.x;
     if (idx < length) {
-        array[idx] = array[idx] + x;
+        array[idx] = array[idx] + 1;
     }
 }
 
@@ -41,7 +41,7 @@ int main(int x) {
 
     dim3 dimBlock(blocksize);
     dim3 dimGrid( ceil(N/(float)blocksize) );
-    increment <<<dimGrid,dimBlock>>> (cuda_b, N, x);
+    increment <<<dimGrid,dimBlock>>> (cuda_b, N);
 
     cudaMemcpy(a, cuda_b, bytes, cudaMemcpyDeviceToHost);
 
