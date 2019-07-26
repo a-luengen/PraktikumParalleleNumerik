@@ -443,8 +443,7 @@ Global Memory size (bytes):   11996954624\\
 
 \subsection{Aufgabe 2}
 
-\paragraph{Arraygröße} Bei kleinen Arrays lohnt sich Cuda nicht wirklich zur Steigerung der Transferrate (Zu viel Overhead?).
-Wenn die Arrays sehr groß werden beobachtet man jedoch eine deutliche Steigerung der Effizienz.
+\paragraph{Arraygröße} Bei kleinen Arrays ist die Transferrate auf der GPU nicht besser als auf der CPU. Das ändert sich aber mit wachsender Arraygröße, denn dann ist die Rate "Device to Device" deutlich besser als "Host to Host".
 Hier wurde mit nvprof gemessen.
 
 \begin{center}
@@ -462,7 +461,7 @@ Hier wurde mit nvprof gemessen.
 	\end{tabular}
 \end{center}
 
-\paragraph{Werte um X erhöhen} 
+\paragraph{Werte um X erhöhen} Im folgender Messung wurde in dem Array jeder Wert um 1 erhöht. Die Lauzeit wurde wieder mit nvprof gemessen. 
 
 \begin{center}
 		\begin{tabular}{|c|l|l|}
@@ -496,10 +495,13 @@ Hier wurde mit nvprof gemessen.
 \end{center}
 
 \paragraph{Speedup} 
-VectorIncrement um 1 nur auf der CPU mit Openmp:\\
-N = 10000000:  Im Schnitt 49.6942 ms (zwischen 194 und 440 ms)\\
-N = 100000000: 488.84 ms
+Wenn die CPU jeden Wert des Vektors um 1 erhöht (mit OpenMP) ergeben sich folgende Laufzeiten:\\
+\begin{itemize}
+	\item N = 10000000:  Im Schnitt 49.6942 ms (zwischen 194 und 440 ms)
+	\item N = 100000000: Im Schnitt 488.84 ms
+\end{itemize}
 
+Verglichen mit der oberen Tabelle ergeben sich folgende Speedups für die verschiedenen Blockgrößen: 
 \begin{center}
 	\begin{tabular}{l|l|l|}
 		\cline{2-3}
