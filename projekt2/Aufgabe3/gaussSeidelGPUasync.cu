@@ -178,7 +178,7 @@ void jaccobi(int n, float fehlerSchranke, float h, float *u)
     // Iterate as long as we do not come below our fehlerSchranke
 
     int count = 0;
-    int block_iter = 6;
+    int block_iter = 25;
 
     while (fehlerSchranke < fehler)
     {
@@ -187,7 +187,6 @@ void jaccobi(int n, float fehlerSchranke, float h, float *u)
 
         if(count > 1) {
             checkForError("Some shit happend.");
-            cudaDeviceSynchronize();
             // move result of first iteration onto host (implicitly synchronizing)
             cudaMemcpy(u_emb_new, gpu_u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyDeviceToHost);
             
@@ -210,6 +209,10 @@ void jaccobi(int n, float fehlerSchranke, float h, float *u)
         }
         #endif
     }
+    cudaDeviceSynchronize();
+
+    // get final result, after all iterations completed.
+    cudaMemcpy(u_emb_new, gpu_u_emb, n_emb * n_emb * sizeof(float), cudaMemcpyDeviceToHost);
 
     printf("Took at least %d Block-Iterations per Warp.\n", count);
     #ifdef PRINT
