@@ -506,9 +506,9 @@ N = 100000000: 488.84 ms
 		& \multicolumn{2}{c|}{Speedup} \\ \hline
 		\multicolumn{1}{|l|}{blocksize} & N = 10ˆ7      & N = 10ˆ8     \\ \hline
 		\multicolumn{1}{|l|}{4}         & 3.52          & 3.49         \\ \hline
-		\multicolumn{1}{|l|}{8}         & 7.07          &              \\ \hline
-		\multicolumn{1}{|l|}{16}        & 14.03         &              \\ \hline
-		\multicolumn{1}{|l|}{24}        & 19.82         &              \\ \hline
+		\multicolumn{1}{|l|}{8}         & 7.07          &       6.89       \\ \hline
+		\multicolumn{1}{|l|}{16}        & 14.03         &       13.87       \\ \hline
+		\multicolumn{1}{|l|}{24}        & 19.82         &     19.64         \\ \hline
 		\multicolumn{1}{|l|}{32}        & 27.19         & 27.74        \\ \hline
 	\end{tabular}
 \end{center}
@@ -520,13 +520,14 @@ N = 100000000: 488.84 ms
 Running with 32 threads.\\
 h = 0.015625, n = 63, l = 6\\
 ~ 6.725816\\
+
+(Mit neu implementierter OpenMP Version.)
+
 		\begin{tabular}{|l|l|l|r|r|r|}
 	\hline
 	&Laufzeit(seriell) &Laufzeit(Openmp)& Laufzeit(CUDA) & S (omp) & S (cuda)\\
 	\hline
-	l=4; h=1/16 & 0.044s & 0.242s & ? & 0.182 & 0.004 \\
-	l=5; h=1/32 & 1.420s & 1.154s & ? &1.231 & 0.026 \\
-	l=6; h=1/64 & 37.216s & 6.725816 ms & ? & 1.384 & 0.029 \\
+	l=6; h=1/64 & 37.216s & 6.725816s & ? & 5.53 & ? \\
 	\hline
 	
 \end{tabular}
