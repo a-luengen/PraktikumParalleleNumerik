@@ -22,11 +22,10 @@ void checkForError(const char* msg);
 //const int THREADS_PER_BLOCK = 32;
 const int BLOCK_DIMENSION = 8;
 
-__global__ void blockIterationAsyncJacobi(int dim_u, int dim_u_emb, float h, float* u_emb, int iterCount, float global_error) {
+__global__ void blockIterationAsyncJacobi(int dim_u, int dim_u_emb, float h, float* u_emb, int iterCount) {
 
 
     __shared__ float localBlock[BLOCK_DIMENSION + 2][BLOCK_DIMENSION + 2];
-    global_error = FEHLERSCHRANKE + 1;
     int global_block_start_i = (blockIdx.x * BLOCK_DIMENSION) + 1;
     int global_block_start_j = (blockIdx.y * BLOCK_DIMENSION) + 1;
 
@@ -179,14 +178,12 @@ void jaccobi(int n, float fehlerSchranke, float h, float *u)
     // Iterate as long as we do not come below our fehlerSchranke
 
     int count = 0;
-    int next_err_check = 1;
-    int step_and_error_arr[2][2];
-    int block_iter = 1;
+    int block_iter = 6;
 
     while (fehlerSchranke < fehler)
     {
 
-        blockIterationAsyncJacobi<<<numBlocks, threadsPerBlock>>>(n, n_emb, h, gpu_u_emb, block_iter, global_error);
+        blockIterationAsyncJacobi<<<numBlocks, threadsPerBlock>>>(n, n_emb, h, gpu_u_emb, block_iter);
 
         if(count > 1) {
             checkForError("Some shit happend.");
