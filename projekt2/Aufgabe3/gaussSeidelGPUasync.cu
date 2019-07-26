@@ -178,7 +178,7 @@ void jaccobi(int n, float fehlerSchranke, float h, float *u)
     // Iterate as long as we do not come below our fehlerSchranke
 
     int count = 0;
-    int block_iter = 25;
+    int block_iter = ITERATIONS;
 
     while (fehlerSchranke < fehler)
     {
