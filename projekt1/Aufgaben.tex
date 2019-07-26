@@ -523,18 +523,79 @@ Running with 32 threads.\\
 h = 0.015625, n = 63, l = 6\\
 ~ 6.725816\\
 
-(Mit neu implementierter OpenMP Version.)
+Es wurde ein Implementierung des Jakobi-Iterationsverfahren zur Lösung des Gauss-Seidel-Verfahrens implementiert.
+Hier im vergleich befindet sich die äußerst naive Implementierung, in welche über die Summen des Gauss-Seidel-Verfahrens mittels OMP parallelisiert wurde,
+der bereits erwähnten Jakobi-Iteration mittels OMP und eine Implementierung der Jakobi-Iteration auf der CUDA-GPU.
 
-		\begin{tabular}{|l|l|l|r|r|r|}
-	\hline
-	&Laufzeit(seriell) &Laufzeit(Openmp)& Laufzeit(CUDA) & S (omp) & S (cuda)\\
-	\hline
-	l=6; h=1/64 & 37.216s & 6.725816s & ? & 5.53 & ? \\
-	\hline
-	
-\end{tabular}
+(Speedup ergibt sich aus dem vergleich mit der sequentiellen Laufzeit des naiven Ansatzes)
+
+	\begin{tabular}{|l|l|l|l|r|}
+		\hline
+		Implementierung & l,h &Laufzeit(seriell) &Laufzeit(parallel) & Speedup\\
+		\hline
+		OMP naiv & l=4; h=1/16 & 0.044s & 0.242s & 0.182  \\
+		\hline
+		OMP naiv & l=5, h=1/32 & 1.42 & 1.154 & 1.231 \\
+		\hline
+		OMP naiv & l=6; h=1/64 & 37.216s & 26.884s & 1.384 \\
+		\hline
+		OMP Jacobi &  l=4; h=1/16 & - & 0.391s & 0.113 \\
+		\hline
+		OMP Jacobi & l=5, h=1/3 & - & 1.475s & 0.963 \\
+		\hline
+		OMP Jacobi & l=6, h=1/64 & - & 6.394s & 5.82 \\
+		\hline 
+	\end{tabular}
 
 \subsubsection{b)}
+
+Block-asynchrone Relaxation ist eine Beschleunigungstechnik bei welcher das Jacobi-Iterationsverfahren asynchron auf einem Teilblock der Gesamtlösung ausgeführt wird.
+Dabei wird zunächst die Lösungsmatrix in meherere Teilblöcke unterteilt und ein Thread-Block hohlt sich einen Block inklusive direkter Nachbarn in den Shared-Memory.
+Auf diesem Block wird dann asynchron eine bestimmte Anzahl an Jacobiiterationen durchgeführt und im anschluss erst der Global-Memory geupdatet.
+Die Besonderheit ist das hier zwischen den Threadblöcken keinerlei Synchronisation stattfindet.
+// cite{}
+
+
+Vergleich implementiertes synchrones Jakobi-Verfahren mit block-asynchronen Verfahren:
+
+	\begin{tabular}{|l|l|l|l|r|}
+		\hline
+		Implementierung & l,h & It./Block & &Laufzeit(parallel) & Speedup (vs. Seq.)\\
+
+		\hline
+		CUDA synch. & 4, 1/16 & - & 1.020 & 0.043 \\
+		\hline
+		CUDA synch. & 5, 1/32 & - & 1.055 & 1.346 \\
+		\hline
+		CUDA synch. & 6, 1/64 & - & 1.318 & 28.237 \\
+		\hline
+		CUDA async & 4, 1/16 & 10 & 0.989 & 0.044 \\
+		\hline
+		CUDA async & 4, 1/16 & 15 & 0.973 & 0.045 \\
+		\hline
+		CUDA async & 4, 1/16 & 20 & 0.950 & 0.046 \\
+		\hline
+		CUDA async & 4, 1/16 & 25 & 0.976 & 0.045 \\
+		\hline
+		CUDA async & 5, 1/32 & 10 & 0.986 & 1.440 \\
+		\hline
+		CUDA async & 5, 1/32 & 15 & 0.979 & 1.450 \\
+		\hline
+		CUDA async & 5, 1/32 & 20 & 1.002 & 1.417 \\
+		\hline
+		CUDA async & 5, 1/32 & 25 & 1.018 & 1.395 \\
+		\hline
+		CUDA async & 6, 1/64 & 10 & 1.088 & 34.206 \\
+		\hline
+		CUDA async & 6, 1/64 & 15 & 1.108 & 33.588 \\
+		\hline
+		CUDA async & 6, 1/64 & 20 & 1.077 & 34.555 \\
+		\hline
+		CUDA async & 6, 1/64 & 25 & 1.056 & 35.242 \\
+
+		\hline 
+	\end{tabular}
+
 
 \subsubsection{c)}
 
