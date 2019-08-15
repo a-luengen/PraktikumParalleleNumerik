@@ -344,11 +344,9 @@ Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000
 	\newline Diese Lösungswerte in Figure \ref{A4L4}, \ref{A4L5} und \ref{A4L6} ergeben sich mit l=4,5,6;  \newline
 	
 	\subsubsection{b)}
-	Die Schleifenabläufe sind direkt voneinander abhängig und müssen in Reihenfolge ablaufen. Die naive Parallelisierung liefert keine korrekten Ergebnisse. 
-	
-
+	Die Schleifenabläufe sind direkt voneinander abhängig und müssen in Reihenfolge ablaufen. Die naive Parallelisierung liefert keine korrekten Ergebnisse. Alternativ könnte man mit einer naiven Parallelisierung auch Parallelisierung der beiden inneren Summen meinen. Diese hätte zur Folge, dass man nur bis zu maximal vier parallele Threads hat, welche jeweils nur einen Wert aufaddieren.
 	\subsubsection{c)}
-		Methodik: Die beiden Summen die innerhalb der Schleife berechnet werden müssen wurden parallelisiert und mit einer Reduktion zusammendgefasst. Den Vergleich zwischen der sequentiellen und parallelisierten Version sieht man in Table \ref{Table:4c}.
+		Methodik: Es gibt verschiedene Wege der effizienteren Parallelisierung der Werte. Man kann die zu berechnenden Werte zeilen- oder spaltenweise in Gruppen einteilen, sowie auch in einem Schachbrettmuster. Dann berechnet man die verschiedenen Gruppen parallel. Dies wird umgangssprachlich ''Rot-Schwarz'' genannt und konvergiert zum korrekten Ergebnis. Eine andere Variante der Berechnung ist die sogenannte ''Wavefront''. Dabei werden die Werte diagonal ausgerechnet. Dadurch entsteht eine ungeleiche Last über die Ausführungszeit, welche jedoch ausgeglichen werden kann, indem man die Matrix zusätzlich in Blöcke einteilt. Den Vergleich zwischen der sequentiellen und parallelisierten Version sieht man in Table \ref{Table:4c}.
 		\begin{table}
 		\begin{tabular}{|l|l|r|r|r|}
 				\hline
