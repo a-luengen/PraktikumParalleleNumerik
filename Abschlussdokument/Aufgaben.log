@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.13)  24 AUG 2019 18:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.13)  24 AUG 2019 19:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -714,6 +714,11 @@ Overfull \hbox (2.8616pt too wide) in paragraph at lines 350--365
 -lelisierung der Werte.
  []
 
+
+Overfull \hbox (28.83054pt too wide) in paragraph at lines 367--367
+[]\OT1/cmr/bx/n/12 Aufgabe 5 -Finite Dif-ferenzmeth-ode & Poisson-Gleichung 
+ []
+
 <Aufgaben-Ressourcen/A5L5M3N2.png, id=54, 1005.7575pt x 514.17094pt>
 File: Aufgaben-Ressourcen/A5L5M3N2.png Graphic file (type png)
 
@@ -749,8 +754,9 @@ File: Aufgaben-Ressourcen/A6L5M3N2.png Graphic file (type png)
 Package pdftex.def Info: Aufgaben-Ressourcen/A6L5M3N2.png used on input line 39
 6.
 (pdftex.def)             Requested size: 345.0pt x 180.40576pt.
-
-<Aufgaben-Ressourcen/A6L6M3N2.png, id=62, 1008.76875pt x 511.15968pt>
+ [13 <./Aufgaben-Ressourcen/A5L5M3N2.png>] [14 <./Aufgaben-Ressourcen/A5L6M3N2.
+png> <./Aufgaben-Ressourcen/A5L7M3N2.png>] <Aufgaben-Ressourcen/A6L6M3N2.png, i
+d=68, 1008.76875pt x 511.15968pt>
 File: Aufgaben-Ressourcen/A6L6M3N2.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/A6L6M3N2.png>
@@ -758,7 +764,7 @@ Package pdftex.def Info: Aufgaben-Ressourcen/A6L6M3N2.png used on input line 40
 1.
 (pdftex.def)             Requested size: 345.0pt x 174.81374pt.
 
-<Aufgaben-Ressourcen/A6L7M3N2.png, id=63, 1000.48781pt x 519.44063pt>
+<Aufgaben-Ressourcen/A6L7M3N2.png, id=69, 1000.48781pt x 519.44063pt>
 File: Aufgaben-Ressourcen/A6L7M3N2.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/A6L7M3N2.png>
@@ -782,10 +788,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 411--414
 
  []
 
-[13 <./Aufgaben-Ressourcen/A5L5M3N2.png>] [14 <./Aufgaben-Ressourcen/A5L6M3N2.p
-ng> <./Aufgaben-Ressourcen/A5L7M3N2.png>] [15 <./Aufgaben-Ressourcen/A6L5M3N2.p
-ng> <./Aufgaben-Ressourcen/A6L6M3N2.png>] [16 <./Aufgaben-Ressourcen/A6L7M3N2.p
-ng>]
+[15 <./Aufgaben-Ressourcen/A6L5M3N2.png>] [16 <./Aufgaben-Ressourcen/A6L6M3N2.p
+ng> <./Aufgaben-Ressourcen/A6L7M3N2.png>]
 Overfull \hbox (136.33315pt too wide) in paragraph at lines 451--454
 \OT1/cmr/m/n/10 Liste weit-erer FEM Pack-ages/Libraries: https://en.wikipedia.o
 rg/wiki/List[]of[]finite[]element[]software[]packages 
@@ -854,68 +858,68 @@ ew^^?ahlten Genauigkeit
  []
 
 [22]
-Overfull \hbox (12.74709pt too wide) in paragraph at lines 680--721
+Overfull \hbox (12.74709pt too wide) in paragraph at lines 681--722
 \OT1/cmr/m/n/10 h$[]$ := R^^?aumlicher Diskretisierungspa-ram-e-ter (Schrit-twe
 ite zwis-chen den r^^?aumlichen
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 680--721
+Underfull \hbox (badness 10000) in paragraph at lines 681--722
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 680--721
+Underfull \hbox (badness 10000) in paragraph at lines 681--722
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 680--721
+Underfull \hbox (badness 10000) in paragraph at lines 681--722
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 680--721
+Underfull \hbox (badness 10000) in paragraph at lines 681--722
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 680--721
+Underfull \hbox (badness 10000) in paragraph at lines 681--722
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 680--721
+Underfull \hbox (badness 10000) in paragraph at lines 681--722
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 680--721
+Underfull \hbox (badness 10000) in paragraph at lines 681--722
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 680--721
+Underfull \hbox (badness 10000) in paragraph at lines 681--722
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 680--721
+Underfull \hbox (badness 10000) in paragraph at lines 681--722
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 680--721
+Underfull \hbox (badness 10000) in paragraph at lines 681--722
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 680--721
+Underfull \hbox (badness 10000) in paragraph at lines 681--722
 
  []
 
 [23] [24]
-Underfull \hbox (badness 10000) in paragraph at lines 722--723
+Underfull \hbox (badness 10000) in paragraph at lines 723--724
 
  []
 
@@ -923,7 +927,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 722--723
 File: Aufgaben-Ressourcen/P2A5T5.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/P2A5T5.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/P2A5T5.png used on input line 725.
+Package pdftex.def Info: Aufgaben-Ressourcen/P2A5T5.png used on input line 726.
 
 (pdftex.def)             Requested size: 345.0pt x 176.57011pt.
 
@@ -931,7 +935,7 @@ Package pdftex.def Info: Aufgaben-Ressourcen/P2A5T5.png used on input line 725.
 File: Aufgaben-Ressourcen/P2A5T30.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/P2A5T30.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/P2A5T30.png used on input line 729
+Package pdftex.def Info: Aufgaben-Ressourcen/P2A5T30.png used on input line 730
 .
 (pdftex.def)             Requested size: 345.0pt x 176.36923pt.
 
@@ -939,7 +943,7 @@ Package pdftex.def Info: Aufgaben-Ressourcen/P2A5T30.png used on input line 729
 File: Aufgaben-Ressourcen/P2A5T60.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/P2A5T60.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/P2A5T60.png used on input line 733
+Package pdftex.def Info: Aufgaben-Ressourcen/P2A5T60.png used on input line 734
 .
 (pdftex.def)             Requested size: 345.0pt x 173.27399pt.
  [25 <./Aufgaben-Ressourcen/P2A5T5.png>]
@@ -948,7 +952,7 @@ Package pdftex.def Info: Aufgaben-Ressourcen/P2A5T60.png used on input line 733
 Here is how much of TeX's memory you used:
  1995 strings out of 492995
  28006 string characters out of 6132704
- 108869 words of memory out of 5000000
+ 109869 words of memory out of 5000000
  5516 multiletter control sequences out of 15000+600000
  9107 words of font info for 32 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -967,7 +971,7 @@ pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb
 usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></u
 sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr
 /local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on Aufgaben.pdf (27 pages, 1940698 bytes).
+Output written on Aufgaben.pdf (27 pages, 1942898 bytes).
 PDF statistics:
  162 PDF objects out of 1000 (max. 8388607)
  103 compressed objects within 2 object streams

@@ -305,7 +305,7 @@
     In diesem Praktikum verwenden wir CPUs und GPUs da sie universeller einsetzbar sind als FPGAs und die Programmierung deutlich leichter ist. Eine ausführlichere Bewertung ist in Table \ref{Table:3c} aufgeführt.
 
 
-    \subsection{Aufgabe 4}
+    \subsection{Aufgabe 4 - Gauß-Seidel Verfahren}
 	\begin{figure}
 		\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A4L4.png}
 		\caption{l=4; h=1/16;}
@@ -364,7 +364,7 @@ Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000
 		\end{table}
 
 \section{Partielle Differentialgleichungen}
-    \subsection{Aufgabe 5}
+    \subsection{Aufgabe 5 -Finite Differenzmethode \& Poisson-Gleichung}
 	\begin{figure}
 		\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A5L5M3N2.png} 
 		\caption{l=5; h=1/32;}
@@ -391,7 +391,7 @@ Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000
 	Die Lösungswerte in Figure \ref{A5L5}, \ref{A5L6} und \ref{A5L7} ergrben sich mit M=3; N=2; l=5,6,7;  \newline
 
 
-\subsection{Aufgabe 6}
+\subsection{Aufgabe 6 - Krylow-Unterraumverfahren \& GMRES}
 \begin{figure}
 	\includegraphics[width=\linewidth]{Aufgaben-Ressourcen/A6L5M3N2.png} 
 		\caption{GMRES; l=5; h=1/32;}
@@ -456,7 +456,7 @@ Fast alle sind Open Source und kostenlos nutzbar. "Hermes Project" scheint zum B
 
 \chapter{Partielle Differentialgleichungen und Cuda}
 \section{Cuda}
-\subsection{Aufgabe 1}
+\subsection{Aufgabe 1 - cudaGetDeviceProperties}
 
 Es gibt sehr viele Eigenschaften die man auslesen kann. Hier sind mögliche Ausgaben: \\
 
@@ -472,7 +472,7 @@ Memory Clock Rate (KHz):      2505000\\
 Memory Bus Width (bits):      384\\
 Global Memory size (bytes):   11996954624\\
 
-\subsection{Aufgabe 2}
+\subsection{Aufgabe 2 - Datentransferraten}
 
 \paragraph{Arraygröße} Bei kleinen Arrays ist die Transferrate auf der GPU nicht besser als auf der CPU. Das ändert sich aber mit wachsender Arraygröße, denn dann ist die Rate "Device to Device" deutlich besser als "Host to Host".
 Hier wurde mit nvprof gemessen. Siehe Table \ref{Table:2_2Groesse}.
@@ -552,7 +552,7 @@ Verglichen mit Table \ref{Table:2_2Groesse} ergeben sich die in Table \ref{Table
 	\label{Table:2_2Speedup}
 \end{table}
 \section{Parallelisierung Partieller Differentialgleichungen}
-\subsection{Aufgabe 3}
+\subsection{Aufgabe 3 - Gauß-Seidel no. 2}
 
 \subsubsection{a)}
 
@@ -638,7 +638,7 @@ In Table \ref{Table:2_3b} wird das block-asynchrone Verfahren mit einer synchron
 
 \subsubsection{c)}
 
-\subsection{Aufgabe 4}
+\subsection{Aufgabe 4 - LU-Zerlegung}
 
 \subsubsection{a)}
 Als Indexmenge eignen sich Indizes für i von 0 bis n-1 und für j jeweils Indizes von i bis i+n. Man braucht nicht mehr Indizes solange die Matrix A die Struktur aus den vorherigen Aufgaben hat. Falls die Matrix voll besetzt ist sollte man i zwischen 0 und n-1 variieren und j zwischen i und n-1.
@@ -673,8 +673,9 @@ Die Messungen wurden mit l=5 M=3 N=2 und variierender Fehlerschranke f durchgef�
 	\caption{Vergleich zwischen GMRES und vorkonditioniertem GMRES}
 	\label{Table:2_4d}
 \end{table}
-\section{Heizprozesssimulation einer Herdplatte}
-\subsection{Aufgabe 5}
+
+\section{Partielle Differentialgleichungen}
+\subsection{Aufgabe 5 - Heizprozess einer Herdplatte}
 
 \subsubsection{Mathematische Grundlage}
 Im folgenden Abschnitt werden folgende Funktionen und Parameter verwendet:\\
