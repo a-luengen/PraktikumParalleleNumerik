@@ -119,34 +119,36 @@
 	\begin{center}
 		\includegraphics[width=0.6\linewidth]{Aufgaben-Ressourcen/critical-1000.jpg}
 	\end{center}
+\newpage
 
-    \subsection{Aufgabe 2}
+    \subsection{Aufgabe 2 - Testwerkzeuge}
     	\subsubsection{a)}
+    				Mithilfe des ThreadSanitizers finden sich folgende Schwachstellen:
 		\begin{enumerate}
-			\item Example: \\
+			\item Beispiel: \\
 				Es besteht eine Race-Condition auf dem Array a über Index i,
 				bei ungünstiger Ausführungsreihenfolge der Threads kann es dazu kommen,
-				das a[i] durch einen Thread geschrieben wird und von einem anderen Thread versucht wird, darauf in der nachfolgenden Anweisung lesend zuzugreifen.
+				dass a[i] durch einen Thread geschrieben wird und von einem anderen Thread versucht wird darauf in der nachfolgenden Anweisung lesend zuzugreifen.
 				Um dieses Problem zu lösen können zwei for-Schleifen verwendet werden.
 				Eine schreibt alle Werte in Array a und die zweite schreibt alle Werte unter Zugriff auf Array a in Array b. 
 				Beide Schleifen werden jeweils getrennt parallelisiert.
-			\item Example: \\
+			\item Beispiel: \\
 				Threads exisiteren hier in der gesamten parallelen Region.
 				Das nowait-Statement der ersten parallelisierten For-Schleife bewirkt, dass Threads bereits die nächste parallelisierte Schleife bearbeiten können, wenn sie ihren Teil der ersten Schleife fertig verarbeitet haben.
 				Dies führt zu einer Race-Condition auf das Array a mit Index i, ähnlich zu Example 1.
 				Mit dem entfernen des nowait-Statements der ersten for-Schleife warten alle Threads wieder auf die implizite Barriere bis alle Threads fertig sind und es kann Problemlos auf die geschriebenen Werte in Array a zugegriffen werden.
-			\item Example: \\
+			\item Beispiel: \\
 				Hier ist die Variable x zunächst global definiert und wird somit implizit zwischen den Threads geshared. 
 				Somit besteht eine Race-Condition auf x da die Threads unabhängig voneinander sowohl lesend als auch schreibend auf x zugreifen.
 				Indem man x explizit als private deklariert, erhält jeder Thread seine eigene Kopie der Variable und es besteht keine Race-Condition mehr.
-			\item Example: \\
+			\item Beispiel: \\
 				f ist global definiert und wird durch jeden Thread private gesetzt. 
 				Allerdings erhält jeder Thread eine uninitialiserte Kopie der Variable f, was bedeutet das dass initialisieren mit dem Wert 2 vor der Schleife nur für den Master-Thread sichtbar ist.
 				Um diese Initialiserung auch für alle übrigen Threads sichtbar zu machen, ist es erforderlich, f mittels firstprivate zu deklarieren.
 				Des weiteren wird der Wert von x nicht aus der parallelen Region wieder rausgeschrieben, sondern gelöscht. 
 				Wodurch der zuletzt geschriebene Wert innerhalb der parallelen Region in x nach außen hin nicht sichtbar ist.
 				Um deses Verhalten zu erreichen, muss x als lastprivate deklariert werden.
-			\item Example: \\
+			\item Beispiel: \\
 				Hier besteht eine Race-Condition auf die Variable sum. 
 				Da mehrere Threads versuchen hier den alten Wert von Sum zu lesen, den i-ten Wert aus b ausfzuaddieren und damit sum wieder zu überschreiben, ist nicht garantiert, dass sum am Ende den korrekten Wert enthält.
 				Indem man das auslesen, aufaddieren und zuweisen mittels critical-Konstrukt schützt, ist garantiert das immer nur ein Thread den Wert überschreiben kann.
@@ -250,7 +252,7 @@
 			\end{table}
 
 \section{Parallelisierung}
-    \subsection{Aufgabe 3}
+    \subsection{Aufgabe 3 - Kennzahlen, Fehlerquellen \& Hardwarekomponenten}
     
         \subsubsection{a)}
         P(x): Anzahl auszuführender Operationen auf x Prozessoren.\\

@@ -1,40 +1,43 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6210 64-bit) (preloaded format=pdflatex 2019.7.4)  14 AUG 2019 14:35
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.9.13)  24 AUG 2019 18:56
 entering extended mode
-**./Aufgaben.tex
-(Aufgaben.tex
-LaTeX2e <2017/01/01> patch level 1
-Babel <3.9r> and hyphenation patterns for 75 language(s) loaded.
-(D:\Programme\MiKTeX\tex\latex\base\article.cls
-Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
-(D:\Programme\MiKTeX\tex\latex\base\size10.clo
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**Aufgaben.tex
+(./Aufgaben.tex
+LaTeX2e <2017-04-15>
+Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/report.cls
+Document Class: report 2014/09/29 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/size10.clo
 File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 )
 \c@part=\count79
-\c@section=\count80
-\c@subsection=\count81
-\c@subsubsection=\count82
-\c@paragraph=\count83
-\c@subparagraph=\count84
-\c@figure=\count85
-\c@table=\count86
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
 \abovecaptionskip=\skip41
 \belowcaptionskip=\skip42
 \bibindent=\dimen102
 )
-(D:\Programme\MiKTeX\tex\latex\base\inputenc.sty
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/inputenc.sty
 Package: inputenc 2015/03/17 v1.2c Input encoding file
 \inpenc@prehook=\toks14
 \inpenc@posthook=\toks15
 
-(D:\Programme\MiKTeX\tex\latex\base\utf8.def
-File: utf8.def 2016/02/28 v1.1s UTF-8 support for inputenc
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/utf8.def
+File: utf8.def 2017/01/28 v1.1t UTF-8 support for inputenc
 Now handling font encoding OML ...
 ... no UTF-8 mapping file for font encoding OML
 Now handling font encoding T1 ...
 ... processing UTF-8 mapping file for font encoding T1
 
-(D:\Programme\MiKTeX\tex\latex\base\t1enc.dfu
-File: t1enc.dfu 2016/02/28 v1.1s UTF-8 support for inputenc
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/t1enc.dfu
+File: t1enc.dfu 2017/01/28 v1.1t UTF-8 support for inputenc
    defining Unicode char U+00A0 (decimal 160)
    defining Unicode char U+00A1 (decimal 161)
    defining Unicode char U+00A3 (decimal 163)
@@ -246,6 +249,8 @@ File: t1enc.dfu 2016/02/28 v1.1s UTF-8 support for inputenc
    defining Unicode char U+0219 (decimal 537)
    defining Unicode char U+021A (decimal 538)
    defining Unicode char U+021B (decimal 539)
+   defining Unicode char U+0232 (decimal 562)
+   defining Unicode char U+0233 (decimal 563)
    defining Unicode char U+1E02 (decimal 7682)
    defining Unicode char U+1E03 (decimal 7683)
    defining Unicode char U+200C (decimal 8204)
@@ -266,12 +271,14 @@ File: t1enc.dfu 2016/02/28 v1.1s UTF-8 support for inputenc
    defining Unicode char U+2039 (decimal 8249)
    defining Unicode char U+203A (decimal 8250)
    defining Unicode char U+2423 (decimal 9251)
+   defining Unicode char U+1E20 (decimal 7712)
+   defining Unicode char U+1E21 (decimal 7713)
 )
 Now handling font encoding OT1 ...
 ... processing UTF-8 mapping file for font encoding OT1
 
-(D:\Programme\MiKTeX\tex\latex\base\ot1enc.dfu
-File: ot1enc.dfu 2016/02/28 v1.1s UTF-8 support for inputenc
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/ot1enc.dfu
+File: ot1enc.dfu 2017/01/28 v1.1t UTF-8 support for inputenc
    defining Unicode char U+00A0 (decimal 160)
    defining Unicode char U+00A1 (decimal 161)
    defining Unicode char U+00A3 (decimal 163)
@@ -311,8 +318,8 @@ File: ot1enc.dfu 2016/02/28 v1.1s UTF-8 support for inputenc
 Now handling font encoding OMS ...
 ... processing UTF-8 mapping file for font encoding OMS
 
-(D:\Programme\MiKTeX\tex\latex\base\omsenc.dfu
-File: omsenc.dfu 2016/02/28 v1.1s UTF-8 support for inputenc
+(/usr/local/texlive/2017/texmf-dist/tex/latex/base/omsenc.dfu
+File: omsenc.dfu 2017/01/28 v1.1t UTF-8 support for inputenc
    defining Unicode char U+00A7 (decimal 167)
    defining Unicode char U+00B6 (decimal 182)
    defining Unicode char U+00B7 (decimal 183)
@@ -335,105 +342,106 @@ Now handling font encoding U ...
    defining Unicode char U+2122 (decimal 8482)
    defining Unicode char U+2423 (decimal 9251)
 ))
-(D:\Programme\MiKTeX\tex\latex\graphics\graphicx.sty
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
 
-(D:\Programme\MiKTeX\tex\latex\graphics\keyval.sty
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/keyval.sty
 Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks16
 )
-(D:\Programme\MiKTeX\tex\latex\graphics\graphics.sty
-Package: graphics 2016/10/09 v1.0u Standard LaTeX Graphics (DPC,SPQR)
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2017/04/14 v1.1b Standard LaTeX Graphics (DPC,SPQR)
 
-(D:\Programme\MiKTeX\tex\latex\graphics\trig.sty
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 )
-(D:\Programme\MiKTeX\tex\latex\graphics-cfg\graphics.cfg
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
 Package graphics Info: Driver file: pdftex.def on input line 99.
 
-(D:\Programme\MiKTeX\tex\latex\graphics-def\pdftex.def
+(/usr/local/texlive/2017/texmf-dist/tex/latex/graphics-def/pdftex.def
 File: pdftex.def 2017/01/12 v0.06k Graphics/color for pdfTeX
 
-(D:\Programme\MiKTeX\tex\generic\oberdiek\infwarerr.sty
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/infwarerr.sty
 Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
 )
-(D:\Programme\MiKTeX\tex\generic\oberdiek\ltxcmds.sty
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
 Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
 )
-\Gread@gobject=\count87
+\Gread@gobject=\count88
 ))
 \Gin@req@height=\dimen103
 \Gin@req@width=\dimen104
 )
-(D:\Programme\MiKTeX\tex\latex\multirow\multirow.sty
+(/usr/local/texlive/2017/texmf-dist/tex/latex/multirow/multirow.sty
 Package: multirow 2016/11/25 v2.2 Span multiple rows of a table
 \multirow@colwidth=\skip43
-\multirow@cntb=\count88
+\multirow@cntb=\count89
 \multirow@dima=\skip44
 \bigstrutjot=\dimen105
-) (Aufgaben.aux)
+)
+(./Aufgaben.aux)
 \openout1 = `Aufgaben.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
 
-(D:\Programme\MiKTeX\tex\context\base\supp-pdf.mkii
+(/usr/local/texlive/2017/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count89
+\scratchcounter=\count90
 \scratchdimen=\dimen106
 \scratchbox=\box26
-\nofMPsegments=\count90
-\nofMParguments=\count91
+\nofMPsegments=\count91
+\nofMParguments=\count92
 \everyMPshowfont=\toks17
-\MPscratchCnt=\count92
+\MPscratchCnt=\count93
 \MPscratchDim=\dimen107
-\MPnumerator=\count93
-\makeMPintoPDFobject=\count94
+\MPnumerator=\count94
+\makeMPintoPDFobject=\count95
 \everyMPtoPDFconversion=\toks18
-) (D:\Programme\MiKTeX\tex\generic\oberdiek\pdftexcmds.sty
-Package: pdftexcmds 2016/05/21 v0.22 Utility functions of pdfTeX for LuaTeX (HO
+) (/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2017/03/19 v0.25 Utility functions of pdfTeX for LuaTeX (HO
 )
 
-(D:\Programme\MiKTeX\tex\generic\oberdiek\ifluatex.sty
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifluatex.sty
 Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
 )
-(D:\Programme\MiKTeX\tex\generic\oberdiek\ifpdf.sty
-Package: ifpdf 2016/05/14 v3.1 Provides the ifpdf switch
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2017/03/15 v3.2 Provides the ifpdf switch
 )
 Package pdftexcmds Info: LuaTeX not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
 Package pdftexcmds Info: \pdfdraftmode found.
 )
-(D:\Programme\MiKTeX\tex\latex\oberdiek\epstopdf-base.sty
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
 
-(D:\Programme\MiKTeX\tex\latex\oberdiek\grfext.sty
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/grfext.sty
 Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
 
-(D:\Programme\MiKTeX\tex\generic\oberdiek\kvdefinekeys.sty
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
 Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
 ))
-(D:\Programme\MiKTeX\tex\latex\oberdiek\kvoptions.sty
+(/usr/local/texlive/2017/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
 
-(D:\Programme\MiKTeX\tex\generic\oberdiek\kvsetkeys.sty
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
 Package: kvsetkeys 2016/05/16 v1.17 Key value parser (HO)
 
-(D:\Programme\MiKTeX\tex\generic\oberdiek\etexcmds.sty
+(/usr/local/texlive/2017/texmf-dist/tex/generic/oberdiek/etexcmds.sty
 Package: etexcmds 2016/05/16 v1.6 Avoid name clashes with e-TeX commands (HO)
 Package etexcmds Info: Could not find \expanded.
 (etexcmds)             That can mean that you are not using pdfTeX 1.50 or
@@ -446,510 +454,523 @@ Package grfext Info: Graphics extension search list:
 (grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
 G,.JBIG2,.JB2,.eps]
 (grfext)             \AppendGraphicsExtensions on input line 456.
+
+(/usr/local/texlive/2017/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 13.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 13.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 13.
+
+[1
+
+{/usr/local/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+(./Aufgaben.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 2.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 2.
 )
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 11.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 11.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 11.
+\tf@toc=\write3
+\openout3 = `Aufgaben.toc'.
+
  [1
 
-{C:/Users/Joshua/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 19.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 19.
- [2] [3]
-Underfull \hbox (badness 10000) in paragraph at lines 72--73
+]
+Chapter 1.
 
+Overfull \hbox (4.63948pt too wide) in paragraph at lines 21--22
+\OT1/cmr/m/n/10 Bei dem par-al-le-len "Hello World"-Programm, bei dem jeder Thr
+ead seine Thread-
  []
 
-<Aufgaben-Ressourcen/normal-1000.jpg, id=18, 240.9pt x 240.9pt>
+[2
+
+] [3] <Aufgaben-Ressourcen/normal-1000.jpg, id=24, 240.9pt x 240.9pt>
 File: Aufgaben-Ressourcen/normal-1000.jpg Graphic file (type jpg)
 
 <use Aufgaben-Ressourcen/normal-1000.jpg>
 Package pdftex.def Info: Aufgaben-Ressourcen/normal-1000.jpg used on input line
- 104.
+ 117.
 (pdftex.def)             Requested size: 207.0021pt x 207.00821pt.
-
-<Aufgaben-Ressourcen/critical-1000.jpg, id=19, 240.9pt x 240.9pt>
+ [4]
+<Aufgaben-Ressourcen/critical-1000.jpg, id=28, 240.9pt x 240.9pt>
 File: Aufgaben-Ressourcen/critical-1000.jpg Graphic file (type jpg)
 
 <use Aufgaben-Ressourcen/critical-1000.jpg>
 Package pdftex.def Info: Aufgaben-Ressourcen/critical-1000.jpg used on input li
-ne 108.
-(pdftex.def)             Requested size: 137.9979pt x 138.0018pt.
-
-<Aufgaben-Ressourcen/critical-1000-1000.jpg, id=20, 240.9pt x 240.9pt>
-File: Aufgaben-Ressourcen/critical-1000-1000.jpg Graphic file (type jpg)
-
-<use Aufgaben-Ressourcen/critical-1000-1000.jpg>
-Package pdftex.def Info: Aufgaben-Ressourcen/critical-1000-1000.jpg used on inp
-ut line 108.
-(pdftex.def)             Requested size: 137.9979pt x 138.0018pt.
-
-<Aufgaben-Ressourcen/critical-10000-1000.jpg, id=21, 2409.0pt x 2409.0pt>
-[4 <./Aufgaben-Ressourcen/normal-1000.jpg>]
-File: Aufgaben-Ressourcen/critical-10000-1000.jpg Graphic file (type jpg)
-
-<use Aufgaben-Ressourcen/critical-10000-1000.jpg>
-Package pdftex.def Info: Aufgaben-Ressourcen/critical-10000-1000.jpg used on in
-put line 110.
-(pdftex.def)             Requested size: 137.9979pt x 137.99078pt.
-File: Aufgaben-Ressourcen/critical-10000-1000.jpg Graphic file (type jpg)
-
-<use Aufgaben-Ressourcen/critical-10000-1000.jpg>
-Package pdftex.def Info: Aufgaben-Ressourcen/critical-10000-1000.jpg used on in
-put line 110.
-(pdftex.def)             Requested size: 137.9979pt x 137.99078pt.
-
-Overfull \hbox (10.77837pt too wide) in paragraph at lines 117--124
-\OT1/cmr/m/n/10 Es besteht eine Race-Condition auf dem Ar-ray a uber In-dex i,
- bei ungunstiger
+ne 120.
+(pdftex.def)             Requested size: 207.0021pt x 207.00821pt.
+ [5 <./Aufgaben-Ressourcen/normal-1000.jpg> <./Aufgaben-Ressourcen/critical-100
+0.jpg>]
+Overfull \hbox (10.77837pt too wide) in paragraph at lines 128--135
+\OT1/cmr/m/n/10 Es besteht eine Race-Condition auf dem Ar-ray a ^^?uber In-dex 
+i, bei ung^^?unstiger
  []
 
-[5 <./Aufgaben-Ressourcen/critical-1000.jpg> <./Aufgaben-Ressourcen/critical-10
-00-1000.jpg> <./Aufgaben-Ressourcen/critical-10000-1000.jpg>]
-Overfull \hbox (4.27826pt too wide) in paragraph at lines 129--133
+
+Overfull \hbox (4.27826pt too wide) in paragraph at lines 140--144
 \OT1/cmr/m/n/10 Thread seine eigene Kopie der Vari-able und es besteht keine Ra
 ce-Condition
  []
 
-
-Overfull \hbox (2.72168pt too wide) in paragraph at lines 154--157
+[6]
+Overfull \hbox (2.72168pt too wide) in paragraph at lines 165--168
 \OT1/cmr/m/n/10 der zwei Schleifen J und K, auch bekannt als IKJ-Optimierung, e
 ine Verbesserung
  []
 
-[6]
-Overfull \hbox (79.09341pt too wide) in paragraph at lines 161--191
- [] 
+
+Overfull \hbox (79.09341pt too wide) in paragraph at lines 173--203
+[][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 203--203
+Underfull \hbox (badness 10000) in paragraph at lines 217--217
 []\OT1/cmr/m/n/10 2
  []
 
 
-Overfull \hbox (7.1862pt too wide) in paragraph at lines 203--203
+Overfull \hbox (7.1862pt too wide) in paragraph at lines 217--217
 \OT1/cmr/m/n/10 Threads| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 203--203
+Underfull \hbox (badness 10000) in paragraph at lines 217--217
 []\OT1/cmr/m/n/10 4
  []
 
 
-Overfull \hbox (7.1862pt too wide) in paragraph at lines 203--203
+Overfull \hbox (7.1862pt too wide) in paragraph at lines 217--217
 \OT1/cmr/m/n/10 Threads| 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 203--203
+Underfull \hbox (badness 10000) in paragraph at lines 217--217
 []\OT1/cmr/m/n/10 8
  []
 
 
-Overfull \hbox (7.1862pt too wide) in paragraph at lines 203--203
+Overfull \hbox (7.1862pt too wide) in paragraph at lines 217--217
 \OT1/cmr/m/n/10 Threads| 
  []
 
 
-Overfull \hbox (4.32513pt too wide) in paragraph at lines 207--207
+Overfull \hbox (4.32513pt too wide) in paragraph at lines 221--221
 []\OT1/cmr/m/n/10 135.882| 
  []
 
 
-Overfull \hbox (4.32513pt too wide) in paragraph at lines 211--211
+Overfull \hbox (4.32513pt too wide) in paragraph at lines 225--225
 []\OT1/cmr/m/n/10 135.966| 
  []
 
 
-Overfull \hbox (61.75383pt too wide) in paragraph at lines 201--214
- [] 
+Overfull \hbox (61.75383pt too wide) in paragraph at lines 215--228
+[][] 
  []
 
-[7]
-Underfull \hbox (badness 10000) in paragraph at lines 240--242
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 243--244
-
+[7] [8]
+Overfull \hbox (23.79999pt too wide) in paragraph at lines 255--255
+[]\OT1/cmr/bx/n/12 Aufgabe 3 - Kenn-zahlen, Fehlerquellen & Hard-warekom-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 245--246
+Underfull \hbox (badness 10000) in paragraph at lines 258--260
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 247--248
+Underfull \hbox (badness 10000) in paragraph at lines 261--262
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 249--250
+Underfull \hbox (badness 10000) in paragraph at lines 263--264
 
  []
 
 
-Overfull \hbox (5.5839pt too wide) in paragraph at lines 252--258
-\OT1/cmr/m/n/10 Race-Conditions: Wenn zwei Threads un-abhangig voneinan-der au
-f eine Ressource
+Underfull \hbox (badness 10000) in paragraph at lines 265--266
+
  []
 
-[8]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 268.
 
- (D:\Programme\MiKTeX\tex\latex\base\omscmr.fd
+Underfull \hbox (badness 10000) in paragraph at lines 267--268
+
+ []
+
+
+Overfull \hbox (5.5839pt too wide) in paragraph at lines 270--276
+\OT1/cmr/m/n/10 Race-Conditions: Wenn zwei Threads un-abh^^?angig voneinan-der 
+auf eine Ressource
+ []
+
+[9]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 287.
+
+ (/usr/local/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 268.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 287.
 
-Underfull \hbox (badness 10000) in paragraph at lines 268--269
+Underfull \hbox (badness 10000) in paragraph at lines 287--288
 []\OT1/cmr/m/n/10 Braucht
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 268--269
+Underfull \hbox (badness 10000) in paragraph at lines 287--288
 \OT1/cmr/m/n/10 Einar-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 272--273
+Underfull \hbox (badness 10000) in paragraph at lines 291--292
 []\OT1/cmr/m/n/10 Am ein-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 272--273
+Underfull \hbox (badness 10000) in paragraph at lines 291--292
 \OT1/cmr/m/n/10 fach-sten zu
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 272--273
+Underfull \hbox (badness 10000) in paragraph at lines 291--292
 \OT1/cmr/m/n/10 pro-gram-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 273--274
+Underfull \hbox (badness 10000) in paragraph at lines 292--293
 []\OT1/cmr/m/n/10 Viele Bib-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 273--274
+Underfull \hbox (badness 10000) in paragraph at lines 292--293
 \OT1/cmr/m/n/10 lio-theken
  []
 
 
-Underfull \hbox (badness 7379) in paragraph at lines 274--275
+Underfull \hbox (badness 7379) in paragraph at lines 293--294
 []\OT1/cmr/m/n/10 Kurze Com-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 276--277
-[]\OT1/cmr/m/n/10 Aufwandig
+Underfull \hbox (badness 10000) in paragraph at lines 295--296
+[]\OT1/cmr/m/n/10 Aufw^^?andig
  []
 
 
-Underfull \hbox (badness 7291) in paragraph at lines 276--277
+Underfull \hbox (badness 7291) in paragraph at lines 295--296
 \OT1/cmr/m/n/10 zu pro-gram-
  []
 
 
-Underfull \hbox (badness 7047) in paragraph at lines 277--278
+Underfull \hbox (badness 7047) in paragraph at lines 296--297
 []\OT1/cmr/m/n/10 Lange Com-
  []
 
 
-Overfull \hbox (72.8858pt too wide) in paragraph at lines 261--282
-[] 
+Overfull \hbox (72.8858pt too wide) in paragraph at lines 280--301
+[][] 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 261--282
-
- []
-
-<Aufgaben-Ressourcen/A4L4.png, id=39, 998.9822pt x 520.19344pt>
+<Aufgaben-Ressourcen/A4L4.png, id=45, 998.9822pt x 520.19344pt>
 File: Aufgaben-Ressourcen/A4L4.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/A4L4.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/A4L4.png used on input line 288.
+Package pdftex.def Info: Aufgaben-Ressourcen/A4L4.png used on input line 310.
 (pdftex.def)             Requested size: 345.0pt x 179.64949pt.
 
-<Aufgaben-Ressourcen/A4L5.png, id=40, 1005.00468pt x 525.46312pt>
+<Aufgaben-Ressourcen/A4L5.png, id=46, 1005.00468pt x 525.46312pt>
 File: Aufgaben-Ressourcen/A4L5.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/A4L5.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/A4L5.png used on input line 293.
+Package pdftex.def Info: Aufgaben-Ressourcen/A4L5.png used on input line 315.
 (pdftex.def)             Requested size: 345.0pt x 180.37894pt.
 
-<Aufgaben-Ressourcen/A4L6.png, id=41, 1003.49907pt x 514.17094pt>
+<Aufgaben-Ressourcen/A4L6.png, id=47, 1003.49907pt x 514.17094pt>
 File: Aufgaben-Ressourcen/A4L6.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/A4L6.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/A4L6.png used on input line 298.
+Package pdftex.def Info: Aufgaben-Ressourcen/A4L6.png used on input line 320.
 (pdftex.def)             Requested size: 345.0pt x 176.76936pt.
 
-
-LaTeX Warning: Reference `A4L4' on page 9 undefined on input line 319.
-
-
-LaTeX Warning: Reference `A4L5' on page 9 undefined on input line 319.
-
-
-LaTeX Warning: Reference `A4L6' on page 9 undefined on input line 319.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 305--320
+Underfull \hbox (badness 10000) in paragraph at lines 327--346
 
  []
 
-[9] [10 <./Aufgaben-Ressourcen/A4L4.png> <./Aufgaben-Ressourcen/A4L5.png>]
-<Aufgaben-Ressourcen/A5L5M3N2.png, id=48, 1005.7575pt x 514.17094pt>
+[10] [11 <./Aufgaben-Ressourcen/A4L4.png> <./Aufgaben-Ressourcen/A4L5.png>]
+Overfull \hbox (15.22298pt too wide) in paragraph at lines 352--362
+[][] 
+ []
+
+
+Overfull \hbox (2.8616pt too wide) in paragraph at lines 350--365
+\OT1/cmr/m/n/10 Methodik: Es gibt ver-schiedene Wege der ef-fizien-teren Par-al
+-lelisierung der Werte.
+ []
+
+<Aufgaben-Ressourcen/A5L5M3N2.png, id=54, 1005.7575pt x 514.17094pt>
 File: Aufgaben-Ressourcen/A5L5M3N2.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/A5L5M3N2.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/A5L5M3N2.png used on input line 34
-1.
+Package pdftex.def Info: Aufgaben-Ressourcen/A5L5M3N2.png used on input line 36
+9.
 (pdftex.def)             Requested size: 345.0pt x 176.36923pt.
-
-<Aufgaben-Ressourcen/A5L6M3N2.png, id=49, 998.9822pt x 510.40688pt>
+ [12 <./Aufgaben-Ressourcen/A4L6.png>]
+<Aufgaben-Ressourcen/A5L6M3N2.png, id=59, 998.9822pt x 510.40688pt>
 File: Aufgaben-Ressourcen/A5L6M3N2.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/A5L6M3N2.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/A5L6M3N2.png used on input line 34
-6.
+Package pdftex.def Info: Aufgaben-Ressourcen/A5L6M3N2.png used on input line 37
+4.
 (pdftex.def)             Requested size: 345.0pt x 176.26968pt.
 
-<Aufgaben-Ressourcen/A5L7M3N2.png, id=50, 998.9822pt x 508.90125pt>
+<Aufgaben-Ressourcen/A5L7M3N2.png, id=60, 998.9822pt x 508.90125pt>
 File: Aufgaben-Ressourcen/A5L7M3N2.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/A5L7M3N2.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/A5L7M3N2.png used on input line 35
-1.
+Package pdftex.def Info: Aufgaben-Ressourcen/A5L7M3N2.png used on input line 37
+9.
 (pdftex.def)             Requested size: 345.0pt x 175.74971pt.
 
-
-LaTeX Warning: Reference `A5L5' on page 11 undefined on input line 363.
-
-
-LaTeX Warning: Reference `A5L6' on page 11 undefined on input line 363.
-
-
-LaTeX Warning: Reference `A5L7' on page 11 undefined on input line 363.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 362--364
+Underfull \hbox (badness 10000) in paragraph at lines 390--392
 
  []
 
-[11 <./Aufgaben-Ressourcen/A4L6.png>] [12 <./Aufgaben-Ressourcen/A5L5M3N2.png> 
-<./Aufgaben-Ressourcen/A5L6M3N2.png>]
-<Aufgaben-Ressourcen/A6L5M3N2.png, id=57, 1001.99344pt x 523.9575pt>
+<Aufgaben-Ressourcen/A6L5M3N2.png, id=61, 1001.99344pt x 523.9575pt>
 File: Aufgaben-Ressourcen/A6L5M3N2.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/A6L5M3N2.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/A6L5M3N2.png used on input line 36
-8.
+Package pdftex.def Info: Aufgaben-Ressourcen/A6L5M3N2.png used on input line 39
+6.
 (pdftex.def)             Requested size: 345.0pt x 180.40576pt.
 
-<Aufgaben-Ressourcen/A6L6M3N2.png, id=58, 1008.76875pt x 511.15968pt>
+<Aufgaben-Ressourcen/A6L6M3N2.png, id=62, 1008.76875pt x 511.15968pt>
 File: Aufgaben-Ressourcen/A6L6M3N2.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/A6L6M3N2.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/A6L6M3N2.png used on input line 37
-3.
+Package pdftex.def Info: Aufgaben-Ressourcen/A6L6M3N2.png used on input line 40
+1.
 (pdftex.def)             Requested size: 345.0pt x 174.81374pt.
 
-<Aufgaben-Ressourcen/A6L7M3N2.png, id=59, 1000.48781pt x 519.44063pt>
+<Aufgaben-Ressourcen/A6L7M3N2.png, id=63, 1000.48781pt x 519.44063pt>
 File: Aufgaben-Ressourcen/A6L7M3N2.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/A6L7M3N2.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/A6L7M3N2.png used on input line 37
-8.
+Package pdftex.def Info: Aufgaben-Ressourcen/A6L7M3N2.png used on input line 40
+6.
 (pdftex.def)             Requested size: 345.0pt x 179.12003pt.
 
-
-LaTeX Warning: Reference `A6L5' on page 13 undefined on input line 385.
-
-
-LaTeX Warning: Reference `A6L6' on page 13 undefined on input line 385.
-
-
-LaTeX Warning: Reference `A6L7' on page 13 undefined on input line 385.
-
-
-Overfull \hbox (15.2819pt too wide) in paragraph at lines 383--386
+Overfull \hbox (15.2819pt too wide) in paragraph at lines 411--414
 \OT1/cmr/m/n/10 Liste: CG Ver-fahren; PCG-Verfahren; Ver-fahren der min-i-malen
  Risiduen(GMRES);
  []
 
 
-Overfull \hbox (0.7367pt too wide) in paragraph at lines 383--386
-\OT1/cmr/m/n/10 Das Gle-ichungssys-tem ist dunnbesetzt und alle Krylow-Unterra
-umverfahren sind
+Overfull \hbox (0.7367pt too wide) in paragraph at lines 411--414
+\OT1/cmr/m/n/10 Das Gle-ichungssys-tem ist d^^?unnbesetzt und alle Krylow-Unter
+raumverfahren sind
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 383--386
+Underfull \hbox (badness 10000) in paragraph at lines 411--414
 
  []
 
-[13 <./Aufgaben-Ressourcen/A5L7M3N2.png>] [14 <./Aufgaben-Ressourcen/A6L5M3N2.p
-ng> <./Aufgaben-Ressourcen/A6L6M3N2.png>] [15 <./Aufgaben-Ressourcen/A6L7M3N2.p
+[13 <./Aufgaben-Ressourcen/A5L5M3N2.png>] [14 <./Aufgaben-Ressourcen/A5L6M3N2.p
+ng> <./Aufgaben-Ressourcen/A5L7M3N2.png>] [15 <./Aufgaben-Ressourcen/A6L5M3N2.p
+ng> <./Aufgaben-Ressourcen/A6L6M3N2.png>] [16 <./Aufgaben-Ressourcen/A6L7M3N2.p
 ng>]
-Overfull \hbox (136.33315pt too wide) in paragraph at lines 420--423
+Overfull \hbox (136.33315pt too wide) in paragraph at lines 451--454
 \OT1/cmr/m/n/10 Liste weit-erer FEM Pack-ages/Libraries: https://en.wikipedia.o
 rg/wiki/List[]of[]finite[]element[]software[]packages 
  []
 
-[16]
-Underfull \hbox (badness 10000) in paragraph at lines 430--431
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 432--443
-
- []
-
-
-Overfull \hbox (19.66727pt too wide) in paragraph at lines 450--462
- [] 
- []
-
 [17]
-Underfull \hbox (badness 10000) in paragraph at lines 498--499
+Chapter 2.
+
+Underfull \hbox (badness 10000) in paragraph at lines 461--462
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 522--525
+Underfull \hbox (badness 10000) in paragraph at lines 463--474
 
  []
 
-[18]
-Overfull \hbox (39.58412pt too wide) in paragraph at lines 532--549
+
+Overfull \hbox (19.66727pt too wide) in paragraph at lines 481--493
 [][] 
  []
 
+[18
 
-Overfull \hbox (7.19502pt too wide) in paragraph at lines 559--560
-[]\OT1/cmr/m/n/10 Vergleich im-ple-men-tiertes syn-chrones Jakobi-Verfahren mit
- block-asynchronen
+]
+Underfull \hbox (badness 10000) in paragraph at lines 533--534
+
  []
 
 
-Overfull \hbox (32.88966pt too wide) in paragraph at lines 561--598
+Overfull \hbox (17.46448pt too wide) in paragraph at lines 554--554
+[]\OT1/cmr/bx/n/14.4 Parallelisierung Par-tieller Dif-fer-en-tial-gle-ichun-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 559--562
+
+ []
+
+
+Overfull \hbox (24.58412pt too wide) in paragraph at lines 568--585
 [][] 
  []
 
 [19] [20]
-File: Aufgaben-Ressourcen/A6L7M3N2.png Graphic file (type png)
- <use Aufgaben-Ressourcen/A6L7M3N2.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/A6L7M3N2.png used on input line 61
-6.
-(pdftex.def)             Requested size: 345.0pt x 179.12003pt.
-
-Overfull \hbox (11.4589pt too wide) in paragraph at lines 620--624
-\OT1/cmr/m/n/10 Das vorkon-di-tion-ierte Ver-fahren kon-vergiert schneller als 
-das gewohnliche GMRES-
- []
-
-
-Overfull \hbox (4.81078pt too wide) in paragraph at lines 620--624
-\OT1/cmr/m/n/10 Verfahren. Allerd-ings ist die Laufzeit trotz-dem je nach der g
-ewahlten Genauigkeit
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 620--624
-
- []
-
-
-Overfull \hbox (11.50087pt too wide) in paragraph at lines 625--634
+Overfull \hbox (17.88966pt too wide) in paragraph at lines 598--635
 [][] 
  []
 
+[21]
+File: Aufgaben-Ressourcen/A6L7M3N2.png Graphic file (type png)
+ <use Aufgaben-Ressourcen/A6L7M3N2.png>
+Package pdftex.def Info: Aufgaben-Ressourcen/A6L7M3N2.png used on input line 65
+5.
+(pdftex.def)             Requested size: 345.0pt x 179.12003pt.
 
-Overfull \hbox (12.74709pt too wide) in paragraph at lines 638--669
-\OT1/cmr/m/n/10 h$[]$ := Raumlicher Diskretisierungspa-ram-e-ter (Schrit-tweit
-e zwis-chen den raumlichen
+Overfull \hbox (11.4589pt too wide) in paragraph at lines 659--676
+\OT1/cmr/m/n/10 Das vorkon-di-tion-ierte Ver-fahren kon-vergiert schneller als 
+das gew^^?ohnliche GMRES-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 638--669
+Overfull \hbox (4.81078pt too wide) in paragraph at lines 659--676
+\OT1/cmr/m/n/10 Verfahren. Allerd-ings ist die Laufzeit trotz-dem je nach der g
+ew^^?ahlten Genauigkeit
+ []
+
+[22]
+Overfull \hbox (12.74709pt too wide) in paragraph at lines 680--721
+\OT1/cmr/m/n/10 h$[]$ := R^^?aumlicher Diskretisierungspa-ram-e-ter (Schrit-twe
+ite zwis-chen den r^^?aumlichen
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 680--721
 
  []
 
-[21] [22]
-Underfull \hbox (badness 10000) in paragraph at lines 670--671
+
+Underfull \hbox (badness 10000) in paragraph at lines 680--721
 
  []
 
-<Aufgaben-Ressourcen/P2A5T5.png, id=97, 988.44281pt x 505.89pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 680--721
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 680--721
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 680--721
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 680--721
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 680--721
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 680--721
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 680--721
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 680--721
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 680--721
+
+ []
+
+[23] [24]
+Underfull \hbox (badness 10000) in paragraph at lines 722--723
+
+ []
+
+<Aufgaben-Ressourcen/P2A5T5.png, id=107, 988.44281pt x 505.89pt>
 File: Aufgaben-Ressourcen/P2A5T5.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/P2A5T5.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/P2A5T5.png used on input line 673.
+Package pdftex.def Info: Aufgaben-Ressourcen/P2A5T5.png used on input line 725.
 
 (pdftex.def)             Requested size: 345.0pt x 176.57011pt.
 
-<Aufgaben-Ressourcen/P2A5T30.png, id=98, 1005.7575pt x 514.17094pt>
+<Aufgaben-Ressourcen/P2A5T30.png, id=108, 1005.7575pt x 514.17094pt>
 File: Aufgaben-Ressourcen/P2A5T30.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/P2A5T30.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/P2A5T30.png used on input line 677
+Package pdftex.def Info: Aufgaben-Ressourcen/P2A5T30.png used on input line 729
 .
 (pdftex.def)             Requested size: 345.0pt x 176.36923pt.
 
-<Aufgaben-Ressourcen/P2A5T60.png, id=99, 1007.26312pt x 505.89pt>
+<Aufgaben-Ressourcen/P2A5T60.png, id=109, 1007.26312pt x 505.89pt>
 File: Aufgaben-Ressourcen/P2A5T60.png Graphic file (type png)
 
 <use Aufgaben-Ressourcen/P2A5T60.png>
-Package pdftex.def Info: Aufgaben-Ressourcen/P2A5T60.png used on input line 681
+Package pdftex.def Info: Aufgaben-Ressourcen/P2A5T60.png used on input line 733
 .
 (pdftex.def)             Requested size: 345.0pt x 173.27399pt.
- [23 <./Aufgaben-Ressourcen/P2A5T5.png>]
-[24 <./Aufgaben-Ressourcen/P2A5T30.png> <./Aufgaben-Ressourcen/P2A5T60.png>]
-(Aufgaben.aux)
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+ [25 <./Aufgaben-Ressourcen/P2A5T5.png>]
+[26 <./Aufgaben-Ressourcen/P2A5T30.png> <./Aufgaben-Ressourcen/P2A5T60.png>]
+(./Aufgaben.aux) ) 
 Here is how much of TeX's memory you used:
- 1957 strings out of 493333
- 26775 string characters out of 3142666
- 102441 words of memory out of 3000000
- 5458 multiletter control sequences out of 15000+200000
- 7895 words of font info for 28 fonts, out of 3000000 for 9000
+ 1995 strings out of 492995
+ 28006 string characters out of 6132704
+ 108869 words of memory out of 5000000
+ 5516 multiletter control sequences out of 15000+600000
+ 9107 words of font info for 32 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 39i,9n,25p,760b,247s stack positions out of 5000i,500n,10000p,200000b,50000s
-<D:/Programme/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx10.pfb><D:/Programme/
-MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><D:/Programme/MiKTeX/fonts/typ
-e1/public/amsfonts/cm/cmmi10.pfb><D:/Programme/MiKTeX/fonts/type1/public/amsfon
-ts/cm/cmmi5.pfb><D:/Programme/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi7.pfb><
-D:/Programme/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><D:/Programme/MiKT
-eX/fonts/type1/public/amsfonts/cm/cmr12.pfb><D:/Programme/MiKTeX/fonts/type1/pu
-blic/amsfonts/cm/cmr17.pfb><D:/Programme/MiKTeX/fonts/type1/public/amsfonts/cm/
-cmr5.pfb><D:/Programme/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb><D:/Progr
-amme/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><D:/Programme/MiKTeX/font
-s/type1/public/amsfonts/cm/cmsy5.pfb><D:/Programme/MiKTeX/fonts/type1/public/am
-sfonts/cm/cmsy7.pfb>
-Output written on Aufgaben.pdf (24 pages, 3697618 bytes).
+ 39i,10n,25p,759b,321s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmbx10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmbx12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmmi10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmmi12.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmmi5.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmmi7.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+r10.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr1
+2.pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.
+pfb></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb
+></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></
+usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></u
+sr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr
+/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
+Output written on Aufgaben.pdf (27 pages, 1940698 bytes).
 PDF statistics:
- 147 PDF objects out of 1000 (max. 8388607)
+ 162 PDF objects out of 1000 (max. 8388607)
+ 103 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 81 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 71 words of extra memory for PDF output out of 10000 (max. 10000000)
 
