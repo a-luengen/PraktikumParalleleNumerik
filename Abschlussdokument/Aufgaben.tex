@@ -16,12 +16,12 @@
     \newpage
     \chapter{Poisson-Gleichung und OpenMP}
     \section{OpenMP und Testtools}
-    \subsection{Aufgabe 1}
+    \subsection{Aufgabe 1 - Hello World, $\pi$ \& Mandelbrot}
         \subsubsection{a)}
-        Die Reihenfolge in welcher die IDs der Threads ausgegeben werden ist jedes Mal unterschiedlich und ist auch nicht vorherzusagen.
-        
+        Bei dem parallelen "Hello World"-Programm, bei dem jeder Thread seine Thread-ID ausgibt, ist nicht vorherzusehen in welcher Reihenfolge dies geschieht und kann sich bei jeder Ausführung ändern.
         \subsubsection{b)}
-        Gemessen wurde auf dem i82sn02. In Table \ref{Table:1b} sind die Messungen dokumentiert. Für die manuelle Parallelisierung wurde atomic verwendet. Diese Messung wurde nach 4 Threads aufgehört da sich die Rechenzeit stark erhöht hat. Für das Parallelisieren mit Reduktion ist das maximales Speedup $ \sim 8 $.\\
+        Um die Kreiszahl $\pi$ parallel mittels numerischer Integration zu berechnen, kann man in OpenMP die einzelnen Summen entweder manuell oder mittels Reduktion aufaddieren. Die Unterschiede in der Laufzeit wurden in Table \ref{Table:1b} dokumentiert.\\
+        Gemessen wurde auf dem i82sn02. Für die manuelle Parallelisierung haben wir uns für atomic entschieden, da uns das intuitiv vorkam. Hier hat sich die Rechenzeit in der parallelen Ausführung jedoch stark erhöht, weshalb die Messung nach der Messung mit 4 Threads beendet wurde. Für das Parallelisieren mit Reduktion ist das maximales Speedup $ \sim 8 $.\\
         Bei 16 und 32 Threads verschlechtert sich die Beschleunigung im Gegensatz zu 8 Threads bei kleineren N. Das könnte am Overhead der Verarbeitung der Threads liegen.
    \begin{table}     
 	\begin{tabular}{|l|l|r|r|r|}
@@ -75,8 +75,10 @@
 \end{table}
 	\newpage
         \subsubsection{c)}
-        
-        Die Messbedingungen waren gleich wie im Aufgabenteil b). Die Werte für das Speedup unterscheiden sich nicht groß von den oben gemessenen. Die Messungen sind in Table  \ref{Table:1c}.\\
+        Die Berechnung der Mandelbrot-Menge kann parallelisiert werden, indem man die äußerste for-Schleife der Berechnung parallelisiert, mit privaten komplexen Zahlen z und kappa und privater innerster Schleifenvariable k für jeden Thread. Die Laufzeiten wurden für die Auflösungen 1000, 2000, 4000 und 5000 gemessen mit jeweils 1, 2, 4, 8 und 16 Threads. Gemessen wurde wieder auf dem i82sn02 und die Ergebnisse sind in Tabelle \ref{Table:1c} zu sehen..\\ 
+		Die Werte für das Speedup sind sehr nah an den gemessenen Werten in Aufgabenteil b).\\
+		Die folgenden Bilder zeigen verschiedene Outputs der Berechnung der Mandelbrotmenge. Bei beiden Bildern wurde die Auflösung 1000 berechnet. Das erste Bild zeigt den Output der sequentiellen Berechnung während das zweite Bild die Ausgabe der parallelen Berechnung zeigt.
+		
         \begin{table}
         \begin{tabular}{|l|r|r|r|}
         	\hline
@@ -110,16 +112,13 @@
         \caption{Messungen zu Aufgabe 1c}
          \label{Table:1c}
         \end{table}
+    
 	\begin{center}
 		\includegraphics[width=0.6\linewidth]{Aufgaben-Ressourcen/normal-1000.jpg}	
 	\end{center}
-
 	\begin{center}
-		\includegraphics[width=0.4\linewidth]{Aufgaben-Ressourcen/critical-1000.jpg}\quad\includegraphics[width=0.4\linewidth]{Aufgaben-Ressourcen/critical-1000-1000.jpg}
-		\\[\baselineskip]
-		\includegraphics[width=0.4\linewidth]{Aufgaben-Ressourcen/critical-10000-1000.jpg}\quad\includegraphics[width=0.4\linewidth]{Aufgaben-Ressourcen/critical-10000-1000.jpg}
+		\includegraphics[width=0.6\linewidth]{Aufgaben-Ressourcen/critical-1000.jpg}
 	\end{center}
-
 
     \subsection{Aufgabe 2}
     	\subsubsection{a)}
