@@ -3,11 +3,11 @@
 #include <stdlib.h>
 #include <math.h>
 #ifndef M_PI
-    #define M_PI 3.14159265358979323846
+#define M_PI 3.14159265358979323846
 #endif
 
 #define FEHLERSCHRANKE 0.0000009
-#define L 5
+#define LVALUE 5
 #define M 3
 #define N 2
 
@@ -38,12 +38,12 @@ int main()
   int k = 10000; //maxiterations
   float h = 1.0;
   int n = 1;
-  for (int i = 0; i < L; i++)
+  for (int i = 0; i < LVALUE; i++)
   {
     h = h / 2.0;
     n = n * 2;
   }
-  n = n - 1 + 2;
+  n = n - 1 +2;
 
   //Lösungsvektoren x0
   struct Vector x0;
@@ -64,7 +64,7 @@ int main()
   {
     for (int j = 0; j < n; j++)
     {
-      b.data[i * n + j] = h * h * functionF(h * i, h * j);
+      b.data[i * n + j] = h * h * functionF(h * i , h * j );
     }
   }
 
@@ -72,7 +72,7 @@ int main()
   struct Matrix A;
   A.rows = n * n;
   A.cols = n * n;
-  A.data = malloc(A.rows * A.cols * sizeof(float));
+  A.data = malloc(n * n * n * n * sizeof(float));
 
   //A besetzen
   #pragma omp parallel for
@@ -83,13 +83,92 @@ int main()
     {
       A.data[i][j] = 0.0;
       if (i == j)
-        A.data[i][j] = 4.0;
+      A.data[i][j] = 4.0;
 
       if (i + n == j || i == j + n || i + 1 == j || i == j + 1)
-        A.data[i][j] = -1.0;
+      A.data[i][j] = -1.0;
 
       if ((i % n == 0 && j == i - 1) || (i == j - 1 && j % n == 0))
-        A.data[i][j] = 0.0;
+      A.data[i][j] = 0.0;
+    }
+  }
+
+  //Matrix U
+  struct Matrix U;
+  U.rows = n * n;
+  U.cols = n * n;
+  U.data = malloc(n * n * n * n * sizeof(float));
+
+  //U besetzen
+  #pragma omp parallel for
+  for (int i = 0; i < n * n; i++)
+  {
+    U.data[i] = malloc(n * n * sizeof(float));
+    for (int j = 0; j < n * n; j++)
+    {
+      U.data[i][j] = 0.0f;
+    }
+  }
+
+  //Matrix L
+  struct Matrix L;
+  L.rows = n * n;
+  L.cols = n * n;
+  L.data = malloc(n * n * n * n * sizeof(float));
+
+  //L besetzen
+  #pragma omp parallel for
+  for (int i = 0; i < n * n; i++)
+  {
+    L.data[i] = malloc(n * n * sizeof(float));
+    for (int j = 0; j < n * n; j++)
+    {
+      L.data[i][j] = 0.0f;
+    }
+  }
+
+  struct Matrix LTEST;
+  LTEST.rows = n * n;
+  LTEST.cols = n * n;
+  LTEST.data = malloc(n * n * n * n * sizeof(float));
+
+  //L besetzen
+  #pragma omp parallel for
+  for (int i = 0; i < n * n; i++)
+  {
+    LTEST.data[i] = malloc(n * n * sizeof(float));
+    for (int j = 0; j < n * n; j++)
+    {
+      LTEST.data[i][j] = 0.0f;
+    }
+  }
+  float testSum = 1.0f;
+
+  //compute preconditioner
+  while(testSum > 0.00001f){ // until convergence!
+    testSum = 0.0f;
+
+    #pragma omp parallel for schedule(static,1) reduction(+:testSum)
+    for(int i = 0; i < n*n; i++){
+      for (int j = i; j <= i+n && j < n*n; j++){
+        float sm = A.data[i][j];
+        if(sm != 0)
+        //sum to diff
+        for(int zaehler = 1; zaehler< i;zaehler++){
+          sm -= U.data[zaehler][i]*U.data[zaehler][j];
+        }
+        if(i != j){
+          U.data[i][j]=sm/U.data[i][i];
+          L.data[j][i] = U.data[i][j];
+        } else {
+          U.data[i][i] = sqrt(sm);
+          L.data[i][i] = U.data[i][i];
+        }
+        float helperSum =L.data[j][i] - LTEST.data[j][i];
+        if(helperSum < 0) helperSum = helperSum * -1.0f;
+        testSum += helperSum;
+        LTEST.data[j][i]=L.data[j][i];
+      }
     }
   }
 
@@ -127,6 +206,16 @@ int main()
   {
     c.data[i] = 0.0f;
   }
+
+  struct Vector w;
+  w.size = n*n;
+  w.data = malloc((n*n) * sizeof(float));
+  #pragma omp parallel for
+  for (int i = 0; i < n *n; i++)
+  {
+    w.data[i] = 0.0f;
+  }
+
   struct Vector gamma;
   gamma.size = k + 1;
   gamma.data = malloc((k + 1) * sizeof(float));
@@ -144,23 +233,87 @@ int main()
     s.data[i] = 0.0f;
   }
 
+  struct Vector r0;
+  r0.size = n*n;
+  r0.data = malloc(n*n * sizeof(float));
+  #pragma omp parallel for
+  for (int i = 0; i < n*n; i++)
+  {
+    r0.data[i] = 0.0f;
+  }
+
   //compute r0
-  struct Vector r0 = diffVectors(b, multMatrixVector(A, x0));
-  for(int i = 0; i < n*n; i++){
+  r0 = diffVectors(b, multMatrixVector(A, x0));
+  //berechne preconditioned r0
+  for (int i = 0; i < n*n; i++)
+  { //Muss in reihenfolge laufen
     if(i<n||i%n == 0 ||i%n==n-1||i>n*(n-1))
     r0.data[i]=0;
+    else {
+      float helperValue = r0.data[i];
+      for (int l = i - 1; l >=l-n &&l >= 0; l--)
+      {
+        helperValue -= L.data[i][l] * r0.data[l];
+      }
+      r0.data[i] = helperValue / L.data[i][i];
+    }
   }
+  for (int i = n*n-1; i >=0; i--)
+  { //Muss in reihenfolge laufen
+    if(i<n||i%n == 0 ||i%n==n-1||i>n*(n-1))
+    r0.data[i]=0;
+    else {
+      float helperValue = r0.data[i];
+      for (int l = i + 1; l<=l+n&&l < n*n; l++)
+      {
+        helperValue -= U.data[i][l] * r0.data[l];
+      }
+      r0.data[i] = helperValue / U.data[i][i];
+    }
+  }
+
   gamma.data[0] = norm(r0);
   V[0] = multFloatVector(1.0f / gamma.data[0], r0);
 
   for (int j = 0; j < k; j++)
   {
     struct Vector q = multMatrixVector(A, V[j]);
+    for(int i = 0; i < n*n; i++){
+      if(i<n||i%n == 0 ||i%n==n-1||i>n*(n-1))
+      q.data[i]=0;
+    }
+    //berechne preconditioned w
+    for (int i = 0; i < n*n; i++)
+    { //Muss in reihenfolge laufen
+      if(i<n||i%n == 0 ||i%n==n-1||i>n*(n-1))
+      w.data[i]=0;
+      else {
+        float helperValue = q.data[i];
+        for (int l = i - 1; l>=l-n&&l >= 0; l--)
+        {
+          helperValue -= L.data[i][l] * w.data[l];
+        }
+        w.data[i] = helperValue / L.data[i][i];
+      }
+    }
+    for (int i = n*n-1; i >=0; i--)
+    { //Muss in reihenfolge laufen
+      if(i<n||i%n == 0 ||i%n==n-1||i>n*(n-1))
+      w.data[i]=0;
+      else {
+        float helperValue = w.data[i];
+        for (int l = i + 1; l<=l+n&&l < n*n; l++)
+        {
+          helperValue -= U.data[i][l] * w.data[l];
+        }
+        w.data[i] = helperValue / U.data[i][i];
+      }
+    }
     //hij berechnen
     #pragma omp parallel for
     for (int i = 0; i <= j; i++)
     {
-      H.data[i][j] = scalar(q, V[i]);
+      H.data[i][j] = scalar(w, V[i]);
     }
     //unnormedVj+1 berechnen
     struct Vector summedVector;
@@ -178,12 +331,11 @@ int main()
       free(vectorToSum.data);
     }
     struct Vector unnormedV;
-    unnormedV = diffVectors(q, summedVector);
+    unnormedV = diffVectors(w, summedVector);
     for(int i = 0; i < n*n; i++){
       if(i<n||i%n == 0 ||i%n==n-1||i>n*(n-1))
       unnormedV.data[i]=0;
     }
-
     //setze hj+1j
     H.data[j + 1][j] = norm(unnormedV);
 
@@ -208,19 +360,17 @@ int main()
 
     float testValue = gamma.data[j + 1];
     if (testValue < 0)
-      testValue = testValue * -1.0f;
+    testValue = testValue * -1.0f;
 
     if (testValue < FEHLERSCHRANKE)
     {
-      k = j;
       printf("Gamma: %f\n", testValue);
+      k = j;
     }
     else
     {
       //setze vj+1
       V[j + 1] = multFloatVector(1 / H.data[j + 1][j], unnormedV);
-
-
     }
 
     free(unnormedV.data);
@@ -240,7 +390,6 @@ int main()
   for (int i = k; i >= 0; i--)
   { //Muss in reihenfolge laufen
     float helperValue = gamma.data[i];
-    //#pragma omp parallel for reduction(-:helperValue)
     for (int l = i + 1; l <= k; l++)
     {
       helperValue -= H.data[i][l] * y.data[l];
@@ -276,9 +425,10 @@ int main()
     {
 
       if (solution.data[i + j * n] < 0)
-        printf("%f ", solution.data[i + j * n]);
+      printf("%f ", solution.data[i + j * n]);
       else
-        printf(" %f ", solution.data[i + j * n]);
+      printf(" %f ", solution.data[i + j * n]);
+
     }
     printf("\n");
   } //Schönere Ausgabe schreiben
@@ -286,11 +436,16 @@ int main()
   for (int i = 0; i < n * n; i++)
   {
     free(A.data[i]);
+    free(L.data[i]);
+    free(U.data[i]);
   }
   free(A.data);
+  free(U.data);
+  free(L.data);
   free(r0.data);
   free(b.data);
   free(x0.data);
+  free(w.data);
   return 0;
 }
 
