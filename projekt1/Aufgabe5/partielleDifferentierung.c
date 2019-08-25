@@ -3,15 +3,11 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define N 2
+#define M 3
+#define PI 3.14159265358979323846
 #define FEHLERSCHRANKE 0.000001
 //Exponent der Verfeinerung
-
-
-/** 
- * Jacobi Iteration implemented with OMP 
- * using embedded Vector-Matrix 
- * 
- */
 
 float functionF(float x, float y);
 float **allocateSquareMatrix(int size, int initialize, int n);
@@ -22,11 +18,11 @@ void printVectorInBlock(float *vector, int length, int blockLength);
 void freeSquareMatrix(float **matrix, int dim);
 
 /**
-*      
+*
 *   n: Dimension of u matrix
 *   fehlerSchranke: Abbruchbedingung für Gaus Seidel Verfahren
 *   h: Verfeinerung/Gitterschrittweite
-*   a: pointer to 2D-Array of Matrix a (currently not used, due 
+*   a: pointer to 2D-Array of Matrix a (currently not used, due
 *       to extraction of calculation pattern into algorithm)
 *   u: pointer to u matrix
 */
@@ -92,7 +88,7 @@ void gaussSeidel(int n, float fehlerSchranke, float h, float **a, float *u)
 
                 //#pragma omp atomic update
                 fehler += diff;
-              
+
 
                 //set new value for u in embedded vector
                 u_emb[i_emb][j_emb] = newU;
@@ -153,7 +149,7 @@ int main()
 
     // executing gauss seidel verfahren
     gaussSeidel(n, FEHLERSCHRANKE, h, a, u);
-    
+
     stop = clock();
     double time_used = (double) (stop - start) / CLOCKS_PER_SEC;
 
@@ -174,7 +170,7 @@ int main()
 
 float functionF(float x, float y)
 { // x and y should be in (0,1)
-    return 32.0f * (x * (1.0f - x) + y * (1.0f - y));
+    return (N*N+M*M)*4*PI*PI*sin(2*M*PI*x)*sin(2*N*PI*y);
 }
 
 float **allocateSquareMatrix(int size, int initialize, int n)
@@ -218,7 +214,7 @@ float **allocateSquareMatrix(int size, int initialize, int n)
 }
 
 /**
- *  Only frees the "rows" of the allocated Matrix. 
+ *  Only frees the "rows" of the allocated Matrix.
  *  Still have to call free on pointer of pointers
  */
 void freeSquareMatrix(float **matrix, int dim)
