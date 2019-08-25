@@ -1,0 +1,5 @@
+\select@language {ngerman}
+\beamer@sectionintoc {1}{OpenMP}{2}{0}{1}
+\beamer@sectionintoc {2}{Parallelisierung}{4}{0}{2}
+\beamer@sectionintoc {3}{Cuda}{6}{0}{3}
+\beamer@sectionintoc {4}{Partielle Differentialgleichungen}{8}{0}{4}
