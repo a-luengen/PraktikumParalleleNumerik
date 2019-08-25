@@ -6,6 +6,13 @@
 #define FEHLERSCHRANKE 0.000001
 //Exponent der Verfeinerung
 
+
+/** 
+ * Jacobi Iteration implemented with OMP 
+ * using embedded Vector-Matrix 
+ * 
+ */
+
 float functionF(float x, float y);
 float **allocateSquareMatrix(int size, int initialize, int n);
 float *allocateVector(int size, int initialize);

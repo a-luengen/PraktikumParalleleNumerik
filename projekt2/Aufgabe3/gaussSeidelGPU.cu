@@ -3,6 +3,12 @@
 #include <stdlib.h>
 #include <time.h>
 
+/**
+ * Jacobi Iteration (Red-Black-itteration) on CUDA GPU
+ * using an embedded Vector-Matrix to cover the corner cases
+ */
+
+
 #define FEHLERSCHRANKE 0.000001
 //Exponent der Verfeinerung
 
