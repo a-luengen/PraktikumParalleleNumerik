@@ -570,14 +570,12 @@ Verglichen mit Table \ref{Table:2_2Groesse} ergeben sich die in Table \ref{Table
 
 \subsubsection{a)}
 
-Running with 32 threads.\\
-h = 0.015625, n = 63, l = 6\\
-~ 6.725816\\
-
-Es wurde ein Implementierung des Jakobi-Iterationsverfahren zur Lösung des Gauss-Seidel-Verfahrens implementiert.
+Es wurde ein Implementierung des Jakobi-Iterationsverfahren zur Lösung des Gauss-Seidel-Verfahrens sowohl in OMP als auch in CUDA implementiert.
 Hier im vergleich befindet sich die äußerst naive Implementierung, in welche über die Summen des Gauss-Seidel-Verfahrens mittels OMP parallelisiert wurde,
 der bereits erwähnten Jakobi-Iteration mittels OMP und eine Implementierung der Jakobi-Iteration auf der CUDA-GPU.\\
-Die Messung sind in Table \ref{Table:2_3a} und der Speedup ergibt sich aus dem Vergleich mit der sequentiellen Laufzeit des naiven Ansatzes.
+Die Messung sind in Table \ref{Table:2_3a} aufgeführt und der Speedup ergibt sich aus dem Vergleich mit der sequentiellen Laufzeit des naiven Ansatzes.
+Die Zeiten für die OMP-Implementierungen wurden immer mit 32-OMP-Threads gemessen.
+
 \begin{table}
 	\begin{tabular}{|l|l|l|l|r|}
 		\hline
@@ -595,6 +593,12 @@ Die Messung sind in Table \ref{Table:2_3a} und der Speedup ergibt sich aus dem V
 		\hline
 		OMP Jacobi & l=6, h=1/64 & - & 6.394s & 5.82 \\
 		\hline 
+		CUDA Jacobi & l=4, h=1/16 & - & 1.020s & 0.043 \\
+		\hline
+		CUDA Jacobi & l=5, h=1/32 & - & 1.055 & 1.346 \\
+		\hline
+		CUDA Jacobi & l=6, h=1/64 & - & 1.318 & 28.237 \\
+		\hline
 	\end{tabular}
 	\caption{Vergleich - Paralleles mit sequentiellem Gauß-Seidel-Verfahren}
 	\label{Table:2_3a}
@@ -606,7 +610,8 @@ Dabei wird zunächst die Lösungsmatrix in meherere Teilblöcke unterteilt und e
 Auf diesem Block wird dann asynchron eine bestimmte Anzahl an Jacobiiterationen durchgeführt und im Anschluss erst der Global-Memory geupdatet.
 Die Besonderheit ist das hier zwischen den Threadblöcken keinerlei Synchronisation stattfindet. \\
 In Table \ref{Table:2_3b} wird das block-asynchrone Verfahren mit einer synchronen Implementierung des Jakobi-Verfahrens verglichen.
-
+Hierbei wird in der 3. Spalte ("It./Block") die Anzahl der Iterationen angegeben, die durch einen Warp ausgeführt werden, bevor das zwischenergebnis in den globalen Speicher zurückgeschrieben wird.
+Eine Steigerung der Iterationen pro Block hat jedoch kaum einen Einfluss auf die Performance der Implementierung.
 
 \begin{table}
 	\begin{tabular}{|l|l|l|l|r|}
