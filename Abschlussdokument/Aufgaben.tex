@@ -347,21 +347,28 @@ Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000
 	\subsubsection{b)}
 	Die Schleifenabläufe sind direkt voneinander abhängig und müssen in Reihenfolge ablaufen. Die naive Parallelisierung liefert keine korrekten Ergebnisse. Alternativ könnte man mit einer naiven Parallelisierung auch Parallelisierung der beiden inneren Summen meinen. Diese hätte zur Folge, dass man nur bis zu maximal vier parallele Threads hat, welche jeweils nur einen Wert aufaddieren.
 	\subsubsection{c)}
-		Methodik: Es gibt verschiedene Wege der effizienteren Parallelisierung der Werte. Man kann die zu berechnenden Werte zeilen- oder spaltenweise in Gruppen einteilen, sowie auch in einem Schachbrettmuster. Dann berechnet man die verschiedenen Gruppen parallel. Dies wird umgangssprachlich ''Rot-Schwarz'' genannt und konvergiert zum korrekten Ergebnis. Eine andere Variante der Berechnung ist die sogenannte ''Wavefront''. Dabei werden die Werte diagonal ausgerechnet. Dadurch entsteht eine ungeleiche Last über die Ausführungszeit, welche jedoch ausgeglichen werden kann, indem man die Matrix zusätzlich in Blöcke einteilt. Den Vergleich zwischen der sequentiellen und parallelisierten Version sieht man in Table \ref{Table:4c}.
-		\begin{table}
-		\begin{tabular}{|l|l|r|r|r|}
-				\hline
-				&Laufzeit(sequentiell) &Laufzeit(parallel) & SpeedUp & Efficiency\\
-			\hline
-			l=4; h=1/16 & 0.044s & 0.242s & 0.182 & 0.004 \\
-			l=5; h=1/32 & 1.420s & 1.154s & 1.231 & 0.026 \\
-				l=6; h=1/64 & 37.216s & 26.884s & 1.384 & 0.029 \\
-				\hline
-
-		\end{tabular}
-	\caption{Laufzeiten und Speedup des parallelisierten Gauß-Seidel-Verfahren}
+		Methodik: Es gibt verschiedene Wege der effizienteren Parallelisierung der Werte. Man kann die zu berechnenden Werte zeilen- oder spaltenweise in Gruppen einteilen, sowie auch in einem Schachbrettmuster. Dann berechnet man die verschiedenen Gruppen parallel. Dies wird umgangssprachlich ''Rot-Schwarz'' genannt und konvergiert zum korrekten Ergebnis. Dieses Verfahren wurde im Zuge dieser Arbeit benutzt. Eine andere Variante der Berechnung ist die sogenannte ''Wavefront''. Dabei werden die Werte diagonal ausgerechnet. Dadurch entsteht eine ungeleiche Last über die Ausführungszeit, welche jedoch ausgeglichen werden kann, indem man die Matrix zusätzlich in Blöcke einteilt. Den Vergleich zwischen der sequentiellen und parallelisierten Version sieht man in Table \ref{Table:4c}.
+\begin{table}
+	\begin{tabular}{|l|l|l|l|r|}
+		\hline
+		Implementierung & l,h &Laufzeit(seriell) &Laufzeit(parallel) & Speedup\\
+		\hline
+		OMP naiv & l=4; h=1/16 & 0.044s & 0.242s & 0.182  \\
+		\hline
+		OMP naiv & l=5, h=1/32 & 1.42 & 1.154 & 1.231 \\
+		\hline
+		OMP naiv & l=6; h=1/64 & 37.216s & 26.884s & 1.384 \\
+		\hline
+		OMP Jacobi &  l=4; h=1/16 & - & 0.391s & 0.113 \\
+		\hline
+		OMP Jacobi & l=5, h=1/3 & - & 1.475s & 0.963 \\
+		\hline
+		OMP Jacobi & l=6, h=1/64 & - & 6.394s & 5.82 \\
+		\hline 
+	\end{tabular}
+	\caption{Vergleich - Paralleles mit sequentiellem Gauß-Seidel-Verfahren}
 	\label{Table:4c}
-		\end{table}
+\end{table}
 
 \section{Partielle Differentialgleichungen}
     \subsection{Aufgabe 5 -Finite Differenzmethode \& Poisson-Gleichung}
