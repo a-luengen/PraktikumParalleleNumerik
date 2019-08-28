@@ -656,7 +656,8 @@ Eine Steigerung der Iterationen pro Block hat jedoch kaum einen Einfluss auf die
 \end{table}
 
 \subsubsection{c)}
-
+Das Gauß-Seidel-Verfahren ist mit asynchroner Paralleisierung für das GMRES-Verfahren nicht geeignet, da eine Vorraussetzung für das GMRES Verfahren ist, dass immer der selbe Vorkonditionierer verwendet wird. Durch die asynchrone Parallelisierung variiert die Vorkonditionierung und der GMRES konvergiert eventuell nicht oder erzeugt inkorrekte Ergebnisse. Bei einer synchronen Parallelisierung des Gauß-Seidel-Verfahren hat man dieses Problem nicht und kann dieses als Vorkonditionierer für das GMRES-Verfahren nutzen. \\
+Das flexible GMRES-Verfahren ermöglicht die Verwendung eines asynchronen Gauß-Seidel-Verfahren. Man kann die Implementierungen des GMRES-Verfahren ohne viel Mehraufwand zum flexiblen GMRES-Verfahren umbauen, indem man die vorkonditionierten Koeffizienten speichert und am Ende den Lösungsvektor mittels des vorkonditionierten Krylow-Unterraum bestimmt, statt des gewöhnlichen Krylow-Unterraums.
 \subsection{Aufgabe 4 - LU-Zerlegung}
 
 \subsubsection{a)}
@@ -680,12 +681,12 @@ Vergleichsimplementierung: GMRES-Verfahren\\
 Das vorkonditionierte Verfahren konvergiert schneller als das gewöhnliche GMRES-Verfahren. Allerdings ist die Laufzeit trotzdem je nach der gewählten Genauigkeit langsamer als im gewöhnlichen GMRES. Dies liegt daran, dass die Bestimmung des Vorkonditionierers am Anfang und dessen Anwendung in jeder Iteration die Laufzeit verlängert. Mit l=5 gilt, wenn der globale Fehler kleiner als 0.8*10$^{-5}$ ist ist die vorkonditionierte Version schneller. Dieser Fehlergrenzwert erhöht sich mit der Erhöhung von l.\\
 Die Messungen wurden mit l=5 M=3 N=2 und variierender Fehlerschranke f durchgeführt. Die Messwerte können in Table \ref{Table:2_4d} abgelesen werden. In den Datenzellen steht jeweils die Anzahl der Iterationen und durch ein Simikolon getrennt die Laufzeit in Sekunden.\\
 \begin{table}
-\begin{tabular}{|l|l|l|r|r|r|}
+\begin{tabular}{|l|r|r|r|r|r|}
 	\hline
 	Algorithmus&f=$10^{-5}$ &$10^{-6}$&$9*10^{-7}$& $8*10^{-7}$& $7*10^{-7}$\\
 	\hline
-	GMRES & 33;0.423 & 173;1.181 & 213;1.378 & 269;1.953 & 351;2.683 \\
-	Vorkonditioniert & 18;0.725 & 21;1.760 & 29;1.921 & 36;2.111 & 36;2.106 \\
+	GMRES & 33 - 0.42 & 173 - 1.18 & 213 - 1.38 & 269 - 1.95 & 351 - 2.68 \\
+	Vorkonditioniert & 18 - 0.72 & 21 - 1.76 & 29 - 1.92 & 36 - 2.11 & 36 - 2.11 \\
 	\hline
 	
 \end{tabular}
