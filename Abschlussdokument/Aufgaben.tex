@@ -351,23 +351,20 @@ Alle Programmdurchläufe für die Messungen hatten eine Fehlerschranke von 0.000
 	\subsubsection{c)}
 
 		Methodik: Es gibt verschiedene Wege der effizienteren Parallelisierung der Werte. Man kann die zu berechnenden Werte zeilen- oder spaltenweise in Gruppen einteilen, sowie auch in einem Schachbrettmuster. Dann berechnet man die verschiedenen Gruppen parallel. Dies wird umgangssprachlich ''Rot-Schwarz'' genannt und konvergiert zum korrekten Ergebnis. Dieses Verfahren wurde im Zuge dieser Arbeit benutzt. Eine andere Variante der Berechnung ist die sogenannte ''Wavefront''. Dabei werden die Werte diagonal ausgerechnet. Dadurch entsteht eine ungeleiche Last über die Ausführungszeit, welche jedoch ausgeglichen werden kann, indem man die Matrix zusätzlich in Blöcke einteilt. Den Vergleich zwischen der sequentiellen und parallelisierten Version sieht man in Table \ref{Table:4c}.
+
 \begin{table}
 	\centering
-	\begin{tabular}{|l|l|l|l|r|}
+	\begin{tabular}{|l|l|r|r|r|}
 		\hline
-		Implementierung & l,h &Laufzeit(seriell) &Laufzeit(parallel) & Speedup\\
+		Implementierung & l,h & T(1) in s & T(n) in s & Speedup\\
 		\hline
-		OMP naiv & l=4; h=1/16 & 0.044s & 0.242s & 0.182  \\
+		\multirow{3}{*}{OMP naiv} & l=4; h=1/16 & 0.044 & 0.242 & 0.182  \\
+		 & l=5, h=1/32 & 1.42ß & 1.154 & 1.231 \\
+		 & l=6; h=1/64 & 37.216 & 26.884 & 1.384 \\
 		\hline
-		OMP naiv & l=5, h=1/32 & 1.42 & 1.154 & 1.231 \\
-		\hline
-		OMP naiv & l=6; h=1/64 & 37.216s & 26.884s & 1.384 \\
-		\hline
-		OMP Jacobi &  l=4; h=1/16 & - & 0.391s & 0.113 \\
-		\hline
-		OMP Jacobi & l=5, h=1/3 & - & 1.475s & 0.963 \\
-		\hline
-		OMP Jacobi & l=6, h=1/64 & - & 6.394s & 5.82 \\
+		\multirow{3}{*}{OMP Jacobi} &  l=4; h=1/16 & - & 0.391 & 0.113 \\
+		& l=5, h=1/3 & - & 1.475 & 0.963 \\
+		& l=6, h=1/64 & - & 6.394 & 5.82 \\
 		\hline 
 	\end{tabular}
 	\caption{Vergleich - Paralleles mit sequentiellem Gauß-Seidel-Verfahren}
@@ -575,29 +572,25 @@ Hier im vergleich befindet sich die äußerst naive Implementierung, in welche �
 der bereits erwähnten Jakobi-Iteration mittels OMP und eine Implementierung der Jakobi-Iteration auf der CUDA-GPU.\\
 Die Messung sind in Table \ref{Table:2_3a} aufgeführt und der Speedup ergibt sich aus dem Vergleich mit der sequentiellen Laufzeit des naiven Ansatzes.
 Die Zeiten für die OMP-Implementierungen wurden immer mit 32-OMP-Threads gemessen.
+Die große Threadanzahl im Verhaltnis zur Eingabegröße erklärt auch den schlechten Speedup der OMP-Jacobi Implementierung mit l=4 bzw. l=5.
+Der Overhead durch die hohe Kommunikation bzgl. der Fehlerberechnung mittels Reduction führt zu einer schlechteren Ausführungszeit als bei sequentieller Ausführung.
 
 \begin{table}
-	\begin{tabular}{|l|l|l|l|r|}
+	\begin{tabular}{|l|l|r|r|r|}
 		\hline
-		Implementierung & l,h &Laufzeit(seriell) &Laufzeit(parallel) & Speedup\\
+		Implementierung & l,h & T(1) in s & T(n) in s & Speedup\\
 		\hline
-		OMP naiv & l=4; h=1/16 & 0.044s & 0.242s & 0.182  \\
+		\multirow{3}{*}{OMP naiv} & l=4; h=1/16 & 0.044 & 0.242 & 0.182  \\
+		& l=5, h=1/32 & 1.42 & 1.154 & 1.231 \\
+		& l=6; h=1/64 & 37.216 & 26.884 & 1.384 \\
 		\hline
-		OMP naiv & l=5, h=1/32 & 1.42 & 1.154 & 1.231 \\
-		\hline
-		OMP naiv & l=6; h=1/64 & 37.216s & 26.884s & 1.384 \\
-		\hline
-		OMP Jacobi &  l=4; h=1/16 & - & 0.391s & 0.113 \\
-		\hline
-		OMP Jacobi & l=5, h=1/3 & - & 1.475s & 0.963 \\
-		\hline
-		OMP Jacobi & l=6, h=1/64 & - & 6.394s & 5.82 \\
+		\multirow{3}{*}{OMP Jacobi} &  l=4; h=1/16 & - & 0.391 & 0.113 \\
+		 & l=5, h=1/32 & - & 1.475 & 0.963 \\
+		 & l=6, h=1/64 & - & 6.394 & 5.820 \\
 		\hline 
-		CUDA Jacobi & l=4, h=1/16 & - & 1.020s & 0.043 \\
-		\hline
-		CUDA Jacobi & l=5, h=1/32 & - & 1.055 & 1.346 \\
-		\hline
-		CUDA Jacobi & l=6, h=1/64 & - & 1.318 & 28.237 \\
+		\multirow{3}{*}{CUDA Jacobi}& l=4, h=1/16 & - & 1.020 & 0.043 \\		
+		 & l=5, h=1/32 & - & 1.055 & 1.346 \\		
+		 & l=6, h=1/64 & - & 1.318 & 28.237 \\
 		\hline
 	\end{tabular}
 	\caption{Vergleich - Paralleles mit sequentiellem Gauß-Seidel-Verfahren}
@@ -610,45 +603,41 @@ Dabei wird zunächst die Lösungsmatrix in meherere Teilblöcke unterteilt und e
 Auf diesem Block wird dann asynchron eine bestimmte Anzahl an Jacobiiterationen durchgeführt und im Anschluss erst der Global-Memory geupdatet.
 Die Besonderheit ist das hier zwischen den Threadblöcken keinerlei Synchronisation stattfindet. \\
 In Table \ref{Table:2_3b} wird das block-asynchrone Verfahren mit einer synchronen Implementierung des Jakobi-Verfahrens verglichen.
-Hierbei wird in der 3. Spalte ("It./Block") die Anzahl der Iterationen angegeben, die durch einen Warp ausgeführt werden, bevor das zwischenergebnis in den globalen Speicher zurückgeschrieben wird.
+Hierbei wird in der 3. Spalte ("It./Block") die Anzahl der Iterationen angegeben, die durch einen Warp ausgeführt werden, bevor das zwischenergebnis in den globalen Speicher zurück
+geschrieben wird.
 Eine Steigerung der Iterationen pro Block hat jedoch kaum einen Einfluss auf die Performance der Implementierung.
 
 \begin{table}
-	\begin{tabular}{|l|l|l|l|r|}
+	\begin{tabular}{|l|l|r|r|r|}
 		\hline
-		Implementierung & l,h & It./Block & Laufzeit(parallel) & Speedup (vs. Seq.)\\
+		Implementierung & l,h & It./Block & T(n) in s & Speedup (vs. Seq.)\\
 
 		\hline
-		CUDA synch. & 4, 1/16 & - & 1.020 & 0.043 \\
+		\multirow{3}{*}{CUDA sync.} & 4, 1/16 & - & 1.020 & 0.043 \\
+		& 5, 1/32 & - & 1.055 & 1.346 \\
+		& 6, 1/64 & - & 1.318 & 28.237 \\
 		\hline
-		CUDA synch. & 5, 1/32 & - & 1.055 & 1.346 \\
-		\hline
-		CUDA synch. & 6, 1/64 & - & 1.318 & 28.237 \\
-		\hline
-		CUDA async & 4, 1/16 & 10 & 0.989 & 0.044 \\
-		\hline
-		CUDA async & 4, 1/16 & 15 & 0.973 & 0.045 \\
-		\hline
-		CUDA async & 4, 1/16 & 20 & 0.950 & 0.046 \\
-		\hline
-		CUDA async & 4, 1/16 & 25 & 0.976 & 0.045 \\
-		\hline
-		CUDA async & 5, 1/32 & 10 & 0.986 & 1.440 \\
-		\hline
-		CUDA async & 5, 1/32 & 15 & 0.979 & 1.450 \\
-		\hline
-		CUDA async & 5, 1/32 & 20 & 1.002 & 1.417 \\
-		\hline
-		CUDA async & 5, 1/32 & 25 & 1.018 & 1.395 \\
-		\hline
-		CUDA async & 6, 1/64 & 10 & 1.088 & 34.206 \\
-		\hline
-		CUDA async & 6, 1/64 & 15 & 1.108 & 33.588 \\
-		\hline
-		CUDA async & 6, 1/64 & 20 & 1.077 & 34.555 \\
-		\hline
-		CUDA async & 6, 1/64 & 25 & 1.056 & 35.242 \\
-
+		\multirow{12}{*}{CUDA async.} & 4, 1/16 & 10 & 0.989 & 0.044 \\
+		  & 4, 1/16 & 15 & 0.973 & 0.045 \\
+		 
+		  & 4, 1/16 & 20 & 0.950 & 0.046 \\
+		 
+		  & 4, 1/16 & 25 & 0.976 & 0.045 \\
+		 \cline{2-5}
+		  & 5, 1/32 & 10 & 0.986 & 1.440 \\
+		 
+		  & 5, 1/32 & 15 & 0.979 & 1.450 \\
+		 
+		  & 5, 1/32 & 20 & 1.002 & 1.417 \\
+		 
+		  & 5, 1/32 & 25 & 1.018 & 1.395 \\
+		 \cline{2-5}
+		  & 6, 1/64 & 10 & 1.088 & 34.206 \\
+		 
+		  & 6, 1/64 & 15 & 1.108 & 33.588 \\
+		 
+		  & 6, 1/64 & 20 & 1.077 & 34.555 \\
+		  & 6, 1/64 & 25 & 1.056 & 35.242 \\
 		\hline 
 	\end{tabular}
 	\caption{Vergleich -  implementiertes synchrones Jakobi-Verfahren mit block-asynchronem Verfahren}
@@ -656,8 +645,15 @@ Eine Steigerung der Iterationen pro Block hat jedoch kaum einen Einfluss auf die
 \end{table}
 
 \subsubsection{c)}
-Das Gauß-Seidel-Verfahren ist mit asynchroner Paralleisierung für das GMRES-Verfahren nicht geeignet, da eine Vorraussetzung für das GMRES Verfahren ist, dass immer der selbe Vorkonditionierer verwendet wird. Durch die asynchrone Parallelisierung variiert die Vorkonditionierung und der GMRES konvergiert eventuell nicht oder erzeugt inkorrekte Ergebnisse. Bei einer synchronen Parallelisierung des Gauß-Seidel-Verfahren hat man dieses Problem nicht und kann dieses als Vorkonditionierer für das GMRES-Verfahren nutzen. \\
-Das flexible GMRES-Verfahren ermöglicht die Verwendung eines asynchronen Gauß-Seidel-Verfahren. Man kann die Implementierungen des GMRES-Verfahren ohne viel Mehraufwand zum flexiblen GMRES-Verfahren umbauen, indem man die vorkonditionierten Koeffizienten speichert und am Ende den Lösungsvektor mittels des vorkonditionierten Krylow-Unterraum bestimmt, statt des gewöhnlichen Krylow-Unterraums.
+Das Gauß-Seidel-Verfahren ist mit asynchroner Parallelisierung für das GMRES-Verfahren nicht geeignet, 
+da eine Vorraussetzung für das GMRES Verfahren ist, dass immer der selbe Vorkonditionierer verwendet werden soll. 
+Durch die asynchrone Parallelisierung variiert das Ergebnis der Vorkonditionierung mit jeder neuen Ausführung 
+und der GMRES konvergiert eventuell nicht oder erzeugt inkorrekte Ergebnisse. 
+Bei einer synchronen Parallelisierung des Gauß-Seidel-Verfahren hat man dieses Problem nicht und kann dieses als Vorkonditionierer für das GMRES-Verfahren nutzen.\\
+Das flexible GMRES-Verfahren ermöglicht die Verwendung eines asynchronen Gauß-Seidel-Verfahren. 
+Man kann die Implementierungen des GMRES-Verfahren ohne viel Mehraufwand zum flexiblen GMRES-Verfahren umbauen, 
+indem man die vorkonditionierten Koeffizienten speichert und am Ende den Lösungsvektor mittels des vorkonditionierten Krylow-Unterraum bestimmt, statt des gewöhnlichen Krylow-Unterraums.
+
 \subsection{Aufgabe 4 - LU-Zerlegung}
 
 \subsubsection{a)}
